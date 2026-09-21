@@ -247,6 +247,7 @@ def generate_fixture_dataset(
         "dataset": target_csv.name,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "seed": seed,
+        "_isolation_guard": "GROUND_TRUTH_FOR_TESTS_ONLY",
         "scenarios_count": 8,
         "cases": {
             "V001": {
