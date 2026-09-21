@@ -69,10 +69,16 @@ MODEL_CKPT      = MODELS_DIR / "best_segformer_oilspill.pt.zip"  # actual upload
 MODEL_IMG_SIZE  = 256   # matches Kaggle training (IMG_SIZE = 256)
 NUM_LABELS      = 2     # 0=background, 1=spill
 
-# ── Drift / OceanParcels settings ─────────────────────────────────────────────
-N_PARTICLES     = 50    # seed points sampled from mask
-DRIFT_HOURS     = 24    # how far back (or forward) to run parcels
-WIND_LEEWAY     = 0.03  # 3 % wind-drift coefficient
+# ── Drift / RK4 engine settings ───────────────────────────────────────────────
+N_PARTICLES              = 50    # seed points sampled from mask
+DRIFT_HOURS              = 24    # default hindcast drift duration
+FORECAST_HOURS           = 48    # forward forecast horizon (hours)
+WIND_LEEWAY              = 0.03  # 3 % wind-drift coefficient
+WIND_DRIFT_COEFFICIENT   = WIND_LEEWAY
+DRIFT_TIME_STEP_MIN      = 10    # 10-minute RK4 integration steps
+STRATIFIED_INTERIOR_RATIO = 0.70 # 70% interior, 30% boundary
+EDDY_DIFFUSIVITY_M2S     = 2.0   # Horizontal turbulent diffusion (m^2/s)
+PIXEL_SCALE_M            = 10.0  # SAR resolution in meters per pixel
 
 # ── AIS settings ──────────────────────────────────────────────────────────────
 AIS_CSV         = AIS_DIR / "ais_sample.csv"

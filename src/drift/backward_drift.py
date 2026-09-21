@@ -1,295 +1,294 @@
 """
-Module 3 — Backward Drift Reconstruction (Hindcasting)
-Simulates where an oil spill originated by running particles backward
-through synthetic Arabian Sea wind + current fields.
+Module 3 — Backward Drift Forensics & Forward Dispersion Forecast (RK4 Engine)
+Implements:
+  1. Backward Hindcast to Reconstructed Discharge (-Xh)
+  2. Forward Forecast to Impact Horizon (+48h)
+  3. Continuous Timeline States with Plume Centroid, Area (km2), and Particle Plume
+  4. Vector Hydrodynamics (HYCOM / GFS) matching operational marine surveillance displays
+  5. Timeline Milestones: Reconstructed Discharge, S1 Scan, +12h, +24h, +48h
 
-Uses a pure-numpy particle advection engine (OceanParcels replacement)
-that is self-contained and offline-safe for the MVP demo.
-
-Usage:
-  python src/drift/backward_drift.py
-  python src/drift/backward_drift.py --case case_01
+Output:
+  - data/processed/{case_id}_drift.json
 """
-import sys, json, argparse
+import sys
+import json
+import argparse
+import datetime
 from pathlib import Path
+from typing import List, Dict, Any, Optional
 
 ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 import numpy as np
-import matplotlib
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-from scipy.ndimage import zoom
-from PIL import Image
 
 from config import (
-    CASES, DATA_PROCESSED, OCEAN_DIR, WIND_DIR,
-    N_PARTICLES, DRIFT_HOURS, WIND_LEEWAY, PIXEL_SCALE_M if hasattr(__import__("config"), "PIXEL_SCALE_M") else None
+    CASES, DATA_PROCESSED, N_PARTICLES, DRIFT_HOURS,
+    FORECAST_HOURS, DRIFT_TIME_STEP_MIN, WIND_DRIFT_COEFFICIENT,
+    STRATIFIED_INTERIOR_RATIO, EDDY_DIFFUSIVITY_M2S
+)
+from drift.velocity_field import VelocityField
+from drift.rk4 import RK45DriftEngine
+from drift.particle_seed import sample_stratified_seed_points
+from drift.origin_zone import (
+    fit_origin_ellipse, compute_release_window, compute_plume_stats
+)
+from drift.weathering import compute_adios_weathering, compute_oceanographic_regime
+from drift.schemas import (
+    SimulationConfig, TimestepState, TimelineMilestone,
+    TimelineRange, DriftResult
 )
 
-# Pixel scale — fall back if not in config
-try:
-    from config import PIXEL_SCALE_M
-except ImportError:
-    PIXEL_SCALE_M = 10.0
 
-M_PER_DEG_LAT = 111_320.0   # metres per degree latitude (fixed)
+def format_utc_display(dt: datetime.datetime) -> str:
+    """Formats datetime to 'Tue, 16 Jan 2024 05:10:00 UTC'."""
+    return dt.strftime("%a, %d %b %Y %H:%M:%S UTC")
 
 
-# ── Field loader ───────────────────────────────────────────────────────────────
-
-def load_fields():
-    curr = np.load(OCEAN_DIR / "current_arabian_sea.npz")
-    wind = np.load(WIND_DIR  / "wind_arabian_sea.npz")
-    return curr, wind
-
-
-def interpolate_velocity(lat, lon, field, lats, lons) -> tuple:
-    """Bilinear interpolation of U, V at a given lat/lon."""
-    lat = np.clip(lat, lats[0], lats[-1])
-    lon = np.clip(lon, lons[0], lons[-1])
-
-    i0 = np.searchsorted(lats, lat) - 1
-    j0 = np.searchsorted(lons, lon) - 1
-    i0 = int(np.clip(i0, 0, len(lats) - 2))
-    j0 = int(np.clip(j0, 0, len(lons) - 2))
-
-    dy = (lat - lats[i0]) / (lats[i0 + 1] - lats[i0] + 1e-10)
-    dx = (lon - lons[j0]) / (lons[j0 + 1] - lons[j0] + 1e-10)
-
-    U = (field["U"][i0,   j0]   * (1 - dy) * (1 - dx) +
-         field["U"][i0+1, j0]   * dy       * (1 - dx) +
-         field["U"][i0,   j0+1] * (1 - dy) * dx       +
-         field["U"][i0+1, j0+1] * dy       * dx)
-    V = (field["V"][i0,   j0]   * (1 - dy) * (1 - dx) +
-         field["V"][i0+1, j0]   * dy       * (1 - dx) +
-         field["V"][i0,   j0+1] * (1 - dy) * dx       +
-         field["V"][i0+1, j0+1] * dy       * dx)
-    return float(U), float(V)
-
-
-# ── Particle advection ─────────────────────────────────────────────────────────
-
-def advect_particles(seed_lats: np.ndarray, seed_lons: np.ndarray,
-                     curr_field: dict, wind_field: dict,
-                     hours: int, direction: int = -1,
-                     dt_min: int = 30) -> tuple:
+def run_drift_case(
+    case_id: str,
+    vel_field: Optional[VelocityField] = None,
+    hindcast_hours: Optional[float] = None,
+    forecast_hours: Optional[float] = None,
+    dt_minutes: float = DRIFT_TIME_STEP_MIN,
+    eddy_diffusivity: float = EDDY_DIFFUSIVITY_M2S
+) -> DriftResult:
     """
-    Advect N particles for `hours` hours.
-    direction = -1 → backward (hindcast)
-    direction = +1 → forward  (forecast)
-    Returns final (lats, lons), trajectory list.
+    Executes the full hindcast + forecast drift simulation for a single case.
     """
-    lats_g = curr_field["lats"]
-    lons_g = curr_field["lons"]
-    n_steps = int(hours * 60 / dt_min)
-    dt_s    = dt_min * 60 * direction   # seconds per step, sign sets direction
+    case_meta = CASES[case_id]
+    field = vel_field or VelocityField()
 
-    p_lat = seed_lats.copy()
-    p_lon = seed_lons.copy()
-    trajectories = [(p_lat.copy(), p_lon.copy())]
+    h_hours = float(hindcast_hours if hindcast_hours is not None else case_meta.get("release_window_hours", DRIFT_HOURS))
+    f_hours = float(forecast_hours if forecast_hours is not None else FORECAST_HOURS)
 
-    for _ in range(n_steps):
-        for i in range(len(p_lat)):
-            u_c, v_c = interpolate_velocity(p_lat[i], p_lon[i],
-                                            {"U": curr_field["U"], "V": curr_field["V"]},
-                                            lats_g, lons_g)
-            u_w, v_w = interpolate_velocity(p_lat[i], p_lon[i],
-                                            {"U": wind_field["U"], "V": wind_field["V"]},
-                                            lats_g, lons_g)
-            # total velocity: current + wind leeway
-            u_total = u_c + WIND_LEEWAY * u_w
-            v_total = v_c + WIND_LEEWAY * v_w
+    # 1. Stratified particle seeding from SAR spill mask (70% interior, 30% boundary)
+    seed_lats, seed_lons, seed_meta = sample_stratified_seed_points(
+        case_id=case_id,
+        n_particles=N_PARTICLES,
+        interior_ratio=STRATIFIED_INTERIOR_RATIO,
+        seed=42
+    )
 
-            # convert m/s → deg/s
-            m_per_deg_lon = M_PER_DEG_LAT * np.cos(np.radians(p_lat[i]))
-            p_lat[i] += v_total * dt_s / M_PER_DEG_LAT
-            p_lon[i] += u_total * dt_s / (m_per_deg_lon + 1e-10)
+    # 2. Physics engine: RK45 Advanced Drift Engine
+    vf = field
+    engine = RK45DriftEngine(
+        velocity_func=vf.get_velocity,
+        diffusivity_func=vf.get_eddy_diffusivity
+    )
 
-        trajectories.append((p_lat.copy(), p_lon.copy()))
+    # 3. Simulate continuous timeline (-hindcast_hours -> 0h -> +forecast_hours)
+    raw_states = engine.simulate_full_timeline(
+        seed_lats=seed_lats,
+        seed_lons=seed_lons,
+        hindcast_hours=h_hours,
+        forecast_hours=f_hours,
+        dt_minutes=dt_minutes,
+        seed=42
+    )
 
-    return p_lat, p_lon, trajectories
+    # Parse SAR observation timestamp
+    sar_ts_clean = case_meta["sar_timestamp"].replace("Z", "+00:00")
+    sar_dt = datetime.datetime.fromisoformat(sar_ts_clean)
 
+    # 4. Process each timeline step: calculate plume centroid, area (km2), and hydrodynamics
+    trajectory_states: List[TimestepState] = []
+    milestone_candidates: Dict[str, Any] = {}
 
-# ── Seed points from mask ──────────────────────────────────────────────────────
+    for idx, raw in enumerate(raw_states):
+        offset_hr = raw["time_offset_hours"]
+        step_dt = sar_dt + datetime.timedelta(hours=offset_hr)
+        lats = raw["lats"]
+        lons = raw["lons"]
 
-def sample_seed_points(case_id: str, n: int = N_PARTICLES) -> tuple:
-    """Sample N points uniformly from the spill mask, in lat/lon."""
-    mask_path = Path(CASES[case_id]["sar_mask"])
-    mask = np.array(Image.open(mask_path).convert("L"))
-    mask = (mask > 127).astype(np.uint8)
+        c_lat, c_lon, area_km2 = compute_plume_stats(lats, lons)
+        particles_list = [
+            [round(float(la), 5), round(float(lo), 5)]
+            for la, lo in zip(lats, lons)
+        ]
 
-    spill_idx = np.argwhere(mask == 1)
-    if len(spill_idx) == 0:
-        raise ValueError(f"No spill pixels in mask for {case_id}")
+        # Calculate localized hydrodynamics at the plume centroid
+        hydro = field.get_vector_hydrodynamics(c_lat, c_lon)
 
-    rng = np.random.default_rng(42)
-    chosen = spill_idx[rng.choice(len(spill_idx), min(n, len(spill_idx)), replace=False)]
-    H, W   = mask.shape
-    bbox   = CASES[case_id]["spill_bbox"]
-
-    seed_lats = bbox["lat_max"] - (chosen[:, 0] / H) * (bbox["lat_max"] - bbox["lat_min"])
-    seed_lons = bbox["lon_min"] + (chosen[:, 1] / W) * (bbox["lon_max"] - bbox["lon_min"])
-    return seed_lats, seed_lons
-
-
-# ── Covariance ellipse ─────────────────────────────────────────────────────────
-
-def fit_uncertainty_ellipse(lats: np.ndarray, lons: np.ndarray) -> dict:
-    """Fit a 2-sigma covariance ellipse to the origin point cloud."""
-    pts  = np.column_stack([lons, lats])
-    cov  = np.cov(pts.T)
-    evals, evecs = np.linalg.eigh(cov)
-    order = evals.argsort()[::-1]
-    evals, evecs = evals[order], evecs[:, order]
-
-    angle_deg = float(np.degrees(np.arctan2(evecs[1, 0], evecs[0, 0])))
-    # 2-sigma ellipse (95 % confidence)
-    a_deg = float(2 * np.sqrt(evals[0]))   # semi-major in degrees
-    b_deg = float(2 * np.sqrt(evals[1]))   # semi-minor in degrees
-    a_km  = a_deg * M_PER_DEG_LAT / 1000.0
-    b_km  = b_deg * M_PER_DEG_LAT / 1000.0
-
-    return {
-        "center_lat":     round(float(lats.mean()), 5),
-        "center_lon":     round(float(lons.mean()), 5),
-        "semi_major_km":  round(a_km, 3),
-        "semi_minor_km":  round(b_km, 3),
-        "angle_deg":      round(angle_deg, 2),
-        "a_deg":          round(a_deg, 6),
-        "b_deg":          round(b_deg, 6),
-    }
-
-
-# ── Release time window ────────────────────────────────────────────────────────
-
-def compute_release_window(case_id: str, drift_hours: int) -> dict:
-    import datetime
-    sar_ts = CASES[case_id]["sar_timestamp"]
-    sar_dt = datetime.datetime.strptime(sar_ts, "%Y-%m-%dT%H:%M:%SZ")
-    release_end   = sar_dt - datetime.timedelta(hours=1)
-    release_start = sar_dt - datetime.timedelta(hours=drift_hours + 6)
-    return {
-        "release_start": release_start.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "release_end":   release_end.strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "window_hours":  drift_hours + 5,
-    }
-
-
-# ── Plot ───────────────────────────────────────────────────────────────────────
-
-def plot_drift(case_id: str, seed_lats, seed_lons,
-               origin_lats, origin_lons, trajectories,
-               ellipse: dict, release_window: dict, out_dir: Path):
-    fig, ax = plt.subplots(figsize=(10, 8))
-    fig.patch.set_facecolor("#0d1117")
-    ax.set_facecolor("#0d1225")
-
-    # draw trajectories (subsample for clarity)
-    n_draw = min(20, len(seed_lats))
-    for i in range(0, len(seed_lats), max(1, len(seed_lats) // n_draw)):
-        traj_lats = [step[0][i] for step in trajectories]
-        traj_lons = [step[1][i] for step in trajectories]
-        ax.plot(traj_lons, traj_lats, color="#4a9eff", alpha=0.25, linewidth=0.7)
-
-    # spill seed points (observation)
-    ax.scatter(seed_lons, seed_lats, c="#ff6b35", s=12, zorder=5,
-               label="Spill mask (SAR observation)")
-
-    # origin point cloud
-    ax.scatter(origin_lons, origin_lats, c="#00e676", s=14, alpha=0.6, zorder=6,
-               label=f"Origin particles (n={len(origin_lats)})")
-
-    # uncertainty ellipse
-    from matplotlib.patches import Ellipse
-    e = Ellipse(xy=(ellipse["center_lon"], ellipse["center_lat"]),
-                width=ellipse["a_deg"] * 2, height=ellipse["b_deg"] * 2,
-                angle=ellipse["angle_deg"],
-                edgecolor="#ffe066", facecolor="none", linewidth=2,
-                linestyle="--", zorder=7, label="2-sigma origin zone")
-    ax.add_patch(e)
-    ax.plot(ellipse["center_lon"], ellipse["center_lat"], "y*", markersize=14,
-            zorder=8, label="Origin centroid")
-
-    # labels
-    ax.set_xlabel("Longitude (E)", color="white")
-    ax.set_ylabel("Latitude (N)",  color="white")
-    ax.tick_params(colors="white")
-    for spine in ax.spines.values():
-        spine.set_edgecolor("#333")
-
-    title = (f"Occuris — {case_id.replace('_',' ').title()} | Backward Drift\n"
-             f"Origin: lat={ellipse['center_lat']}  lon={ellipse['center_lon']}  "
-             f"a={ellipse['semi_major_km']}km  b={ellipse['semi_minor_km']}km\n"
-             f"Release window: {release_window['release_start']} → {release_window['release_end']}")
-    ax.set_title(title, color="white", fontsize=9, pad=10)
-    ax.legend(facecolor="#1a1a2e", labelcolor="white", fontsize=8)
-
-    out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"{case_id}_backward_drift.png"
-    plt.savefig(out_path, bbox_inches="tight", dpi=130, facecolor=fig.get_facecolor())
-    plt.close()
-    return out_path
-
-
-# ── Main ───────────────────────────────────────────────────────────────────────
-
-def run_backward_drift(case_ids=None) -> dict:
-    curr_raw = np.load(OCEAN_DIR / "current_arabian_sea.npz")
-    wind_raw = np.load(WIND_DIR  / "wind_arabian_sea.npz")
-    curr_field = {k: curr_raw[k] for k in curr_raw.files}
-    wind_field = {k: wind_raw[k] for k in wind_raw.files}
-
-    ids = case_ids if case_ids else list(CASES.keys())
-    results = {}
-
-    print(f"\n{'='*62}")
-    print(f"Module 3 -- Backward Drift Reconstruction")
-    print(f"{'='*62}")
-    print(f"  Particles: {N_PARTICLES}  Duration: {DRIFT_HOURS}h  "
-          f"Wind leeway: {WIND_LEEWAY*100:.0f}%")
-
-    for case_id in ids:
-        print(f"\n  Processing {case_id}...")
-        seed_lats, seed_lons = sample_seed_points(case_id, N_PARTICLES)
-        origin_lats, origin_lons, trajs = advect_particles(
-            seed_lats, seed_lons, curr_field, wind_field,
-            hours=CASES[case_id]["release_window_hours"], direction=-1
+        ts_state = TimestepState(
+            step_index=idx,
+            phase=raw["phase"],
+            time_offset_hours=offset_hr,
+            timestamp=step_dt.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            formatted_time=format_utc_display(step_dt),
+            plume_centroid={"latitude": c_lat, "longitude": c_lon},
+            plume_area_km2=area_km2,
+            particles=particles_list,
+            vector_hydrodynamics=hydro,
+            weathering=compute_adios_weathering(offset_hr, area_km2, hydro.wind_leeway.speed_knots)
         )
-        ellipse  = fit_uncertainty_ellipse(origin_lats, origin_lons)
-        rel_win  = compute_release_window(case_id, CASES[case_id]["release_window_hours"])
-        out_path = plot_drift(case_id, seed_lats, seed_lons,
-                              origin_lats, origin_lons, trajs,
-                              ellipse, rel_win, DATA_PROCESSED)
+        trajectory_states.append(ts_state)
 
-        results[case_id] = {
-            "origin_ellipse":   ellipse,
-            "release_window":   rel_win,
-            "origin_lats":      origin_lats.tolist(),
-            "origin_lons":      origin_lons.tolist(),
-            "plot":             str(out_path),
-        }
+        # Record milestone steps
+        if idx == 0:
+            milestone_candidates["discharge"] = ts_state
+        elif raw["phase"] == "observation" and offset_hr == 0.0:
+            milestone_candidates["s1_scan"] = ts_state
+        elif abs(offset_hr - 12.0) < (dt_minutes / 120.0):
+            milestone_candidates["forecast_12h"] = ts_state
+        elif abs(offset_hr - 24.0) < (dt_minutes / 120.0):
+            milestone_candidates["forecast_24h"] = ts_state
+        elif abs(offset_hr - f_hours) < (dt_minutes / 120.0):
+            milestone_candidates["forecast_48h"] = ts_state
 
-        # Save JSON
-        (DATA_PROCESSED / f"{case_id}_drift.json").write_text(
-            json.dumps({k: v for k, v in results[case_id].items()
-                        if k not in ("origin_lats","origin_lons")}, indent=2))
+    # 5. Extract Origin Zone (at discharge step) & Release Window
+    discharge_state = milestone_candidates.get("discharge", trajectory_states[0])
+    origin_lats = np.array([p[0] for p in discharge_state.particles])
+    origin_lons = np.array([p[1] for p in discharge_state.particles])
 
-        print(f"    Origin centre  : lat={ellipse['center_lat']}  lon={ellipse['center_lon']}")
-        print(f"    Ellipse        : a={ellipse['semi_major_km']}km  b={ellipse['semi_minor_km']}km  "
-              f"angle={ellipse['angle_deg']}deg")
-        print(f"    Release window : {rel_win['release_start']} --> {rel_win['release_end']}")
-        print(f"    Plot saved     : {out_path}")
+    origin_zone = fit_origin_ellipse(origin_lats, origin_lons)
+    release_window = compute_release_window(
+        sar_timestamp=case_meta["sar_timestamp"],
+        drift_hours=h_hours,
+        buffer_hours=2.0
+    )
 
-    print(f"\n[OK] Module 3 Definition of Done: origin ellipse + release window for all {len(ids)} cases.")
-    print(f"{'='*62}\n")
-    return results
+    # 6. Assemble Timeline Milestones
+    s1_state = milestone_candidates.get("s1_scan", trajectory_states[len(trajectory_states)//2])
+    f12_state = milestone_candidates.get("forecast_12h", s1_state)
+    f24_state = milestone_candidates.get("forecast_24h", s1_state)
+    f48_state = milestone_candidates.get("forecast_48h", trajectory_states[-1])
+
+    milestones = [
+        TimelineMilestone(
+            id="reconstructed_discharge",
+            label=f"-{int(h_hours)}h Reconstructed Discharge",
+            time_offset_hours=-h_hours,
+            timestamp=discharge_state.timestamp,
+            formatted_time=discharge_state.formatted_time,
+            plume_centroid=discharge_state.plume_centroid,
+            plume_area_km2=discharge_state.plume_area_km2
+        ),
+        TimelineMilestone(
+            id="s1_scan",
+            label="0h S1 Scan",
+            time_offset_hours=0.0,
+            timestamp=s1_state.timestamp,
+            formatted_time=s1_state.formatted_time,
+            plume_centroid=s1_state.plume_centroid,
+            plume_area_km2=s1_state.plume_area_km2
+        ),
+        TimelineMilestone(
+            id="forecast_12h",
+            label="+12h Forecast",
+            time_offset_hours=12.0,
+            timestamp=f12_state.timestamp,
+            formatted_time=f12_state.formatted_time,
+            plume_centroid=f12_state.plume_centroid,
+            plume_area_km2=f12_state.plume_area_km2
+        ),
+        TimelineMilestone(
+            id="forecast_24h",
+            label="+24h Forecast",
+            time_offset_hours=24.0,
+            timestamp=f24_state.timestamp,
+            formatted_time=f24_state.formatted_time,
+            plume_centroid=f24_state.plume_centroid,
+            plume_area_km2=f24_state.plume_area_km2
+        ),
+        TimelineMilestone(
+            id="forecast_48h",
+            label=f"+{int(f_hours)}h Impact Horizon",
+            time_offset_hours=f_hours,
+            timestamp=f48_state.timestamp,
+            formatted_time=f48_state.formatted_time,
+            plume_centroid=f48_state.plume_centroid,
+            plume_area_km2=f48_state.plume_area_km2
+        ),
+    ]
+
+    # 7. Local Vector Hydrodynamics at SAR Observation Centroid
+    obs_hydro = field.get_vector_hydrodynamics(
+        s1_state.plume_centroid["latitude"],
+        s1_state.plume_centroid["longitude"]
+    )
+
+    # 8. Assemble full DriftResult
+    timeline_range = TimelineRange(
+        min_offset_hours=-h_hours,
+        max_offset_hours=f_hours,
+        total_steps=len(trajectory_states)
+    )
+    
+    regime = compute_oceanographic_regime(s1_state.plume_centroid["latitude"], s1_state.plume_centroid["longitude"])
+
+    result = DriftResult(
+        case_id=case_id,
+        sar_timestamp=case_meta["sar_timestamp"],
+        simulation=SimulationConfig(
+            hindcast_hours=int(h_hours),
+            forecast_hours=int(f_hours),
+            time_step_minutes=dt_minutes,
+            particle_count=N_PARTICLES,
+            engine="RK45",
+            eddy_diffusivity_m2s=eddy_diffusivity
+        ),
+        vector_hydrodynamics=obs_hydro,
+        oceanographic_regime=regime,
+        milestones=milestones,
+        origin_zone=origin_zone,
+        release_time_window=release_window,
+        timeline_range=timeline_range,
+        trajectory=trajectory_states,
+        preview_plot=None
+    )
+
+    # 9. Save JSON artifact
+    json_path = DATA_PROCESSED / f"{case_id}_drift.json"
+    json_dict = result.to_dict()
+    # Add top-level convenience coordinates for downstream modules (Module 4 SpillSplit, Module 7)
+    json_dict["origin_lats"] = [round(float(x), 5) for x in origin_lats]
+    json_dict["origin_lons"] = [round(float(x), 5) for x in origin_lons]
+    json_path.write_text(json.dumps(json_dict, indent=2))
+
+    return result
+
+
+def main(case_ids: Optional[List[str]] = None):
+    print("\n" + "=" * 66)
+    print("Module 3 -- Drift Forensics & Forecast Engine (RK4 + Hydrodynamics)")
+    print("=" * 66)
+
+    field = VelocityField()
+    target_cases = case_ids or list(CASES.keys())
+
+    for cid in target_cases:
+        print(f"\n[RUNNING] {cid} ({CASES[cid]['title']})")
+        res = run_drift_case(cid, vel_field=field)
+        oz = res.origin_zone
+        rw = res.release_time_window
+        vh = res.vector_hydrodynamics
+        sc = vh.surface_current
+        wl = vh.wind_leeway
+        na = vh.net_advection
+
+        print(f"  Timeline Range   : {res.timeline_range.min_offset_hours:.1f}h to +{res.timeline_range.max_offset_hours:.1f}h ({res.timeline_range.total_steps} steps)")
+        print(f"  Hydrodynamics    : [{vh.model_source}]")
+        print(f"    Surface Current: {sc.speed_mps:.2f} m/s @ {sc.direction_deg:.0f} deg")
+        print(f"    Wind Leeway    : {wl.speed_knots:.1f} kts @ {wl.direction_deg:.0f} deg")
+        print(f"    Net Advection  : {na.speed_kmh:.2f} km/h ({na.speed_knots:.2f} kts) @ {na.direction_deg:.0f} deg")
+        print(f"  Milestones:")
+        for m in res.milestones:
+            c = m.plume_centroid
+            print(f"    * {m.label:<28}: {m.formatted_time} | Centroid: {c['latitude']:.4f} N, {c['longitude']:.4f} E | Area: {m.plume_area_km2:.2f} km2")
+        print(f"  Origin 2-sigma   : a={oz.semi_major_km:.2f} km, b={oz.semi_minor_km:.2f} km, Area={oz.area_km2:.2f} km2")
+        print(f"  Release Window   : {rw.release_start} -> {rw.release_end} ({rw.window_hours}h window)")
+        print(f"  Saved JSON       : data/processed/{cid}_drift.json")
+
+    print("\n" + "=" * 66)
+    print(f"[OK] Module 3 Definition of Done: Reconstructed origin zones and forecast trajectories for {len(target_cases)} cases.")
+    print("=" * 66 + "\n")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--case", type=str, default=None)
+    parser = argparse.ArgumentParser(description="Occuris Module 3 — Drift Forensics & Forecast")
+    parser.add_argument("--case", type=str, default=None, help="Target case ID (e.g. case_01)")
     args = parser.parse_args()
-    run_backward_drift(case_ids=[args.case] if args.case else None)
+
+    selected = [args.case] if args.case else None
+    main(case_ids=selected)
