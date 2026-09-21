@@ -1,0 +1,43 @@
+{
+  "case_id": "case_02",
+  "result": "One Source Zone",
+  "confidence": "Supported",
+  "source_zones": [
+    {
+      "id": "A",
+      "latitude": 17.66154,
+      "longitude": 69.35954,
+      "weight": 1.0
+    }
+  ],
+  "source_separation_km": 1.794,
+  "stability": {
+    "stable": true,
+    "score": 0.9462,
+    "variation_km": 1.614,
+    "n_bootstrap_runs": 15,
+    "note": "Stable"
+  },
+  "one_source": {
+    "bic": -604.778,
+    "iou": 0.0143,
+    "centroid_dist_km": 12.348,
+    "area_diff_pct": 98.57
+  },
+  "two_source": {
+    "bic": -591.505,
+    "iou": 0.0155,
+    "centroid_dist_km": 12.328,
+    "area_diff_pct": 98.45
+  },
+  "decision_factors": {
+    "bic_improvement": -13.273,
+    "bic_favours_two": false,
+    "iou_improvement": 0.0012,
+    "iou_favours_two": false,
+    "separation_km": 1.794,
+    "sep_favours_two": false,
+    "stability_score": 0.9462,
+    "stab_favours_two": true
+  }
+}
