@@ -162,6 +162,10 @@ def run_inference(case_ids=None):
         pred    = predict_mask(model, pv)
         metrics = compute_metrics(pred, gt)
         out_path = save_comparison(sar_arr, pred, gt, case_id, metrics, DATA_PROCESSED)
+        
+        # Save the raw predicted mask as .npy for Module 2 and .png for visual reference
+        np.save(DATA_PROCESSED / f"{case_id}_pred_mask.npy", pred)
+        Image.fromarray(pred * 255).save(DATA_PROCESSED / f"{case_id}_pred_mask.png")
 
         results[case_id] = {"metrics": metrics, "pred_mask": pred, "output": str(out_path)}
 
