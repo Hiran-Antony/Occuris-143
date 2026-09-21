@@ -40,15 +40,23 @@ from drift.velocity_field import VelocityField
 from drift.rk4 import RK45DriftEngine
 
 # ── Algorithm constants ────────────────────────────────────────────────────────
-MIN_SEP_KM        = 5.0    # minimum km between two GMM centres to consider them distinct
-STABILITY_FRACS   = [0.80, 0.90, 1.00]  # sub-sample fractions for stability test
-STABILITY_SEEDS   = [10, 42, 99, 137, 200]  # random seeds for each fraction
-STABLE_THRESH_KM  = 30.0  # max centroid variance (km) for H2 to be called "stable"
-BIC_DELTA_THRESH  = 6.0   # minimum BIC reduction (H1 - H2) to favour two-source
-IOU_DELTA_THRESH  = 0.04  # minimum IoU improvement to favour two-source
-FORWARD_N_PX      = 30    # particles to seed per source for forward sim
-FORWARD_HOURS     = 24.0  # forward simulation duration matching hindcast
-MASK_SIZE         = 256   # must match MODEL_IMG_SIZE from config
+# Configurable MVP thresholds — document that these must be calibrated against
+# controlled one-source and two-source test cases before operational use.
+MIN_SEP_KM        = 5.0    # Minimum km between GMM-2 centres for distinct sources.
+                            # MVP prototype value; should be compared to reconstruction
+                            # uncertainty from Module 3 particle spread.
+STABILITY_FRACS   = [0.80, 0.90, 1.00]  # bootstrap sub-sample fractions
+STABILITY_SEEDS   = [10, 42, 99, 137, 200]  # random seeds per fraction (15 runs total)
+STABILITY_SEP_FACTOR = 0.5  # max acceptable centroid variation as fraction of separation.
+                              # e.g. 0.5 means variation must be < 50% of source separation.
+                              # This makes stability relative to evidence, not an absolute km.
+BIC_DELTA_THRESH  = 6.0   # BIC_H1 - BIC_H2 must exceed this (lower BIC is better;
+                            # so positive delta means H2 is statistically justified).
+IOU_DELTA_THRESH  = 0.04  # Minimum IoU improvement for H2 over H1 physical reconstruction.
+                            # Prototype threshold; should be validated against test cases.
+FORWARD_N_PX      = 30    # particles released per GMM component for forward sim
+FORWARD_HOURS     = 24.0  # forward hours — matches hindcast window from Module 3
+MASK_SIZE         = 256   # must match MODEL_IMG_SIZE from Module 1 training
 
 EARTH_R_M = 6_371_000.0
 
@@ -91,7 +99,12 @@ def load_pred_mask(case_id: str) -> np.ndarray:
 
 # ── GMM fitting ───────────────────────────────────────────────────────────────
 def fit_gmm(lats: np.ndarray, lons: np.ndarray, n: int, seed: int = 42) -> dict:
-    """Fit a Gaussian Mixture Model with n components. Returns BIC and component info."""
+    """
+    Fit a Gaussian Mixture Model with n components.
+    Returns BIC, component means, and covariance matrices (used for seeding
+    forward simulations from the full Gaussian distribution, not just centroid).
+    Note: Lower BIC is better. BIC_H1 - BIC_H2 > threshold means H2 is justified.
+    """
     X = np.column_stack([lats, lons])
     gmm = GaussianMixture(n_components=n, covariance_type="full",
                           random_state=seed, n_init=5, max_iter=300)
@@ -99,21 +112,33 @@ def fit_gmm(lats: np.ndarray, lons: np.ndarray, n: int, seed: int = 42) -> dict:
     bic = gmm.bic(X)
     components = []
     for i in range(n):
-        w   = float(gmm.weights_[i])
-        lat = float(gmm.means_[i, 0])
-        lon = float(gmm.means_[i, 1])
-        components.append({"id": chr(65 + i), "weight": round(w, 4),
-                            "latitude": round(lat, 5), "longitude": round(lon, 5)})
-    # Sort by weight descending
+        w    = float(gmm.weights_[i])
+        lat  = float(gmm.means_[i, 0])
+        lon  = float(gmm.means_[i, 1])
+        cov  = gmm.covariances_[i].tolist()   # 2x2 covariance matrix [lat,lon]
+        components.append({
+            "id":        chr(65 + i),
+            "weight":    round(w, 4),
+            "latitude":  round(lat, 5),
+            "longitude": round(lon, 5),
+            "covariance": cov,            # preserved for covariance-based seeding
+        })
     components.sort(key=lambda x: x["weight"], reverse=True)
     return {"bic": round(bic, 3), "components": components}
 
 
 # ── Stability test ────────────────────────────────────────────────────────────
-def stability_test(lats: np.ndarray, lons: np.ndarray) -> dict:
+def stability_test(lats: np.ndarray, lons: np.ndarray, sep_km: float) -> dict:
     """
-    Bootstrap GMM(n=2) across sub-sample fractions and seeds.
-    Returns stability score (0-1) and mean centroid variation.
+    Bootstrap GMM(n=2) across sub-sample fractions and random seeds.
+
+    KEY IMPROVEMENT over simple absolute threshold:
+    Stability is measured relative to the source separation, not against a fixed km.
+    Criterion: max centroid variation < STABILITY_SEP_FACTOR * sep_km
+
+    Rationale: If two sources are only 6 km apart, variation of 5 km is not 'stable'.
+    If two sources are 50 km apart, variation of 5 km is highly stable.
+    This makes the test scale with the actual evidence being evaluated.
     """
     n = len(lats)
     centroid_As, centroid_Bs = [], []
@@ -130,45 +155,81 @@ def stability_test(lats: np.ndarray, lons: np.ndarray) -> dict:
                 centroid_As.append((comps[0]["latitude"], comps[0]["longitude"]))
                 centroid_Bs.append((comps[1]["latitude"], comps[1]["longitude"]))
             except Exception:
-                pass  # occasionally GMM may not converge on very small subsets
+                pass  # GMM may not converge on very small subsets — silently skip
 
     if len(centroid_As) < 3:
-        return {"stable": False, "score": 0.0, "variation_km": 999.0,
-                "note": "Too few successful GMM fits for stability test"}
+        return {
+            "stable": False, "score": 0.0,
+            "variation_km": 999.0, "sep_km": round(sep_km, 3),
+            "stability_sep_factor": STABILITY_SEP_FACTOR,
+            "n_bootstrap_runs": 0,
+            "note": "Too few successful GMM fits for stability test",
+        }
 
-    # Compute centroid spread (mean pairwise Haversine)
-    def mean_spread(pts):
-        lts = [p[0] for p in pts]
-        lns = [p[1] for p in pts]
-        return (np.std(lts)**2 + np.std(lns)**2)**0.5 * 111.32  # rough km
+    # Compute max centroid displacement across bootstrap runs
+    def spread_km(pts):
+        """95th percentile displacement from mean centroid position (km)."""
+        lts = np.array([p[0] for p in pts])
+        lns = np.array([p[1] for p in pts])
+        mean_lat, mean_lon = lts.mean(), lns.mean()
+        dists = np.array([
+            haversine_km(mean_lat, mean_lon, lt, ln)
+            for lt, ln in zip(lts, lns)
+        ])
+        return float(np.percentile(dists, 95))  # 95th pctile, not just mean
 
-    var_A = mean_spread(centroid_As)
-    var_B = mean_spread(centroid_Bs)
+    var_A = spread_km(centroid_As)
+    var_B = spread_km(centroid_Bs)
     max_var = max(var_A, var_B)
 
-    # Normalise: if variation < threshold, stable
-    stable = bool(max_var < STABLE_THRESH_KM)
-    score  = round(float(np.clip(1.0 - max_var / STABLE_THRESH_KM, 0, 1)), 4)
+    # Adaptive threshold: variation must be small relative to separation
+    adaptive_thresh = STABILITY_SEP_FACTOR * sep_km
+    stable = bool(sep_km > 0 and max_var < adaptive_thresh)
+
+    # Normalised score: 1 = perfectly stable, 0 = variation equals separation
+    if sep_km > 0:
+        score = round(float(np.clip(1.0 - max_var / (sep_km + 1e-9), 0, 1)), 4)
+    else:
+        score = 0.0
+
+    note = (
+        f"Stable (var={max_var:.2f}km < {adaptive_thresh:.2f}km threshold)"
+        if stable
+        else f"Unstable (var={max_var:.2f}km >= {adaptive_thresh:.2f}km threshold)"
+    )
+
     return {
         "stable": stable,
-        "score":  score,
+        "score": score,
         "variation_km": round(max_var, 3),
+        "adaptive_threshold_km": round(adaptive_thresh, 3),
+        "sep_km": round(sep_km, 3),
+        "stability_sep_factor": STABILITY_SEP_FACTOR,
         "n_bootstrap_runs": len(centroid_As),
-        "note": "Stable" if stable else "Clusters shift significantly across sub-samples",
+        "note": note,
     }
 
 
 # ── Forward simulation ────────────────────────────────────────────────────────
-def forward_simulate(source_lat: float, source_lon: float, n_px: int,
-                     vf: VelocityField) -> tuple:
+def forward_simulate_from_gmm(comp: dict, n_px: int, vf: VelocityField,
+                               seed: int = 42) -> tuple:
     """
-    Release n_px particles at (source_lat, source_lon), advect forward,
-    return final (lats, lons).
+    Release n_px particles sampled from the GMM component's Gaussian distribution
+    (mean + covariance), then advect forward.
+
+    KEY IMPROVEMENT: Instead of releasing all particles from a single centroid point,
+    we sample from the full GMM covariance ellipse. This propagates the reconstruction
+    uncertainty from Module 3 through the forward simulation, making the simulated
+    spill footprint physically more realistic.
     """
-    rng = np.random.default_rng(42)
-    # Scatter seeds around source within ~0.05 deg radius
-    seed_lats = source_lat + rng.normal(0, 0.02, n_px)
-    seed_lons = source_lon + rng.normal(0, 0.02, n_px)
+    mean = np.array([comp["latitude"], comp["longitude"]])
+    cov  = np.array(comp["covariance"])    # 2x2 matrix [lat, lon]
+
+    rng = np.random.default_rng(seed)
+    # Sample release positions from the GMM component distribution
+    samples = rng.multivariate_normal(mean, cov, size=n_px)
+    seed_lats = samples[:, 0]
+    seed_lons = samples[:, 1]
 
     engine = RK45DriftEngine(
         velocity_func=vf.get_velocity,
@@ -259,53 +320,134 @@ def compute_physical_fit(obs_mask, sim_mask, case_id) -> dict:
 # ── Decision logic ────────────────────────────────────────────────────────────
 def decide(h1: dict, h2: dict, sep_km: float, stability: dict) -> dict:
     """
-    Combine BIC, IoU improvement, source separation, and stability into a verdict.
+    GATED SEQUENTIAL DECISION — not a simple vote count.
 
-    Returns one of:
-        "One Source Zone"
-        "Two Source Zones"
-        "Inconclusive"
+    Gate 1 — Separation valid?
+        NO  → One Source Zone (H2 has no meaningfully distinct clusters)
+        YES → Gate 2
+
+    Gate 2 — Stability valid?
+        NO  → One Source Zone (H2 clusters are not reproducible)
+        YES → Gate 3
+
+    Gate 3 — Physics improves?
+        NO  → One Source Zone (H2 doesn't explain the observed spill better)
+        YES → Gate 4
+
+    Gate 4 — BIC justifies complexity?
+        YES → Two Source Zones (Supported)
+        NO  → Inconclusive (physics supports H2 but statistical penalty is too high)
+
+    This gated approach ensures that physical reconstruction (Gate 3) is the
+    primary evidence, and BIC (Gate 4) is a complexity check on top — not a
+    factor that can override poor physical fit.
+
+    Inconclusive is a genuine third state; it is NOT silently converted to
+    One Source. Downstream modules should carry confidence_status = INCONCLUSIVE
+    and may use H1 as a fallback while explicitly flagging the ambiguity.
     """
-    bic_improvement  = h1["bic"] - h2["bic"]           # positive = H2 simpler after penalty
-    iou_improvement  = h2["physical"]["iou"] - h1["physical"]["iou"]
-    stable           = stability["stable"]
-    separation_ok    = sep_km >= MIN_SEP_KM
+    bic_improvement = h1["bic"] - h2["bic"]        # positive = H2 has lower BIC (better fit)
+    iou_improvement = h2["physical"]["iou"] - h1["physical"]["iou"]
+    separation_ok   = sep_km >= MIN_SEP_KM
+    stable          = stability["stable"]
+    physics_ok      = iou_improvement >= IOU_DELTA_THRESH
+    bic_ok          = bic_improvement >= BIC_DELTA_THRESH
 
-    # Score each factor (0 or 1)
-    bic_favours_two  = bic_improvement >= BIC_DELTA_THRESH
-    iou_favours_two  = iou_improvement >= IOU_DELTA_THRESH
-    sep_favours_two  = separation_ok
-    stab_favours_two = stable
+    # ── Gated evaluation ─────────────────────────────────────────────────────
+    gate_log = []
 
-    votes_for_two  = sum([bic_favours_two, iou_favours_two, sep_favours_two, stab_favours_two])
-    votes_for_one  = 4 - votes_for_two
+    # Gate 1: Separation
+    if not separation_ok:
+        verdict           = "One Source Zone"
+        confidence        = "H2 Not Tested — separation below minimum"
+        confidence_status = "ONE_SOURCE_SEP_FAIL"
+        reason            = (
+            f"GMM-2 cluster centres are {sep_km:.2f} km apart, below the {MIN_SEP_KM} km "
+            f"minimum required for distinct source zones. The backward-drift origin cloud "
+            f"does not support two spatially distinguishable release zones."
+        )
+        gate_log.append(f"GATE1 FAIL: sep={sep_km:.2f}km < {MIN_SEP_KM}km minimum")
 
-    if votes_for_two >= 3:
-        verdict = "Two Source Zones"
-        confidence = "Supported"
-    elif votes_for_one >= 3:
-        verdict = "One Source Zone"
-        confidence = "Supported"
+    # Gate 2: Stability
+    elif not stable:
+        verdict           = "One Source Zone"
+        confidence        = "H2 Not Supported — clusters unstable across bootstrap samples"
+        confidence_status = "ONE_SOURCE_STABILITY_FAIL"
+        reason            = (
+            f"GMM-2 cluster positions shift {stability['variation_km']} km across bootstrap "
+            f"sub-samples, exceeding the adaptive threshold of {stability['adaptive_threshold_km']} km "
+            f"({STABILITY_SEP_FACTOR}x source separation). The two-cluster solution is not "
+            f"reproducible — the spatial structure of the origin cloud cannot reliably place "
+            f"two distinct source zones."
+        )
+        gate_log.append(f"GATE2 FAIL: stability score={stability['score']:.3f} — clusters unstable")
+
+    # Gate 3: Physical fit
+    elif not physics_ok:
+        verdict           = "One Source Zone"
+        confidence        = "H2 Not Supported — two-source reconstruction performed worse"
+        confidence_status = "ONE_SOURCE_PHYSICS_FAIL"
+        reason            = (
+            f"Forward physical reconstruction with two sources (H2 IoU={h2['physical']['iou']:.4f}) "
+            f"does not materially improve on the one-source reconstruction "
+            f"(H1 IoU={h1['physical']['iou']:.4f}, delta={iou_improvement:.4f} < threshold {IOU_DELTA_THRESH}). "
+            f"The observed spill is better explained by a single release zone."
+        )
+        gate_log.append(
+            f"GATE3 FAIL: IoU improvement={iou_improvement:.4f} < {IOU_DELTA_THRESH} threshold\n"
+            f"            H2 does not materially improve physical reconstruction"
+        )
+
+    # Gate 4: BIC complexity penalty
+    elif bic_ok:
+        verdict           = "Two Source Zones"
+        confidence        = "Supported — all four gates passed"
+        confidence_status = "TWO_SOURCE_SUPPORTED"
+        reason            = (
+            f"All gates passed: separation={sep_km:.2f} km, stable (variation={stability['variation_km']} km), "
+            f"H2 improves physical fit (IoU delta={iou_improvement:.4f}), "
+            f"BIC improvement={bic_improvement:.3f} justifies the extra source."
+        )
+        gate_log.append(
+            f"ALL GATES PASS: sep={sep_km:.2f}km, stable, IoU+{iou_improvement:.4f}, "
+            f"BIC improvement={bic_improvement:.3f}"
+        )
     else:
-        verdict = "One Source Zone"       # default to simpler model when ambiguous
-        confidence = "Inconclusive — evidence insufficient to separate sources"
+        # Physics supports H2 but BIC penalty is too high — genuine ambiguity
+        verdict           = "Inconclusive"
+        confidence        = "Physics supports H2 but statistical penalty insufficient"
+        confidence_status = "INCONCLUSIVE"
+        reason            = (
+            f"Physical reconstruction favours H2 (IoU +{iou_improvement:.4f}) but "
+            f"BIC improvement ({bic_improvement:.3f}) does not exceed the {BIC_DELTA_THRESH} threshold. "
+            f"Use H1 as operational fallback; flag confidence_status=INCONCLUSIVE in "
+            f"downstream modules (Module 5 AIS, Module 6 reporting)."
+        )
+        gate_log.append(f"GATE4 AMBIGUOUS: physics OK but BIC={bic_improvement:.3f} < {BIC_DELTA_THRESH}")
 
     return {
-        "verdict":          verdict,
-        "confidence":       confidence,
-        "votes_for_two":    votes_for_two,
-        "votes_for_one":    votes_for_one,
+        "verdict":            verdict,
+        "confidence":         confidence,
+        "confidence_status":  confidence_status,   # machine-readable enum
+        "reason":             reason,               # human-readable explanation
+        "gate_log":           gate_log,
         "factors": {
-            "bic_improvement":  round(bic_improvement, 3),
-            "bic_favours_two":  bic_favours_two,
-            "iou_improvement":  round(iou_improvement, 4),
-            "iou_favours_two":  iou_favours_two,
-            "separation_km":    round(sep_km, 3),
-            "sep_favours_two":  sep_favours_two,
-            "stability_score":  stability["score"],
-            "stab_favours_two": stab_favours_two,
+            "separation_km":       round(sep_km, 3),
+            "separation_ok":       bool(separation_ok),
+            "stability_stable":    bool(stable),
+            "stability_score":     stability["score"],
+            "stability_variation_km": stability["variation_km"],
+            "iou_h1":              round(h1["physical"]["iou"], 4),
+            "iou_h2":              round(h2["physical"]["iou"], 4),
+            "iou_improvement":     round(iou_improvement, 4),
+            "iou_favours_two":     bool(physics_ok),
+            "bic_improvement":     round(bic_improvement, 3),
+            "bic_favours_two":     bool(bic_ok),
+            "iou_threshold_note":  "Prototype MVP threshold (0.04); calibrate against known test cases.",
+            "sep_threshold_note":  "Prototype MVP threshold (5 km); relate to Module 3 reconstruction uncertainty.",
         }
     }
+
 
 
 # ── Diagnostic plot ───────────────────────────────────────────────────────────
@@ -380,26 +522,27 @@ def process_case(case_id: str) -> dict:
                            comps[1]["latitude"], comps[1]["longitude"]) if len(comps) == 2 else 0.0
     print(f"    Source sep       : {round(sep_km, 2)} km (min={MIN_SEP_KM} km)")
 
-    # 4. Stability test
-    stability = stability_test(origin_lats, origin_lons)
+    # 4. Stability test (adaptive: threshold is relative to separation, not absolute km)
+    stability = stability_test(origin_lats, origin_lons, sep_km)
     print(f"    Stability score  : {stability['score']}  ({stability['note']})")
+    print(f"    Stability thresh : {stability['adaptive_threshold_km']} km (={STABILITY_SEP_FACTOR}x sep)")
 
     # 5. Forward simulation + physical fit
+    # Seeds are sampled from the full GMM covariance distribution, not just the centroid.
+    # This preserves reconstruction uncertainty through the forward simulation.
     vf = VelocityField()
 
-    # H1 forward
+    # H1 forward (from GMM-1 covariance)
     h1_comp = h1_gmm["components"][0]
-    h1_lats, h1_lons = forward_simulate(h1_comp["latitude"], h1_comp["longitude"],
-                                         FORWARD_N_PX, vf)
+    h1_lats, h1_lons = forward_simulate_from_gmm(h1_comp, FORWARD_N_PX, vf, seed=42)
     h1_sim_mask = particles_to_mask(h1_lats, h1_lons, case_id)
     h1_physical  = compute_physical_fit(obs_mask, h1_sim_mask, case_id)
     print(f"    H1 IoU           : {h1_physical['iou']}")
 
-    # H2 forward (combine both sources)
+    # H2 forward (from each GMM-2 component's covariance; combined mask)
     h2_all_lats, h2_all_lons = np.array([]), np.array([])
-    for comp in comps:
-        fl, flo = forward_simulate(comp["latitude"], comp["longitude"],
-                                    FORWARD_N_PX // 2 + 1, vf)
+    for i, comp in enumerate(comps):
+        fl, flo = forward_simulate_from_gmm(comp, FORWARD_N_PX // 2 + 1, vf, seed=42 + i)
         h2_all_lats = np.concatenate([h2_all_lats, fl])
         h2_all_lons = np.concatenate([h2_all_lons, flo])
     h2_sim_mask = particles_to_mask(h2_all_lats, h2_all_lons, case_id)

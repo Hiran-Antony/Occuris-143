@@ -1,43 +1,51 @@
 {
   "case_id": "case_02",
   "result": "One Source Zone",
-  "confidence": "Supported",
+  "confidence": "H2 Not Supported \u2014 clusters unstable across bootstrap samples",
   "source_zones": [
     {
       "id": "A",
-      "latitude": 17.66154,
-      "longitude": 69.35954,
+      "latitude": 17.62349,
+      "longitude": 69.63085,
       "weight": 1.0
     }
   ],
-  "source_separation_km": 1.794,
+  "source_separation_km": 82.517,
   "stability": {
-    "stable": true,
-    "score": 0.9462,
-    "variation_km": 1.614,
+    "stable": false,
+    "score": 0.1503,
+    "variation_km": 70.113,
+    "adaptive_threshold_km": 41.259,
+    "sep_km": 82.517,
+    "stability_sep_factor": 0.5,
     "n_bootstrap_runs": 15,
-    "note": "Stable"
+    "note": "Unstable (var=70.11km >= 41.26km threshold)"
   },
   "one_source": {
-    "bic": -604.778,
-    "iou": 0.0143,
-    "centroid_dist_km": 12.348,
-    "area_diff_pct": 98.57
+    "bic": 114.92,
+    "iou": 0.1307,
+    "centroid_dist_km": 24.321,
+    "area_diff_pct": 86.66
   },
   "two_source": {
-    "bic": -591.505,
-    "iou": 0.0155,
-    "centroid_dist_km": 12.328,
-    "area_diff_pct": 98.45
+    "bic": 118.745,
+    "iou": 0.1436,
+    "centroid_dist_km": 17.065,
+    "area_diff_pct": 85.48
   },
   "decision_factors": {
-    "bic_improvement": -13.273,
-    "bic_favours_two": false,
-    "iou_improvement": 0.0012,
+    "separation_km": 82.517,
+    "separation_ok": true,
+    "stability_stable": false,
+    "stability_score": 0.1503,
+    "stability_variation_km": 70.113,
+    "iou_h1": 0.1307,
+    "iou_h2": 0.1436,
+    "iou_improvement": 0.0129,
     "iou_favours_two": false,
-    "separation_km": 1.794,
-    "sep_favours_two": false,
-    "stability_score": 0.9462,
-    "stab_favours_two": true
+    "bic_improvement": -3.825,
+    "bic_favours_two": false,
+    "iou_threshold_note": "Prototype MVP threshold (0.04); calibrate against known test cases.",
+    "sep_threshold_note": "Prototype MVP threshold (5 km); relate to Module 3 reconstruction uncertainty."
   }
 }

@@ -14,8 +14,24 @@
   "geometry": {
     "spill_pixels": 42900,
     "area_px2": 42900,
-    "area_km2": 4.29,
-    "area_caveat": "MVP geospatial estimate assuming configured 10 m/pixel scale. Requires verified Sentinel-1 metadata for real-world validation.",
+    "area_km2": 19347.9844,
+    "area_status": "PROVISIONAL",
+    "area_caveat": "PROVISIONAL GEOSPATIAL ESTIMATE. The 256x256 image represents a surveillance scene of ~178x166 km (spill_bbox). Pixel scale: 695.8 m/px (lat) x 648.2 m/px (lon). This maps each pixel to its geographic location within the scene, which is correct for centroid and drift seeding, but the spill patch area derived from pixel count conflates spill extent with scene coverage. Do NOT present this as a measured oil-spill area. Requires real Sentinel-1 geotransform + tight spill crop for a valid area estimate.",
+    "pixel_scale": {
+      "case_id": "case_03",
+      "image_size_px": "256\u00d7256",
+      "bbox_lat": "20.5\u201322.1",
+      "bbox_lon": "61.0\u201362.6",
+      "geographic_width_km": 165.95,
+      "geographic_height_km": 178.11,
+      "m_per_row": 695.75,
+      "m_per_col": 648.22,
+      "km_per_row": 0.6958,
+      "km_per_col": 0.6482,
+      "transform_source": "spill_bbox / image_dimensions (authoritative)",
+      "note": "This transform is shared by Module 2 (area), Module 3 (seeding), and Module 4 (rasterisation). Do not use PIXEL_SCALE_M from config for spatial calculations; that is the SAR sensor resolution, not the image pixel geographic scale after resizing to 256\u00d7256.",
+      "scene_vs_spill_note": "The bbox is the monitoring scene (~170x190 km), NOT the spill footprint. The spill patch is a localised object within this scene. Centroid and coordinate transforms are valid; area_km2 is not."
+    },
     "perimeter_px": 1307.25,
     "centroid_pixel": {
       "x": 97.8,
@@ -26,7 +42,7 @@
       "longitude": 61.61126
     },
     "orientation_deg": 54.58,
-    "major_axis_km": 1.587,
-    "minor_axis_km": 1.1616
+    "major_axis_km": 110.4143,
+    "minor_axis_km": 80.8206
   }
 }
