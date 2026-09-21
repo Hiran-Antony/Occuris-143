@@ -585,3 +585,470 @@ body { display: flex; }
 .popup-row span:first-child { color: var(--text-dim); }
 .popup-row span:last-child  { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
 .popup-pass { margin-top: 6px; padding: 4px 8px; background: rgba(0,230,118,0.12); border-radius: 4px; color: var(--done); font-size: 10px; font-weight: 600; }
+
+/* ══════════════════════════════════════════════ MODULE 5 MARITIME MEMORY STYLES */
+
+.overlay-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+/* AIS Source Badge */
+.source-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 230, 118, 0.08);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+  color: var(--done);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-left: auto;
+}
+.source-badge .pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--done);
+  box-shadow: 0 0 6px var(--done);
+  animation: pulse 1.5s infinite;
+}
+
+/* Vessel Quick Pills */
+.vessel-pills {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.v-pill {
+  padding: 5px 10px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-dim);
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.v-pill:hover {
+  border-color: var(--accent);
+  color: #fff;
+  background: rgba(0, 200, 255, 0.08);
+}
+.v-pill.active {
+  background: rgba(0, 200, 255, 0.18);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Stats */
+.maritime-stats {
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.stat-card.highlight-red {
+  background: rgba(255, 82, 82, 0.08);
+}
+.stat-card.highlight-red .stat-value {
+  color: var(--red);
+}
+
+/* Maritime Layout */
+.maritime-layout {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  height: calc(100vh - 200px);
+}
+
+.maritime-map-container {
+  flex: 1;
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+#maritimeMap {
+  width: 100%;
+  height: 100%;
+  background: #090d16;
+}
+
+/* Floating Replay Bar */
+.replay-bar {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13, 18, 32, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 30px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  width: min(92%, 680px);
+}
+
+.replay-controls {
+  display: flex;
+  gap: 6px;
+}
+.replay-btn {
+  background: rgba(0, 200, 255, 0.12);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.replay-btn:hover {
+  background: rgba(0, 200, 255, 0.25);
+  color: #fff;
+}
+
+.replay-slider-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.replay-slider-wrap input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.replay-slider-wrap input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.replay-slider-wrap input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.replay-time-wrap {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+}
+.replay-label {
+  color: var(--text-dim);
+}
+.replay-time {
+  font-family: 'JetBrains Mono', monospace;
+  color: #fff;
+  font-weight: 500;
+}
+
+.replay-speeds {
+  display: flex;
+  gap: 4px;
+}
+.speed-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-dim);
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.speed-btn.active {
+  background: rgba(0, 200, 255, 0.2);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Legend in Maritime view */
+.mm-legend {
+  bottom: 74px !important;
+  max-width: 320px;
+}
+.legend-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Sidepanel */
+.maritime-sidepanel {
+  width: 380px;
+  min-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+.mm-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mm-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mm-badge {
+  background: rgba(0, 200, 255, 0.15);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.vessel-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  flex: 1;
+}
+
+.status-pill {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.status-pill.status-normal {
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--done);
+  border: 1px solid rgba(0, 230, 118, 0.3);
+}
+.status-pill.status-warning {
+  background: rgba(255, 215, 64, 0.15);
+  color: var(--wip);
+  border: 1px solid rgba(255, 215, 64, 0.3);
+}
+.status-pill.status-alert {
+  background: rgba(255, 82, 82, 0.15);
+  color: var(--red);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+}
+
+.mm-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+.mm-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.meta-label {
+  font-size: 8.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.meta-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: #fff;
+  font-weight: 600;
+}
+
+.evidence-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 10px;
+}
+.evidence-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.8px;
+  margin-bottom: 6px;
+}
+.evidence-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.evidence-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10.5px;
+  color: var(--text);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+.evidence-row:last-child {
+  border-bottom: none;
+}
+.evidence-row .tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+.evidence-row.pass .tag {
+  background: rgba(0, 230, 118, 0.15);
+  color: var(--done);
+}
+.evidence-row.alert .tag {
+  background: rgba(255, 82, 82, 0.15);
+  color: var(--red);
+}
+.evidence-row.info .tag {
+  background: rgba(0, 200, 255, 0.15);
+  color: var(--accent);
+}
+
+/* Crossing Feed */
+.crossing-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.feed-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 6px;
+  font-size: 11px;
+}
+.feed-row:hover {
+  background: rgba(0, 200, 255, 0.05);
+  border-color: rgba(0, 200, 255, 0.2);
+}
+.feed-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.feed-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.feed-event-tag {
+  font-size: 8.5px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.feed-event-tag.entry {
+  background: rgba(0, 230, 118, 0.18);
+  color: var(--done);
+}
+.feed-event-tag.exit {
+  background: rgba(255, 107, 53, 0.18);
+  color: var(--orange);
+}
+.feed-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-dim);
+}
+.feed-speed {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+}
+
+/* Corridors list */
+.corridor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.corridor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  border-left: 3px solid #00f0ff;
+}
+.corridor-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+}
+.corridor-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+}
+
+/* Custom Ship Icons */
+.ship-marker-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease-out;
+}
+.ship-marker-svg {
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.8));
+}
+.ship-pulse {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  animation: pulse 2s infinite;
+}
+

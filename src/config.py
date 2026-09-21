@@ -81,10 +81,13 @@ EDDY_DIFFUSIVITY_M2S     = 2.0   # Horizontal turbulent diffusion (m^2/s)
 PIXEL_SCALE_M            = 10.0  # SAR resolution in meters per pixel
 
 # ── AIS settings ──────────────────────────────────────────────────────────────
-AIS_CSV         = AIS_DIR / "ais_sample.csv"
-GAP_THRESHOLD_MIN = 30  # minutes — gap longer than this → Dark vessel
-EKF_MAHAL_THRESH  = 9.0 # chi² 99 % for 2 DOF ≈ 9.21
-MAX_VESSEL_SPEED_KN = 18.0  # knots — reachability upper bound
+AIS_CSV                 = AIS_DIR / "ais_sample.csv"
+AIS_SOURCE_MODE         = "SYNTHETIC_REPLAY"
+GAP_THRESHOLD_MIN       = 30   # minutes — gap longer than this → Dark vessel
+EKF_MAHAL_THRESH        = 9.0  # chi² 99 % for 2 DOF ≈ 9.21
+MAX_VESSEL_SPEED_KN     = 18.0 # knots — reachability upper bound
+TRAFFIC_DENSITY_WINDOW_MIN = 60 # minutes for local traffic density sliding window
+REFERENCE_TRANSIT_SPEED_KN = 13.0 # knots baseline for Arabian Sea corridor transit
 
 # ── Investigation priority weights ────────────────────────────────────────────
 PRIORITY_WEIGHTS = {
@@ -97,11 +100,20 @@ PRIORITY_WEIGHTS = {
 PRIORITY_HIGH_THRESH   = 0.65
 PRIORITY_MEDIUM_THRESH = 0.35
 
-# ── Gateway polygons (Arabian Sea, synthetic) ─────────────────────────────────
-# 4 geofences around the test region entry/exit corridors
+# ── Gateway polygons & corridors (Arabian Sea) ────────────────────────────────
+# 4 geofences around regional boundaries
 GATEWAY_POLYGONS = {
-    "gulf_of_aden":     [(41,11),(50,11),(50,15),(41,15)],  # west entrance
-    "hormuz_strait":    [(56,24),(60,24),(60,26),(56,26)],  # north entrance
-    "west_india_coast": [(72,14),(75,14),(75,22),(72,22)],  # east boundary
-    "east_africa_lane": [(58,10),(62,10),(62,16),(58,16)],  # southwest corridor
+    "gulf_of_aden":     [(41, 11), (50, 11), (50, 15), (41, 15)],  # west entrance
+    "hormuz_strait":    [(56, 24), (60, 24), (60, 26), (56, 26)],  # north entrance
+    "west_india_coast": [(72, 14), (75, 14), (75, 22), (72, 22)],  # east boundary
+    "east_africa_lane": [(58, 10), (62, 10), (62, 16), (58, 16)],  # southwest corridor
 }
+
+# Module 5 operational corridor line gateways that intersect active shipping tracks
+GATEWAY_CORRIDORS = {
+    "GW_NORTH": {"name": "Northern Transit Corridor", "coords": [(18.0, 64.0), (18.0, 68.0)], "orientation": "north"},
+    "GW_EAST":  {"name": "Eastern Approach Gate",     "coords": [(16.0, 66.0), (19.0, 66.0)], "orientation": "east"},
+    "GW_WEST":  {"name": "Western Oman Corridor",     "coords": [(14.0, 63.0), (22.5, 63.0)], "orientation": "west"},
+    "GW_SOUTH": {"name": "Southern Passage Gate",     "coords": [(16.0, 68.0), (16.0, 72.0)], "orientation": "south"},
+}
+

@@ -32,10 +32,10 @@
       <span>Regional Monitoring</span>
       <span class="nav-badge done">LIVE</span>
     </a>
-    <a class="nav-item disabled" href="#" title="Module 5 — In Progress (teammate)">
+    <a class="nav-item" data-view="maritime" href="#" id="navMaritime">
       <span class="nav-icon">🧠</span>
       <span>Maritime Memory</span>
-      <span class="nav-badge pending">M5</span>
+      <span class="nav-badge done">M5</span>
     </a>
   </nav>
 
@@ -77,7 +77,7 @@
   <!-- Status footer -->
   <div class="sidebar-footer">
     <span class="status-dot active"></span>
-    <span>Modules 0–2 Active</span>
+    <span>Modules 0–2 & 5 Active</span>
   </div>
 </aside>
 
@@ -250,10 +250,10 @@
           <span class="mod-label">M4 · SpillSplit</span>
           <span class="mod-tag pending">–</span>
         </div>
-        <div class="module-row progress">
-          <span class="mod-dot progress"></span>
+        <div class="module-row done">
+          <span class="mod-dot done"></span>
           <span class="mod-label">M5 · Maritime Memory</span>
-          <span class="mod-tag progress">WIP</span>
+          <span class="mod-tag done">✓</span>
         </div>
         <div class="module-row pending">
           <span class="mod-dot pending"></span>
@@ -350,8 +350,199 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════════ MARITIME MEMORY VIEW (MODULE 5) -->
+<div id="maritimeView" class="overlay-view hidden">
+  <div class="overlay-header">
+    <button class="back-btn" id="backFromMaritime">← Back to Monitoring</button>
+    <div>
+      <h2>Maritime Memory & Virtual Gateways — Module 5</h2>
+      <div class="overlay-sub">Automated AIS Trajectory Engine · Virtual Gateway Corridors · Passage Baseline & Delay Analysis</div>
+    </div>
+    
+    <!-- AIS Source Badge -->
+    <div class="source-badge" id="aisSourceBadge">
+      <span class="pulse-dot"></span>
+      <span id="sourceBadgeText">SYNTHETIC REPLAY · ais_sample.csv</span>
+    </div>
+
+    <!-- Vessel quick filter buttons -->
+    <div class="vessel-pills" id="vesselPills">
+      <button class="v-pill active" data-vessel="all">All Vessels</button>
+      <button class="v-pill" data-vessel="V001">V001 (Trader)</button>
+      <button class="v-pill" data-vessel="V002">V002 (Suspect)</button>
+      <button class="v-pill" data-vessel="V003">V003 (Cargo)</button>
+      <button class="v-pill" data-vessel="V004">V004 (Feeder)</button>
+      <button class="v-pill" data-vessel="V005">V005 (Bulker)</button>
+    </div>
+  </div>
+
+  <!-- Maritime stats bar -->
+  <div class="stats-bar maritime-stats">
+    <div class="stat-card">
+      <div class="stat-value" id="statGateways">4</div>
+      <div class="stat-label">VIRTUAL CORRIDORS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statVessels">5</div>
+      <div class="stat-label">MONITORED SHIPS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statCrossings">5</div>
+      <div class="stat-label">GATEWAY CROSSINGS</div>
+    </div>
+    <div class="stat-card highlight-orange">
+      <div class="stat-value" id="statGaps">1</div>
+      <div class="stat-label">AIS BLACKOUTS (DARK)</div>
+    </div>
+    <div class="stat-card highlight-red">
+      <div class="stat-value" id="statAnomalies">1</div>
+      <div class="stat-label">UNEXPLAINED DELAYS</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statPings">451</div>
+      <div class="stat-label">INGESTED AIS PINGS</div>
+    </div>
+  </div>
+
+  <!-- Main Maritime Layout -->
+  <div class="maritime-layout">
+    
+    <!-- Left: Map Container -->
+    <div class="maritime-map-container">
+      
+      <!-- Toolbar -->
+      <div class="map-toolbar">
+        <button class="map-btn" id="btnMmSentinel">⊛ Sentinel-2</button>
+        <button class="map-btn active" id="btnMmDark">🌑 Dark Marine</button>
+        <button class="map-btn" id="btnMmStreet">🗺 Street Map</button>
+        <button class="map-btn" id="btnFitCorridors" title="Fit all gateways and tracks">⛶ Fit View</button>
+      </div>
+
+      <div id="maritimeMap"></div>
+
+      <!-- Floating Replay Control Bar -->
+      <div class="replay-bar">
+        <div class="replay-controls">
+          <button class="replay-btn" id="btnReplayPlay" title="Play / Pause Replay">▶ Play</button>
+          <button class="replay-btn" id="btnReplayReset" title="Reset to Start">↺ Reset</button>
+        </div>
+        
+        <div class="replay-slider-wrap">
+          <input type="range" id="replaySlider" min="0" max="100" value="100" />
+          <div class="replay-time-wrap">
+            <span class="replay-label">Replay Time:</span>
+            <span class="replay-time" id="replayTimeDisplay">2024-03-15 12:00:00 UTC</span>
+          </div>
+        </div>
+
+        <div class="replay-speeds">
+          <button class="speed-btn active" data-speed="1">1×</button>
+          <button class="speed-btn" data-speed="3">3×</button>
+          <button class="speed-btn" data-speed="8">8×</button>
+        </div>
+      </div>
+
+      <!-- Map Legend -->
+      <div class="map-legend mm-legend">
+        <div class="legend-title">GATEWAY CORRIDORS & MARITIME MEMORY</div>
+        <div class="legend-grid">
+          <div class="legend-item"><span class="legend-line" style="background:#00f0ff"></span> GW_NORTH (Northern Corridor)</div>
+          <div class="legend-item"><span class="legend-line" style="background:#39ff14"></span> GW_EAST (Eastern Approach)</div>
+          <div class="legend-item"><span class="legend-line" style="background:#ffaa00"></span> GW_WEST (Western Oman)</div>
+          <div class="legend-item"><span class="legend-line" style="background:#ff007f"></span> GW_SOUTH (Southern Passage)</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#00e676"></span> Normal Transit</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ff5252"></span> Potential Unexplained Delay / Gap</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ffd740"></span> Explained Delay</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Intelligence Panels -->
+    <div class="maritime-sidepanel">
+      
+      <!-- Card 1: Selected Vessel Intelligence Card -->
+      <div class="mm-card" id="vesselDetailCard">
+        <div class="mm-card-header">
+          <span class="mm-badge" id="vesselBadge">V001</span>
+          <span class="vessel-title" id="vesselName">NORMAL TRADER</span>
+          <span class="status-pill status-normal" id="vesselStatusBadge">NORMAL TRANSIT</span>
+        </div>
+        
+        <div class="mm-meta-grid">
+          <div class="mm-meta-item">
+            <span class="meta-label">MMSI</span>
+            <span class="meta-val" id="vesselMmsi">477001001</span>
+          </div>
+          <div class="mm-meta-item">
+            <span class="meta-label">SPEED (SOG)</span>
+            <span class="meta-val" id="vesselSog">13.8 kn</span>
+          </div>
+          <div class="mm-meta-item">
+            <span class="meta-label">COURSE (COG)</span>
+            <span class="meta-val" id="vesselCog">182.9°</span>
+          </div>
+          <div class="mm-meta-item">
+            <span class="meta-label">NAV STATUS</span>
+            <span class="meta-val" id="vesselNav">Under way</span>
+          </div>
+          <div class="mm-meta-item">
+            <span class="meta-label">PASSAGE DISTANCE</span>
+            <span class="meta-val" id="vesselDistance">308.2 km</span>
+          </div>
+          <div class="mm-meta-item">
+            <span class="meta-label">ACTUAL DURATION</span>
+            <span class="meta-val" id="vesselDuration">11.90 h</span>
+          </div>
+          <div class="mm-meta-item">
+            <span class="meta-label">CORRIDOR BASELINE</span>
+            <span class="meta-val" id="vesselExpected">12.99 h</span>
+          </div>
+          <div class="mm-meta-item">
+            <span class="meta-label">DELAY / DEV</span>
+            <span class="meta-val" id="vesselDelay">-1.09 h (On-time)</span>
+          </div>
+        </div>
+
+        <!-- Evidence & Contributing Factor Checklist -->
+        <div class="evidence-box">
+          <div class="evidence-title">▲ BEHAVIOURAL EVIDENCE CHECKLIST</div>
+          <div id="evidenceList" class="evidence-checklist">
+            <div class="evidence-row pass"><span>✓ AIS Reporting Continuity</span><span class="tag">CONTINUOUS</span></div>
+            <div class="evidence-row pass"><span>✓ Transit Duration</span><span class="tag">WITHIN BASELINE</span></div>
+            <div class="evidence-row info"><span>ℹ Local Traffic Density</span><span class="tag">NORMAL (2 SHIPS)</span></div>
+            <div class="evidence-row info"><span>ℹ Environmental Coupling</span><span class="tag">DECOUPLED</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Gateway Crossing Chronological Event Feed -->
+      <div class="mm-card">
+        <div class="mm-card-header">
+          <span class="panel-title">● GATEWAY CROSSING FEED</span>
+          <span class="feed-count" id="feedCount">5 Events</span>
+        </div>
+        <div class="crossing-feed" id="crossingFeedList">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Card 3: Gateway Corridors Status -->
+      <div class="mm-card">
+        <div class="mm-card-header">
+          <span class="panel-title">● VIRTUAL GATEWAYS STATUS</span>
+        </div>
+        <div class="corridor-list" id="corridorStatusList">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <!-- ─── Leaflet JS ─── -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <script src="app.js"></script>
 </body>
 </html>
