@@ -1,0 +1,18 @@
+{
+  "case_id": "case_02",
+  "spill_pixels": 8541,
+  "area_km2": 0.8541,
+  "perimeter_km": 4.99,
+  "centroid_lat": 17.8626,
+  "centroid_lon": 68.97679,
+  "orientation_deg": 122.89,
+  "semi_major_km": 0.6391,
+  "semi_minor_km": 0.4303,
+  "lookalike": {
+    "verdict": "pass",
+    "ratio": 0.4485,
+    "inside_mean": 30.92,
+    "outside_mean": 68.96,
+    "reason": "inside_mean=30.9 < outside_mean=69.0 (ratio=0.448 < 0.85)"
+  }
+}
