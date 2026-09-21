@@ -275,10 +275,57 @@ def init_db():
         reachability_km REAL,
         created_at      TEXT DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS gateway_events (
+        id          TEXT PRIMARY KEY,
+        vessel_id   TEXT REFERENCES vessels(vessel_id),
+        vessel_name TEXT,
+        gateway_id  TEXT,
+        event_type  TEXT,   -- 'ENTRY' / 'EXIT'
+        timestamp   TEXT,
+        lat         REAL,
+        lon         REAL,
+        speed       REAL,
+        course      REAL,
+        source      TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS vessel_journeys (
+        id                  TEXT PRIMARY KEY,
+        vessel_id           TEXT REFERENCES vessels(vessel_id),
+        vessel_name         TEXT,
+        entry_gateway       TEXT,
+        entry_time          TEXT,
+        exit_gateway        TEXT,
+        exit_time           TEXT,
+        distance_km         REAL,
+        actual_duration_h   REAL,
+        expected_duration_h REAL,
+        average_speed_kn    REAL,
+        max_speed_kn        REAL,
+        delay_h             REAL,
+        delay_zscore        REAL,
+        expected_basis      TEXT,
+        status              TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS behaviour_events (
+        id              INTEGER PRIMARY KEY AUTOINCREMENT,
+        vessel_id       TEXT REFERENCES vessels(vessel_id),
+        timestamp       TEXT,
+        status          TEXT,
+        ais_continuity  TEXT,
+        nav_status      TEXT,
+        delay_h         REAL,
+        traffic_level   TEXT,
+        notes_json      TEXT,
+        created_at      TEXT DEFAULT (datetime('now'))
+    );
     """)
     con.commit()
     con.close()
     print(f"  [DB] {DB_PATH}  schema initialized")
+
 
 
 # ── Entry point ────────────────────────────────────────────────────────────────

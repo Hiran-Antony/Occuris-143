@@ -1,0 +1,92 @@
+region:
+  name: "Arabian Sea Monitored Sector"
+  bounds: [58.0, 14.0, 75.0, 25.0]  # [min_lon, min_lat, max_lon, max_lat]
+
+# 4 narrow corridor gateways (not region-sized boxes) positioned to intercept shipping corridors
+gateways:
+  - gateway_id: "GATE_A"
+    name: "Western Oman / Gulf of Aden Approach Corridor"
+    orientation: "west"
+    entry_side: "west"
+    exit_side: "east"
+    geometry_geojson:
+      type: "Polygon"
+      # Narrow corridor polygon around lon 63.0E from lat 14.0N to 22.5N
+      coordinates:
+        - - [62.75, 14.0]
+          - [63.25, 14.0]
+          - [63.25, 22.5]
+          - [62.75, 22.5]
+          - [62.75, 14.0]
+
+  - gateway_id: "GATE_B"
+    name: "Northern Persian Gulf Approach Corridor"
+    orientation: "north"
+    entry_side: "north"
+    exit_side: "south"
+    geometry_geojson:
+      type: "Polygon"
+      # Narrow corridor polygon around lat 18.0N from lon 64.0E to 68.0E
+      coordinates:
+        - - [64.0, 17.8]
+          - [68.0, 17.8]
+          - [68.0, 18.2]
+          - [64.0, 18.2]
+          - [64.0, 17.8]
+
+  - gateway_id: "GATE_C"
+    name: "Southern Lakshadweep Passage Corridor"
+    orientation: "south"
+    entry_side: "north"
+    exit_side: "south"
+    geometry_geojson:
+      type: "Polygon"
+      # Narrow corridor polygon around lat 16.0N from lon 68.0E to 72.0E
+      coordinates:
+        - - [68.0, 15.8]
+          - [72.0, 15.8]
+          - [72.0, 16.2]
+          - [68.0, 16.2]
+          - [68.0, 15.8]
+
+  - gateway_id: "GATE_D"
+    name: "Eastern India Coastal Transit Corridor"
+    orientation: "east"
+    entry_side: "east"
+    exit_side: "west"
+    geometry_geojson:
+      type: "Polygon"
+      # Narrow corridor polygon around lon 66.0E from lat 16.0N to 19.0N
+      coordinates:
+        - - [65.75, 16.0]
+          - [66.25, 16.0]
+          - [66.25, 19.0]
+          - [65.75, 19.0]
+          - [65.75, 16.0]
+
+thresholds:
+  ais_gap_minutes: 15.0
+  rendezvous_m: 500.0
+  rendezvous_kn: 3.0
+  rendezvous_min: 20.0
+  coordinated_dark_overlap_min: 10.0
+  coordinated_dark_nm: 5.0
+  z_sigma: 2.0
+  traffic_high_percentile: 75.0
+  traffic_bin_minutes: 60          # Fixed hourly bins (not sliding); deterministic, non-overlapping
+  min_history_journeys: 5
+  merkle_window_events: 100
+  weather_wind_ms: 6.5             # ERA5 wind speed threshold for adverse conditions (m/s)
+  vessel_max_speed_kn: 18.0        # Default max vessel speed for dark-path feasibility (knots)
+
+vessel_class_baseline_speeds_kn:
+  default: 12.0     # IMO average transit speed for mixed commercial vessels (IMO GHG Study 4)
+  tanker: 11.5      # Typical laden crude/product tanker cruising baseline (DNV Maritime 2023)
+  cargo: 13.5       # Container / general cargo reference speed
+  fishing: 8.0      # Commercial trawler cruising baseline
+
+vessel_class_max_speeds_kn:
+  default: 18.0     # General commercial vessel upper bound
+  tanker: 16.0      # Laden tanker max practical speed
+  cargo: 20.0       # Container vessel max practical speed
+  fishing: 12.0     # Trawler max practical speed

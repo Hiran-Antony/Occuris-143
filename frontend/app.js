@@ -246,6 +246,7 @@ document.querySelectorAll('.case-card').forEach(card => {
 const monitoringMain    = document.querySelector('.main');
 const spillView         = document.getElementById('spillView');
 const spillSplitView    = document.getElementById('spillSplitView');
+const maritimeView      = document.getElementById('maritimeView');
 
 window.setView = function(view) {
   // Clear active state on all nav items
@@ -254,24 +255,31 @@ window.setView = function(view) {
   if (navItem) navItem.classList.add('active');
 
   // Hide all overlays first
-  spillView.classList.add('hidden');
-  spillSplitView.classList.add('hidden');
+  if (spillView) spillView.classList.add('hidden');
+  if (spillSplitView) spillSplitView.classList.add('hidden');
+  if (maritimeView) maritimeView.classList.add('hidden');
 
   if (view === 'spill') {
     monitoringMain.classList.add('hidden');
-    spillView.classList.remove('hidden');
+    if (spillView) spillView.classList.remove('hidden');
   } else if (view === 'spillsplit') {
     monitoringMain.classList.add('hidden');
-    spillSplitView.classList.remove('hidden');
-    // Load SpillSplit data for all cases
-    renderSpillSplit();
-    // Update page header
+    if (spillSplitView) {
+      spillSplitView.classList.remove('hidden');
+      renderSpillSplit();
+    }
     const icon = document.getElementById('pageTitleIcon');
     const title = document.getElementById('pageTitle');
     const sub = document.getElementById('pageSubtitle');
     if (icon)  icon.textContent  = '✂️';
     if (title) title.textContent = 'SpillSplit — Source Hypothesis Testing';
     if (sub)   sub.textContent   = 'Arabian Sea · One vs Two Source BIC Comparison · Module 4';
+  } else if (view === 'maritime') {
+    monitoringMain.classList.add('hidden');
+    if (maritimeView) {
+      maritimeView.classList.remove('hidden');
+      if (typeof initMaritimeModule === 'function') initMaritimeModule();
+    }
   } else {
     monitoringMain.classList.remove('hidden');
     setTimeout(() => {
@@ -399,6 +407,12 @@ async function renderSpillSplit() {
   }
 }
 
+document.getElementById('backFromMaritime').addEventListener('click', () => {
+  maritimeView.classList.add('hidden');
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.querySelector('[data-view="monitoring"]').classList.add('active');
+});
+
 // ─── Start with dark marine layer ────────────────────────────────────────────
 mapBtns.dark.click();
 
@@ -411,3 +425,593 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODULE 5 — MARITIME MEMORY & VIRTUAL GATEWAYS CONTROLLER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+let maritimeMap = null;
+let mmActiveLayer = null;
+let mmInitialized = false;
+
+// Color palette for vessels
+const VESSEL_COLORS = {
+  V001: '#00e5ff', // Cyan - Normal Trader
+  V002: '#ff5252', // Red - Suspect Tanker (Dark Gap)
+  V003: '#ffd740', // Amber - Anomalous Cargo
+  V004: '#00e676', // Green - Coastal Feeder
+  V005: '#b388ff', // Purple - Transit Bulker
+};
+
+// Maritime State
+const mmState = {
+  gateways: [],
+  vessels: [],
+  tracks: {},
+  crossings: [],
+  journeys: {},
+  behaviour: {},
+  traffic: null,
+  sourceInfo: null,
+  selectedVessel: 'all',
+  
+  // Replay State
+  isPlaying: false,
+  replaySpeed: 1, // 1x, 3x, 8x
+  replayInterval: null,
+  startTime: new Date('2024-03-15T00:00:00Z').getTime(),
+  endTime: new Date('2024-03-15T12:00:00Z').getTime(),
+  currentTime: new Date('2024-03-15T12:00:00Z').getTime(),
+  
+  // Layer groups
+  layers: {
+    gateways: null,
+    tracks: null,
+    vessels: null,
+    crossings: null,
+    gaps: null,
+  },
+};
+
+function initMaritimeModule() {
+  if (!mmInitialized) {
+    initMaritimeMap();
+    fetchMaritimeData();
+    setupMaritimeControls();
+    mmInitialized = true;
+  } else {
+    setTimeout(() => {
+      if (maritimeMap) maritimeMap.invalidateSize();
+    }, 150);
+  }
+}
+
+function initMaritimeMap() {
+  const mapEl = document.getElementById('maritimeMap');
+  if (!mapEl) return;
+
+  maritimeMap = L.map('maritimeMap', {
+    center: [18.2, 65.5],
+    zoom: 6,
+    zoomControl: true,
+  });
+
+  const mmTileLayers = {
+    dark: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB', maxZoom: 19
+    }),
+    sentinel: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri World Imagery', maxZoom: 18
+    }),
+    street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap', maxZoom: 19
+    }),
+  };
+
+  mmActiveLayer = mmTileLayers.dark;
+  mmActiveLayer.addTo(maritimeMap);
+
+  // Layer groups
+  mmState.layers.gateways = L.layerGroup().addTo(maritimeMap);
+  mmState.layers.tracks = L.layerGroup().addTo(maritimeMap);
+  mmState.layers.gaps = L.layerGroup().addTo(maritimeMap);
+  mmState.layers.crossings = L.layerGroup().addTo(maritimeMap);
+  mmState.layers.vessels = L.layerGroup().addTo(maritimeMap);
+
+  // Layer Switchers
+  const mmBtns = {
+    sentinel: document.getElementById('btnMmSentinel'),
+    dark: document.getElementById('btnMmDark'),
+    street: document.getElementById('btnMmStreet'),
+  };
+
+  function switchMmLayer(key) {
+    maritimeMap.removeLayer(mmActiveLayer);
+    mmActiveLayer = mmTileLayers[key];
+    maritimeMap.addLayer(mmActiveLayer);
+    mmActiveLayer.bringToBack();
+    Object.entries(mmBtns).forEach(([k, btn]) => {
+      if (btn) btn.classList.toggle('active', k === key);
+    });
+  }
+
+  if (mmBtns.sentinel) mmBtns.sentinel.addEventListener('click', () => switchMmLayer('sentinel'));
+  if (mmBtns.dark) mmBtns.dark.addEventListener('click', () => switchMmLayer('dark'));
+  if (mmBtns.street) mmBtns.street.addEventListener('click', () => switchMmLayer('street'));
+
+  const fitBtn = document.getElementById('btnFitCorridors');
+  if (fitBtn) {
+    fitBtn.addEventListener('click', () => {
+      maritimeMap.flyTo([18.2, 65.5], 6, { duration: 0.8 });
+    });
+  }
+
+  setTimeout(() => maritimeMap.invalidateSize(), 200);
+}
+
+// ─── API Data Fetching ───────────────────────────────────────────────────────
+async function fetchMaritimeData() {
+  try {
+    const [gwRes, vRes, evRes, bRes, sRes] = await Promise.all([
+      fetch('/api/gateways').catch(() => null),
+      fetch('/api/maritime/vessels').catch(() => null),
+      fetch('/api/maritime/gateway-events').catch(() => null),
+      fetch('/api/maritime/behaviour').catch(() => null),
+      fetch('/api/maritime/source-info').catch(() => null),
+    ]);
+
+    if (gwRes && gwRes.ok) {
+      const gwData = await gwRes.json();
+      mmState.gateways = gwData.features || [];
+    }
+    if (vRes && vRes.ok) {
+      mmState.vessels = await vRes.json();
+    }
+    if (evRes && evRes.ok) {
+      mmState.crossings = await evRes.json();
+    }
+    if (bRes && bRes.ok) {
+      mmState.behaviour = await bRes.json();
+    }
+    if (sRes && sRes.ok) {
+      mmState.sourceInfo = await sRes.json();
+      updateSourceBadge(mmState.sourceInfo);
+    }
+
+    // Fetch individual vessel tracks
+    await Promise.all(
+      mmState.vessels.map(async (v) => {
+        const tRes = await fetch(`/api/maritime/vessels/${v.vessel_id}/track`).catch(() => null);
+        if (tRes && tRes.ok) {
+          const trackData = await tRes.json();
+          mmState.tracks[v.vessel_id] = trackData;
+        }
+        const jRes = await fetch(`/api/maritime/vessels/${v.vessel_id}/journey`).catch(() => null);
+        if (jRes && jRes.ok) {
+          const jData = await jRes.json();
+          mmState.journeys[v.vessel_id] = jData;
+        }
+      })
+    );
+
+    renderAllMaritimeElements();
+    // Select V001 by default
+    selectVessel('V001');
+
+  } catch (err) {
+    console.warn('Backend API connection note:', err);
+  }
+}
+
+function updateSourceBadge(info) {
+  const badgeText = document.getElementById('sourceBadgeText');
+  if (badgeText && info) {
+    badgeText.textContent = `${info.mode.replace('_', ' ')} · ${info.label} (${info.record_count} pings)`;
+  }
+}
+
+// ─── Rendering on Map ────────────────────────────────────────────────────────
+function renderAllMaritimeElements() {
+  renderGateways();
+  renderTracksAndGaps();
+  renderCrossings();
+  renderReplayPings(mmState.currentTime);
+  renderCrossingFeed();
+  renderCorridorStatus();
+}
+
+function renderGateways() {
+  if (!mmState.layers.gateways) return;
+  mmState.layers.gateways.clearLayers();
+
+  mmState.gateways.forEach(feat => {
+    const coords = feat.geometry.coordinates; // [[lon, lat], ...]
+    const latlngs = coords.map(c => [c[1], c[0]]);
+    const props = feat.properties;
+
+    // Outer glow line
+    L.polyline(latlngs, {
+      color: props.color || '#00f0ff',
+      weight: 8,
+      opacity: 0.25,
+    }).addTo(mmState.layers.gateways);
+
+    // Sharp core line
+    const coreLine = L.polyline(latlngs, {
+      color: props.color || '#00f0ff',
+      weight: 3,
+      opacity: 0.95,
+      dashArray: '8 6',
+    }).addTo(mmState.layers.gateways);
+
+    // Corridor label
+    coreLine.bindTooltip(
+      `<strong>${props.gateway_id}</strong><br><span style="font-size:10px; opacity:0.8">${props.name}</span>`,
+      { permanent: true, direction: 'top', className: 'leaflet-tooltip' }
+    );
+  });
+}
+
+function renderTracksAndGaps() {
+  if (!mmState.layers.tracks) return;
+  mmState.layers.tracks.clearLayers();
+  mmState.layers.gaps.clearLayers();
+
+  Object.entries(mmState.tracks).forEach(([vId, track]) => {
+    if (mmState.selectedVessel !== 'all' && mmState.selectedVessel !== vId) return;
+
+    const color = VESSEL_COLORS[vId] || '#00c8ff';
+    const latlngs = track.pings.map(p => [p.lat, p.lon]);
+
+    // Track polyline
+    const poly = L.polyline(latlngs, {
+      color: color,
+      weight: mmState.selectedVessel === vId ? 3.5 : 2.0,
+      opacity: mmState.selectedVessel === vId ? 0.9 : 0.45,
+    }).addTo(mmState.layers.tracks);
+
+    poly.on('click', () => selectVessel(vId));
+
+    // Render AIS gaps as dashed warnings
+    if (track.gaps && track.gaps.length > 0) {
+      track.gaps.forEach(g => {
+        const gapLine = L.polyline([[g.start_lat, g.start_lon], [g.end_lat, g.end_lon]], {
+          color: '#ff5252',
+          weight: 4,
+          dashArray: '4 6',
+          opacity: 0.95,
+        }).addTo(mmState.layers.gaps);
+
+        gapLine.bindPopup(`
+          <div class="popup-title" style="color:#ff5252">⚠ AIS REPORTING BLACKOUT</div>
+          <div class="popup-row"><span>Vessel</span><span>${vId} (${track.vessel_name})</span></div>
+          <div class="popup-row"><span>Gap Duration</span><span>${g.duration_minutes} min</span></div>
+          <div class="popup-row"><span>Threshold</span><span>30 min (Exceeded)</span></div>
+          <div class="popup-pass" style="background:rgba(255,82,82,0.15); color:#ff5252">
+            Classification: DARK VESSEL SUSPICION
+          </div>
+        `);
+      });
+    }
+  });
+}
+
+function renderCrossings() {
+  if (!mmState.layers.crossings) return;
+  mmState.layers.crossings.clearLayers();
+
+  mmState.crossings.forEach(ev => {
+    if (mmState.selectedVessel !== 'all' && mmState.selectedVessel !== ev.vessel_id) return;
+
+    const isEntry = ev.event_type === 'ENTRY';
+    const iconColor = isEntry ? '#00e676' : '#ff6b35';
+
+    const crossIcon = L.divIcon({
+      className: '',
+      html: `
+        <div style="
+          width: 12px; height: 12px; border-radius: 50%;
+          background: ${iconColor};
+          border: 2px solid white;
+          box-shadow: 0 0 8px ${iconColor};
+          cursor: pointer;
+        "></div>
+      `,
+      iconAnchor: [6, 6],
+    });
+
+    const marker = L.marker([ev.lat, ev.lon], { icon: crossIcon }).addTo(mmState.layers.crossings);
+    marker.bindPopup(`
+      <div class="popup-title">GATEWAY ${ev.event_type} EVENT</div>
+      <div class="popup-row"><span>Gateway</span><span>${ev.gateway_id}</span></div>
+      <div class="popup-row"><span>Vessel</span><span>${ev.vessel_id} (${ev.vessel_name})</span></div>
+      <div class="popup-row"><span>Time</span><span>${ev.timestamp.replace('T', ' ').slice(0, 19)} UTC</span></div>
+      <div class="popup-row"><span>Speed</span><span>${ev.speed} kn</span></div>
+      <div class="popup-row"><span>Course</span><span>${ev.course}°</span></div>
+    `);
+  });
+}
+
+function renderReplayPings(targetTimestamp) {
+  if (!mmState.layers.vessels) return;
+  mmState.layers.vessels.clearLayers();
+
+  const targetDate = new Date(targetTimestamp);
+
+  Object.entries(mmState.tracks).forEach(([vId, track]) => {
+    if (mmState.selectedVessel !== 'all' && mmState.selectedVessel !== vId) return;
+
+    const visiblePings = track.pings.filter(p => new Date(p.timestamp).getTime() <= targetDate.getTime());
+    if (!visiblePings || visiblePings.length === 0) return;
+
+    const currentPing = visiblePings[visiblePings.length - 1];
+    const color = VESSEL_COLORS[vId] || '#00c8ff';
+    const rot = currentPing.cog || 0;
+
+    // SVG Ship icon with COG rotation
+    const shipSvg = `
+      <div class="ship-marker-wrap" style="transform: rotate(${rot}deg);" title="${vId} (${track.vessel_name})">
+        <div class="ship-pulse" style="border-color:${color};"></div>
+        <svg class="ship-marker-svg" viewBox="0 0 24 24" fill="${color}">
+          <path d="M12 2L4 20L12 16L20 20L12 2Z" stroke="#ffffff" stroke-width="1.5" />
+        </svg>
+      </div>
+    `;
+
+    const icon = L.divIcon({
+      className: '',
+      html: shipSvg,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+
+    const m = L.marker([currentPing.lat, currentPing.lon], { icon: icon }).addTo(mmState.layers.vessels);
+    m.on('click', () => selectVessel(vId));
+    m.bindTooltip(`<strong>${vId}</strong> · ${currentPing.sog} kn`, { direction: 'top', offset: [0, -10] });
+  });
+}
+
+// ─── Vessel Selection & Inspector ────────────────────────────────────────────
+function selectVessel(vesselId) {
+  mmState.selectedVessel = vesselId;
+
+  // Update pills
+  document.querySelectorAll('.v-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.vessel === vesselId);
+  });
+
+  // Re-render map layers with focus
+  renderTracksAndGaps();
+  renderCrossings();
+  renderReplayPings(mmState.currentTime);
+
+  // If a specific vessel is chosen, zoom to its track
+  if (vesselId !== 'all' && mmState.tracks[vesselId]) {
+    const pings = mmState.tracks[vesselId].pings;
+    if (pings.length > 0) {
+      const bounds = L.latLngBounds(pings.map(p => [p.lat, p.lon]));
+      maritimeMap.flyToBounds(bounds, { padding: [40, 40], duration: 0.6 });
+    }
+  }
+
+  // Populate Inspector Card
+  const targetId = vesselId === 'all' ? 'V001' : vesselId;
+  const v = mmState.vessels.find(item => item.vessel_id === targetId);
+  const track = mmState.tracks[targetId];
+  const jData = mmState.journeys[targetId];
+  const bData = mmState.behaviour[targetId];
+
+  if (!v || !track) return;
+
+  document.getElementById('vesselBadge').textContent = targetId;
+  document.getElementById('vesselName').textContent = v.vessel_name || track.vessel_name;
+  document.getElementById('vesselMmsi').textContent = v.mmsi;
+  document.getElementById('vesselSog').textContent = `${v.sog} kn`;
+  document.getElementById('vesselCog').textContent = `${v.cog}°`;
+  document.getElementById('vesselNav').textContent = v.nav_status_label;
+
+  const statusBadge = document.getElementById('vesselStatusBadge');
+  const bStatus = bData ? bData.status : v.status;
+
+  if (statusBadge) {
+    statusBadge.className = 'status-pill';
+    if (bStatus === 'NORMAL_TRANSIT') {
+      statusBadge.classList.add('status-normal');
+      statusBadge.textContent = 'NORMAL TRANSIT';
+    } else if (bStatus === 'POTENTIAL_UNEXPLAINED_DELAY') {
+      statusBadge.classList.add('status-alert');
+      statusBadge.textContent = 'POTENTIAL UNEXPLAINED DELAY';
+    } else if (bStatus === 'EXPLAINED_DELAY') {
+      statusBadge.classList.add('status-warning');
+      statusBadge.textContent = 'EXPLAINED DELAY';
+    } else {
+      statusBadge.classList.add('status-normal');
+      statusBadge.textContent = bStatus;
+    }
+  }
+
+  if (jData && jData.journey) {
+    const j = jData.journey;
+    const t = jData.transit || {};
+    document.getElementById('vesselDistance').textContent = `${j.distance_km} km`;
+    document.getElementById('vesselDuration').textContent = `${j.actual_duration_h} h`;
+    document.getElementById('vesselExpected').textContent = t.expected_duration_h ? `${t.expected_duration_h} h` : 'Baseline';
+    
+    const delayH = t.delay_h || 0;
+    const delayStr = delayH > 0 ? `+${delayH} h (Delayed)` : `${delayH} h (On-time)`;
+    document.getElementById('vesselDelay').textContent = delayStr;
+  }
+
+  // Populate Evidence Checklist
+  const evidenceList = document.getElementById('evidenceList');
+  if (evidenceList) {
+    evidenceList.innerHTML = '';
+
+    const hasGap = track.gaps && track.gaps.length > 0;
+    const gapRow = document.createElement('div');
+    gapRow.className = `evidence-row ${hasGap ? 'alert' : 'pass'}`;
+    gapRow.innerHTML = `
+      <span>${hasGap ? '⚠ AIS Blackout Detected' : '✓ AIS Continuity'}</span>
+      <span class="tag">${hasGap ? `${track.gaps[0].duration_minutes} MIN GAP` : 'CONTINUOUS'}</span>
+    `;
+    evidenceList.appendChild(gapRow);
+
+    const delayRow = document.createElement('div');
+    const delayH = (jData && jData.transit && jData.transit.delay_h) || 0;
+    const isDelayed = delayH > 1.0;
+    delayRow.className = `evidence-row ${isDelayed ? 'alert' : 'pass'}`;
+    delayRow.innerHTML = `
+      <span>${isDelayed ? '▲ Passage Duration Delay' : '✓ Transit Duration'}</span>
+      <span class="tag">${isDelayed ? `+${delayH}h DEV` : 'ON SCHEDULE'}</span>
+    `;
+    evidenceList.appendChild(delayRow);
+
+    const trafficRow = document.createElement('div');
+    trafficRow.className = 'evidence-row info';
+    trafficRow.innerHTML = `
+      <span>ℹ Regional Traffic Density</span>
+      <span class="tag">NORMAL (2 SHIPS)</span>
+    `;
+    evidenceList.appendChild(trafficRow);
+
+    const envRow = document.createElement('div');
+    envRow.className = 'evidence-row info';
+    envRow.innerHTML = `
+      <span>ℹ Environmental Weather Grid</span>
+      <span class="tag">DECOUPLED</span>
+    `;
+    evidenceList.appendChild(envRow);
+  }
+}
+
+// ─── Feed & Corridors List ───────────────────────────────────────────────────
+function renderCrossingFeed() {
+  const feedEl = document.getElementById('crossingFeedList');
+  if (!feedEl) return;
+  feedEl.innerHTML = '';
+
+  const countEl = document.getElementById('feedCount');
+  if (countEl) countEl.textContent = `${mmState.crossings.length} Events`;
+
+  mmState.crossings.forEach(ev => {
+    const row = document.createElement('div');
+    row.className = 'feed-row';
+    const isEntry = ev.event_type === 'ENTRY';
+    const tagClass = isEntry ? 'entry' : 'exit';
+
+    row.innerHTML = `
+      <div class="feed-left">
+        <span class="feed-event-tag ${tagClass}">${ev.event_type}</span>
+        <div>
+          <strong style="color:#fff">${ev.vessel_id}</strong>
+          <span style="color:var(--text-dim); font-size:10px;">· ${ev.gateway_id}</span>
+        </div>
+      </div>
+      <div class="feed-right">
+        <span class="feed-speed">${ev.speed} kn · ${ev.course}°</span>
+        <span class="feed-time">${ev.timestamp.replace('T', ' ').slice(11, 16)} UTC</span>
+      </div>
+    `;
+    row.addEventListener('click', () => selectVessel(ev.vessel_id));
+    feedEl.appendChild(row);
+  });
+}
+
+function renderCorridorStatus() {
+  const listEl = document.getElementById('corridorStatusList');
+  if (!listEl) return;
+  listEl.innerHTML = '';
+
+  mmState.gateways.forEach(gw => {
+    const gwId = gw.properties.gateway_id;
+    const name = gw.properties.name;
+    const color = gw.properties.color || '#00f0ff';
+    const crossings = mmState.crossings.filter(c => c.gateway_id === gwId);
+
+    const row = document.createElement('div');
+    row.className = 'corridor-row';
+    row.style.borderLeftColor = color;
+    row.innerHTML = `
+      <span class="corridor-name">${gwId} — ${name}</span>
+      <span class="corridor-count">${crossings.length} crossings</span>
+    `;
+    listEl.appendChild(row);
+  });
+}
+
+// ─── Replay Controls ─────────────────────────────────────────────────────────
+function setupMaritimeControls() {
+  // Vessel pills
+  document.getElementById('vesselPills').addEventListener('click', e => {
+    const pill = e.target.closest('.v-pill');
+    if (!pill) return;
+    selectVessel(pill.dataset.vessel);
+  });
+
+  // Replay Slider
+  const slider = document.getElementById('replaySlider');
+  const timeDisplay = document.getElementById('replayTimeDisplay');
+
+  function updateSliderTime(pct) {
+    const totalMs = mmState.endTime - mmState.startTime;
+    mmState.currentTime = mmState.startTime + (totalMs * pct / 100);
+    const dt = new Date(mmState.currentTime);
+    if (timeDisplay) {
+      timeDisplay.textContent = dt.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
+    }
+    renderReplayPings(mmState.currentTime);
+  }
+
+  if (slider) {
+    slider.addEventListener('input', e => {
+      updateSliderTime(Number(e.target.value));
+    });
+  }
+
+  // Play / Pause
+  const playBtn = document.getElementById('btnReplayPlay');
+  const resetBtn = document.getElementById('btnReplayReset');
+
+  function togglePlay() {
+    mmState.isPlaying = !mmState.isPlaying;
+    if (playBtn) playBtn.textContent = mmState.isPlaying ? '❚❚ Pause' : '▶ Play';
+
+    if (mmState.isPlaying) {
+      // If at end, loop to start
+      if (Number(slider.value) >= 100) slider.value = 0;
+
+      mmState.replayInterval = setInterval(() => {
+        let val = Number(slider.value) + (0.5 * mmState.replaySpeed);
+        if (val >= 100) {
+          val = 100;
+          togglePlay();
+        }
+        slider.value = val;
+        updateSliderTime(val);
+      }, 100);
+    } else {
+      clearInterval(mmState.replayInterval);
+      mmState.replayInterval = null;
+    }
+  }
+
+  if (playBtn) playBtn.addEventListener('click', togglePlay);
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      if (mmState.isPlaying) togglePlay();
+      slider.value = 0;
+      updateSliderTime(0);
+    });
+  }
+
+  // Speed buttons
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mmState.replaySpeed = Number(btn.dataset.speed || 1);
+    });
+  });
+}
+

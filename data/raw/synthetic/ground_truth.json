@@ -1,0 +1,36 @@
+{
+  "dataset": "module5_demo.csv",
+  "generated_at": "2026-09-21T18:03:51.245816+00:00",
+  "cases": {
+    "V001": {
+      "expected_classification": "NORMAL_TRANSIT",
+      "has_ais_gap": false,
+      "has_unexplained_delay": false
+    },
+    "V002": {
+      "expected_classification": "EXPLAINED_DELAY",
+      "primary_explanation": "WEATHER",
+      "has_ais_gap": false
+    },
+    "V003": {
+      "expected_classification": "POTENTIAL_UNEXPLAINED_DELAY",
+      "has_ais_gap": true,
+      "gap_duration_minutes": 38.0
+    },
+    "V004": {
+      "re_identifiable_via_dna": true,
+      "collective_anomalies": [
+        "COORDINATED_DARK",
+        "RENDEZVOUS"
+      ],
+      "partner_vessel": "V005"
+    },
+    "V005": {
+      "collective_anomalies": [
+        "COORDINATED_DARK",
+        "RENDEZVOUS"
+      ],
+      "partner_vessel": "V004"
+    }
+  }
+}
