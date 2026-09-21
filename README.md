@@ -114,3 +114,51 @@ Exports the frozen `EvidenceBundleV1` structure consumed by downstream analytica
 - Multi-vessel collective anomaly associations
 - Physics-informed candidate dark paths
 - Cryptographic Merkle provenance root and row hashes
+
+---
+
+## Module 6: AIS Verification Engine
+
+Module 6 conducts an empirical, six-stage forensic verification of vessel AIS records during the spill investigation window. Built on frozen Module 5 `EvidenceBundleV1` outputs and `CaseContextV1`, it determines tracking filter consistency, reachability boundaries, and honest evidential classifications.
+
+### Six-Stage Verification Pipeline
+
+```mermaid
+flowchart TD
+    Bundle[EvidenceBundleV1] --> S1[Stage 1: InvestigationWindowResolver]
+    Context[CaseContextV1] --> S1
+    S1 --> S2[Stage 2: AISContinuityAnalyzer]
+    S2 --> S3[Stage 3: KinematicConsistencyEngine]
+    S3 --> S4[Stage 4: ReachabilityEngine]
+    S4 --> S5[Stage 5: DarkPathValidator]
+    S5 --> S6[Stage 6: StateClassifier]
+    
+    subgraph S6_Outputs [Stage 6 Outputs]
+        S6_A[Bayesian Odds Integrity Score]
+        S6_B[Softmax Explanation Competition]
+        S6_C[AIS State & Anomaly Classifications]
+    end
+    
+    S6 --> S6_Outputs
+    S6_Outputs --> VBundle[Module6VerificationBundleV1]
+```
+
+### Key Stages & Capabilities
+
+1. **Stage 1 — Investigation Window Resolver**: Computes the temporal and spatial intersection between the release window (with configurable padding) and the vessel's journey.
+2. **Stage 2 — AIS Continuity Analyzer**: Computes the regional gap concurrency index against other nearby vessels to distinguish regional infrastructure outages from solo blackouts.
+3. **Stage 3 — Kinematic Consistency Engine**: Constant-Velocity Extended Kalman Filter (CV-EKF in local ENU). Evaluates Normalized Innovation Squared (NIS) against $\chi^2(2)$ and flags teleport jumps, impossible speeds, and simultaneous identity conflicts (>50 km within 30 min).
+4. **Stage 4 — Physical Reachability Engine**: Evaluates whether reported positions and candidate round-trips to the probable spill origin zone are physically reachable under vessel class speed limits assisted by CMEMS ocean currents.
+5. **Stage 5 — Dark-Path Hypothesis Validator**: Validates kinematic plausibility and probability mass intersecting the origin zone for unobserved blackout intervals, preserving the mandatory hypothesis disclaimer.
+6. **Stage 6 — State Classifier & Evidential Aggregator**: Executes evidential competition across `{COVERAGE, WEATHER, TRAFFIC, OPERATIONAL, CONCEALMENT_PATTERN}` using softmax, computes Bayesian odds-form posterior track integrity ($P(\text{reliable} \mid \text{evidence})$) with sensitivity intervals, and emits `NORMAL`, `AIS_GAP_DARK`, `REPORTING_ANOMALY`, or `AMBIGUOUS`.
+
+### Verification API Endpoints
+
+```http
+POST /api/v1/verification/run/{vessel_id}?case_id=case_01
+GET  /api/v1/verification/report/{vessel_id}?case_id=case_01
+GET  /api/v1/verification/case/{case_id}
+GET  /api/v1/verification/ledger/verify
+POST /api/v1/verification/analyst-labels
+GET  /api/v1/verification/review-queue
+```

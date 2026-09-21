@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [6.0.0] - 2026-09-22
+
+### Added
+- **Six-Stage AIS Verification Engine (`src/verification/`)**:
+  - `Stage 1: WindowResolver`: Resolves intersection between vessel presence and investigation spill release window with configurable padding.
+  - `Stage 2: ContinuityAnalyzer`: Audits AIS gaps, calculates spatial/temporal gap concurrency index against all other vessels in the vicinity, and flags regional infrastructure coverage outages.
+  - `Stage 3: KinematicEngine`: Constant-Velocity Extended Kalman Filter (CV-EKF in local ENU coordinates) with $\chi^2(2)$ NIS test, episode grouping, and simultaneous identity conflict detection (>50 km within 30 min).
+  - `Stage 4: ReachabilityEngine`: Validates physical reachability of consecutive reported pings and unobserved candidate round-trips to probable spill origin zones, assisted by CMEMS ocean currents.
+  - `Stage 5: DarkPathValidator`: Validates kinematic feasibility and origin-zone intersection for unobserved blackout intervals, preserving the mandatory hypothesis disclaimer.
+  - `Stage 6: StateClassifier`: Multi-hypothesis evidential softmax competition (`{COVERAGE, WEATHER, TRAFFIC, OPERATIONAL, CONCEALMENT_PATTERN}`), Bayesian odds-form posterior track integrity ($P(\text{reliable} \mid \text{evidence})$) with sensitivity intervals, and forensic decision rules (`NORMAL`, `AIS_GAP_DARK`, `REPORTING_ANOMALY`, `AMBIGUOUS`).
+- **Frozen Contracts (`src/ais/schemas.py`)**:
+  - `Module6VerificationBundleV1` downstream verification contract.
+  - `WindowResolution`, `ContinuityReport`, `KinematicReport`, `ReachabilityResult`, `DarkPathValidation`, `AnomalyState`, `AnalystLabel`.
+  - Enums: `VerificationStageStatus`, `AnomalyClassification`, `KinematicFlag`, `AisState`, `ReachabilityVerdict`.
+- **Single Merkle Audit Extension**: Extended Module 5 Merkle chain with `VERIFICATION_ARTIFACT` records and full ledger verification.
+- **Verification API (`/api/v1/verification/`)**:
+  - `POST /run/{vessel_id}`: Idempotent full 6-stage verification run returning bundle and ledger hash.
+  - `GET /report/{vessel_id}`: Cached report retrieval with provenance input hashes.
+  - `GET /case/{case_id}`: All vessel reports for an investigation case.
+  - `GET /ledger/verify`: Comprehensive audit ledger verification covering Module 6 records.
+  - `POST /analyst-labels`: Human analyst label persistence (storage-only, no ML feedback loop).
+  - `GET /review-queue`: Verification review queue sorted by integrity interval width (most ambiguous first).
+- **Configuration**:
+  - Created `config/verification.yaml` as single source of truth for all EKF, Bayesian integrity, reachability, concurrency, and explanation weights with documented LR rationales. Zero magic numbers.
+- **Automated Testing Suite**: 120 passing tests achieving 92% statement coverage across `src/verification/`.
+
+---
+
 ## [5.1.0] - 2026-09-21
 
 ### Added

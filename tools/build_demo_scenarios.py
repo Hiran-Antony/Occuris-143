@@ -191,30 +191,53 @@ def generate_demo_dataset():
     ground_truth = {
         "dataset": "module5_demo.csv",
         "generated_at": datetime.now(timezone.utc).isoformat(),
+        # ── GROUND TRUTH ISOLATION GUARD ──
+        # This ground truth is consumed ONLY by test fixtures.
+        # It MUST NOT be imported or read by production code in src/.
+        "_isolation_guard": "GROUND_TRUTH_FOR_TESTS_ONLY",
         "cases": {
             "V001": {
                 "expected_classification": "NORMAL_TRANSIT",
                 "has_ais_gap": False,
                 "has_unexplained_delay": False,
+                # Module 6 expected states
+                "m6_ais_state": "NORMAL",
+                "m6_has_kinematic_episodes": False,
+                "m6_reachability": "REACHABLE",
             },
             "V002": {
                 "expected_classification": "EXPLAINED_DELAY",
                 "primary_explanation": "WEATHER",
                 "has_ais_gap": False,
+                # Module 6 expected states
+                "m6_ais_state": "NORMAL",
+                "m6_has_kinematic_episodes": False,
+                "m6_reachability": "REACHABLE",
             },
             "V003": {
                 "expected_classification": "POTENTIAL_UNEXPLAINED_DELAY",
                 "has_ais_gap": True,
                 "gap_duration_minutes": 38.0,
+                # Module 6 expected states
+                "m6_ais_state": "AIS_GAP_DARK",
+                "m6_has_kinematic_episodes": False,
+                "m6_reachability": "REACHABLE",
+                "m6_gap_concurrency_low": True,
             },
             "V004": {
                 "re_identifiable_via_dna": True,
                 "collective_anomalies": ["COORDINATED_DARK", "RENDEZVOUS"],
                 "partner_vessel": "V005",
+                # Module 6 expected states
+                "m6_ais_state": "AIS_GAP_DARK",
+                "m6_has_kinematic_episodes": False,
             },
             "V005": {
                 "collective_anomalies": ["COORDINATED_DARK", "RENDEZVOUS"],
                 "partner_vessel": "V004",
+                # Module 6 expected states
+                "m6_ais_state": "AIS_GAP_DARK",
+                "m6_has_kinematic_episodes": False,
             },
         },
     }

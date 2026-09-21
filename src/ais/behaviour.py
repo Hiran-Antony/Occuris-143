@@ -237,6 +237,10 @@ class BehaviourAuditor:
 
         return assessments
 
+    # Backwards compatibility aliases
+    assess_all = audit_all
+    assess_vessel = audit_vessel
+
 
 # Backwards compatibility alias
 BehaviourClassifier = BehaviourAuditor

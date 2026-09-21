@@ -13,11 +13,12 @@ from fastapi.staticfiles import StaticFiles
 
 from src.api.maritime import ensure_pipeline, router as maritime_v1_router
 from src.api.maritime_router import router as maritime_compat_router, state as maritime_compat_state
+from src.api.verification import router as verification_v1_router
 from src.config import ROOT
 
 app = FastAPI(
     title="OCCURIS Maritime Intelligence API",
-    description="Module 5: Maritime Memory, Virtual Gateways, Behavioral DNA, and Merkle Audit",
+    description="Module 5: Maritime Memory, Virtual Gateways, Behavioral DNA, and Merkle Audit; Module 6: AIS Verification",
     version="1.0.0",
 )
 
@@ -30,8 +31,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount official /api/v1 router
+# Mount official /api/v1 routers
 app.include_router(maritime_v1_router)
+app.include_router(verification_v1_router)
 
 # Mount legacy /api router for backwards compatibility
 app.include_router(maritime_compat_router)
