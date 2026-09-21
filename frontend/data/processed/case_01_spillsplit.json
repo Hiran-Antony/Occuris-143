@@ -1,0 +1,51 @@
+{
+  "case_id": "case_01",
+  "result": "One Source Zone",
+  "confidence": "H2 Not Supported \u2014 two-source reconstruction performed worse",
+  "source_zones": [
+    {
+      "id": "A",
+      "latitude": 15.08432,
+      "longitude": 53.60547,
+      "weight": 1.0
+    }
+  ],
+  "source_separation_km": 117.636,
+  "stability": {
+    "stable": true,
+    "score": 0.9278,
+    "variation_km": 8.493,
+    "adaptive_threshold_km": 58.818,
+    "sep_km": 117.636,
+    "stability_sep_factor": 0.5,
+    "n_bootstrap_runs": 15,
+    "note": "Stable (var=8.49km < 58.82km threshold)"
+  },
+  "one_source": {
+    "bic": 163.928,
+    "iou": 0.1201,
+    "centroid_dist_km": 4.113,
+    "area_diff_pct": 81.6
+  },
+  "two_source": {
+    "bic": 158.279,
+    "iou": 0.1112,
+    "centroid_dist_km": 16.1,
+    "area_diff_pct": 82.53
+  },
+  "decision_factors": {
+    "separation_km": 117.636,
+    "separation_ok": true,
+    "stability_stable": true,
+    "stability_score": 0.9278,
+    "stability_variation_km": 8.493,
+    "iou_h1": 0.1201,
+    "iou_h2": 0.1112,
+    "iou_improvement": -0.0089,
+    "iou_favours_two": false,
+    "bic_improvement": 5.649,
+    "bic_favours_two": false,
+    "iou_threshold_note": "Prototype MVP threshold (0.04); calibrate against known test cases.",
+    "sep_threshold_note": "Prototype MVP threshold (5 km); relate to Module 3 reconstruction uncertainty."
+  }
+}

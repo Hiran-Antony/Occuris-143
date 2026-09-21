@@ -1,0 +1,51 @@
+{
+  "case_id": "case_03",
+  "result": "One Source Zone",
+  "confidence": "H2 Not Supported \u2014 clusters unstable across bootstrap samples",
+  "source_zones": [
+    {
+      "id": "A",
+      "latitude": 21.48327,
+      "longitude": 62.3673,
+      "weight": 1.0
+    }
+  ],
+  "source_separation_km": 81.755,
+  "stability": {
+    "stable": false,
+    "score": 0.0,
+    "variation_km": 100.77,
+    "adaptive_threshold_km": 40.877,
+    "sep_km": 81.755,
+    "stability_sep_factor": 0.5,
+    "n_bootstrap_runs": 15,
+    "note": "Unstable (var=100.77km >= 40.88km threshold)"
+  },
+  "one_source": {
+    "bic": 128.016,
+    "iou": 0.0861,
+    "centroid_dist_km": 34.024,
+    "area_diff_pct": 83.84
+  },
+  "two_source": {
+    "bic": 137.739,
+    "iou": 0.1228,
+    "centroid_dist_km": 11.656,
+    "area_diff_pct": 83.95
+  },
+  "decision_factors": {
+    "separation_km": 81.755,
+    "separation_ok": true,
+    "stability_stable": false,
+    "stability_score": 0.0,
+    "stability_variation_km": 100.77,
+    "iou_h1": 0.0861,
+    "iou_h2": 0.1228,
+    "iou_improvement": 0.0367,
+    "iou_favours_two": false,
+    "bic_improvement": -9.723,
+    "bic_favours_two": false,
+    "iou_threshold_note": "Prototype MVP threshold (0.04); calibrate against known test cases.",
+    "sep_threshold_note": "Prototype MVP threshold (5 km); relate to Module 3 reconstruction uncertainty."
+  }
+}

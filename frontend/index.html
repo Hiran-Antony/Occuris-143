@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Occuris — Maritime Intelligence</title>
+  <title>Occuris — Maritime Intelligence · SIH 2026</title>
+  <meta name="description" content="OCCURIS Maritime Oil-Spill Detection & Attribution Dashboard — SIH 2026" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -47,10 +48,10 @@
       <span>Spill Investigation</span>
       <span class="nav-badge done">M1·M2</span>
     </a>
-    <a class="nav-item disabled" href="#" title="Module 4 — Pending Module 3">
+    <a class="nav-item" data-view="spillsplit" href="#" title="Module 4 — SpillSplit Complete">
       <span class="nav-icon">✂️</span>
       <span>SpillSplit</span>
-      <span class="nav-badge pending">M4</span>
+      <span class="nav-badge done">M4</span>
     </a>
     <a class="nav-item" data-view="drift" href="#" title="Module 3 — Complete">
       <span class="nav-icon">🌊</span>
@@ -77,7 +78,7 @@
   <!-- Status footer -->
   <div class="sidebar-footer">
     <span class="status-dot active"></span>
-    <span>Modules 0–2 Active</span>
+    <span>Modules 0–4 Active</span>
   </div>
 </aside>
 
@@ -90,7 +91,7 @@
       <div class="page-title-icon" id="pageTitleIcon">📡</div>
       <div>
         <div class="page-title" id="pageTitle">Regional Monitoring</div>
-        <div class="page-subtitle" id="pageSubtitle">Arabian Sea · 3 Investigation Cases · Modules 1–2 Active</div>
+        <div class="page-subtitle" id="pageSubtitle">Arabian Sea · 3 Investigation Cases · Modules 0–4 Active</div>
       </div>
     </div>
 
@@ -98,13 +99,13 @@
     <div class="case-pills" id="casePills">
       <button class="pill active" data-case="all">All Cases</button>
       <button class="pill" data-case="case_01">
-        <span class="spill-dot red"></span>Case 01 (3.92 km²)
+        <span class="spill-dot red"></span>Case 01 · Al-Mahra
       </button>
       <button class="pill" data-case="case_02">
-        <span class="spill-dot orange"></span>Case 02 (5.21 km²)
+        <span class="spill-dot orange"></span>Case 02 · Lakshadweep
       </button>
       <button class="pill" data-case="case_03">
-        <span class="spill-dot yellow"></span>Case 03 (4.29 km²)
+        <span class="spill-dot yellow"></span>Case 03 · Oman Basin
       </button>
     </div>
 
@@ -120,27 +121,27 @@
   <div class="stats-bar">
     <div class="stat-card">
       <div class="stat-value">3</div>
-      <div class="stat-label">ACTIVE CASES</div>
+      <div class="stat-label">Active Cases</div>
     </div>
     <div class="stat-card">
       <div class="stat-value">5</div>
-      <div class="stat-label">VESSELS TRACKED</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value">13.43</div>
-      <div class="stat-label">TOTAL SPILL km²</div>
+      <div class="stat-label">Vessels Tracked</div>
     </div>
     <div class="stat-card highlight">
-      <div class="stat-value">0.89</div>
-      <div class="stat-label">AVG IoU SCORE</div>
+      <div class="stat-value">13.42<span class="stat-value-unit">km²</span></div>
+      <div class="stat-label">Total Spill Area</div>
     </div>
-    <div class="stat-card highlight-orange">
+    <div class="stat-card highlight">
+      <div class="stat-value">0.898</div>
+      <div class="stat-label">Avg IoU Score</div>
+    </div>
+    <div class="stat-card highlight-green">
       <div class="stat-value">3</div>
-      <div class="stat-label">LOOK-ALIKE PASS</div>
+      <div class="stat-label">Look-Alike Pass</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card highlight-green">
       <div class="stat-value">0</div>
-      <div class="stat-label">FLAGGED</div>
+      <div class="stat-label">Flagged Cases</div>
     </div>
   </div>
 
@@ -159,27 +160,27 @@
 
       <div id="map"></div>
 
-      <!-- Vector Hydrodynamics Map Overlay -->
+      <!-- Vector Hydrodynamics Map Overlay (Drift Forecast only) -->
       <div id="hydroCard" class="hydro-card hidden">
         <div class="hydro-header">
           <span class="hydro-title">VECTOR HYDRODYNAMICS</span>
           <span class="hydro-badge">HYCOM</span>
         </div>
         <div class="hydro-row">
-          <div class="hydro-label"><span class="hydro-icon">🌊</span> Surface Current:</div>
+          <div class="hydro-label"><span>🌊</span> Surface Current:</div>
           <div class="hydro-value" id="hydroCurrent">--</div>
         </div>
         <div class="hydro-row">
-          <div class="hydro-label"><span class="hydro-icon">💨</span> Wind Leeway:</div>
+          <div class="hydro-label"><span>💨</span> Wind Leeway:</div>
           <div class="hydro-value" id="hydroWind" style="color: #00e5ff;">--</div>
         </div>
         <div class="hydro-row total-advection">
-          <div class="hydro-label"><span class="hydro-icon">🧭</span> Net Advection:</div>
-          <div class="hydro-value" id="hydroNet" style="color: #ffd740; font-weight: 600;">--</div>
+          <div class="hydro-label"><span>🧭</span> Net Advection:</div>
+          <div class="hydro-value" id="hydroNet" style="color: #ffd740;">--</div>
         </div>
       </div>
 
-      <!-- Timeline Scrubber -->
+      <!-- Timeline Scrubber (Drift Forecast only) -->
       <div id="timelineScrubber" class="timeline-container hidden">
         <div class="timeline-top">
           <button id="btnPlayPause" class="play-btn">▶</button>
@@ -189,7 +190,7 @@
             <button class="speed-btn" data-speed="8">8x</button>
           </div>
           <div class="timeline-status">
-            <div id="scrubberPhase" class="scrubber-phase">Forecast: +0.0h</div>
+            <div id="scrubberPhase" class="scrubber-phase" style="color:#00e5ff;">Forecast: +0.0h</div>
             <div id="scrubberTime" class="scrubber-time">--</div>
             <div id="scrubberMeta" class="scrubber-meta">Plume Centroid: -- · Area: --</div>
           </div>
@@ -205,11 +206,11 @@
           <input type="range" id="timeSlider" class="time-slider" min="0" max="100" value="0">
           <div class="timeline-labels">
             <span style="color: #ff5252">-24h Reconstructed Discharge</span>
-            <span style="color: rgba(255,255,255,0.5)">-12h</span>
+            <span style="color: rgba(255,255,255,0.4)">-12h</span>
             <span style="color: #00e5ff">0h Satellite Detection</span>
-            <span style="color: rgba(255,255,255,0.5)">+12h</span>
-            <span style="color: rgba(255,255,255,0.5)">+24h</span>
-            <span style="color: rgba(255,255,255,0.5)">+36h</span>
+            <span style="color: rgba(255,255,255,0.4)">+12h</span>
+            <span style="color: rgba(255,255,255,0.4)">+24h</span>
+            <span style="color: rgba(255,255,255,0.4)">+36h</span>
             <span style="color: #ffd740">+48h Dispersion Horizon</span>
           </div>
         </div>
@@ -217,9 +218,9 @@
 
       <!-- Legend -->
       <div class="map-legend">
-        <div class="legend-title">VIRTUAL GATEWAYS</div>
+        <div class="legend-title">Virtual Gateways</div>
         <div class="legend-item"><span class="legend-line" style="background:#00e5ff"></span> Arabian Sea Monitoring Zone</div>
-        <div style="margin-top:8px; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">
+        <div style="margin-top:8px; border-top:1px solid rgba(255,255,255,0.08); padding-top:8px;">
           <div class="legend-item"><span class="legend-dot" style="background:#ff6b35"></span> Predicted Spill Mask</div>
           <div class="legend-item"><span class="legend-dot" style="background:#b388ff"></span> SAR Centroid</div>
         </div>
@@ -228,60 +229,60 @@
 
     <!-- Right panel -->
     <div class="right-panel">
-      <!-- Case Summary Cards -->
+      <!-- Case Summary Cards (Regional Monitoring) -->
       <div id="caseSummarySection">
         <div class="panel-title">● CASE SUMMARY</div>
 
         <!-- Case 01 -->
         <div class="case-card active" id="card-case_01">
           <div class="case-card-header">
-            <span class="case-id">Case 01</span>
+            <span class="case-id">CASE 01</span>
             <span class="case-status pass">PASS</span>
           </div>
           <div class="case-card-title">Al-Mahra Corridor Spill</div>
           <div class="case-card-meta">
-            <div class="meta-row"><span>Area</span><strong>3.92 km²</strong></div>
-            <div class="meta-row"><span>IoU</span><strong>0.8991</strong></div>
-            <div class="meta-row"><span>Ratio</span><strong>0.58</strong></div>
+            <div class="meta-row accent"><span>Area</span><strong>3.92 km²</strong></div>
+            <div class="meta-row accent"><span>IoU</span><strong>0.8991</strong></div>
+            <div class="meta-row"><span>Contrast Ratio</span><strong>0.58</strong></div>
             <div class="meta-row"><span>Centroid</span><strong>14.96°N 53.25°E</strong></div>
           </div>
-          <div class="case-card-footer">2024-03-15 · 06:30 UTC</div>
+          <div class="case-card-footer">2024-03-15 · 06:30 UTC · Track 101 Ascending</div>
         </div>
 
         <!-- Case 02 -->
         <div class="case-card" id="card-case_02">
           <div class="case-card-header">
-            <span class="case-id">Case 02</span>
+            <span class="case-id">CASE 02</span>
             <span class="case-status pass">PASS</span>
           </div>
           <div class="case-card-title">Lakshadweep Passage Spill</div>
           <div class="case-card-meta">
-            <div class="meta-row"><span>Area</span><strong>5.21 km²</strong></div>
-            <div class="meta-row"><span>IoU</span><strong>0.8985</strong></div>
-            <div class="meta-row"><span>Ratio</span><strong>0.48</strong></div>
+            <div class="meta-row accent"><span>Area</span><strong>5.21 km²</strong></div>
+            <div class="meta-row accent"><span>IoU</span><strong>0.8985</strong></div>
+            <div class="meta-row"><span>Contrast Ratio</span><strong>0.48</strong></div>
             <div class="meta-row"><span>Centroid</span><strong>17.49°N 69.03°E</strong></div>
           </div>
-          <div class="case-card-footer">2024-04-02 · 09:15 UTC</div>
+          <div class="case-card-footer">2024-04-02 · 09:15 UTC · Track 48 Descending</div>
         </div>
 
         <!-- Case 03 -->
         <div class="case-card" id="card-case_03">
           <div class="case-card-header">
-            <span class="case-id">Case 03</span>
+            <span class="case-id">CASE 03</span>
             <span class="case-status pass">PASS</span>
           </div>
           <div class="case-card-title">Oman Basin Spill</div>
           <div class="case-card-meta">
-            <div class="meta-row"><span>Area</span><strong>4.29 km²</strong></div>
-            <div class="meta-row"><span>IoU</span><strong>0.8975</strong></div>
-            <div class="meta-row"><span>Ratio</span><strong>0.57</strong></div>
+            <div class="meta-row accent"><span>Area</span><strong>4.29 km²</strong></div>
+            <div class="meta-row accent"><span>IoU</span><strong>0.8975</strong></div>
+            <div class="meta-row"><span>Contrast Ratio</span><strong>0.57</strong></div>
             <div class="meta-row"><span>Centroid</span><strong>21.18°N 61.61°E</strong></div>
           </div>
-          <div class="case-card-footer">2024-04-18 · 04:45 UTC</div>
+          <div class="case-card-footer">2024-04-18 · 04:45 UTC · Track 72 Ascending</div>
         </div>
       </div>
 
-      <!-- Module Pipeline Tracker (Visible in Regional Monitoring) -->
+      <!-- Module Pipeline Tracker (Regional Monitoring only) -->
       <div id="modulePipelineSection" class="module-progress">
         <div class="panel-title" style="margin-bottom:10px;">MODULE PIPELINE</div>
         <div class="module-row done">
@@ -304,10 +305,10 @@
           <span class="mod-label">M3 · Backward Drift</span>
           <span class="mod-tag done">✓</span>
         </div>
-        <div class="module-row pending">
-          <span class="mod-dot pending"></span>
+        <div class="module-row done">
+          <span class="mod-dot done"></span>
           <span class="mod-label">M4 · SpillSplit</span>
-          <span class="mod-tag pending">–</span>
+          <span class="mod-tag done">✓</span>
         </div>
         <div class="module-row progress">
           <span class="mod-dot progress"></span>
@@ -358,7 +359,7 @@
       <div id="weatheringPanel" class="panel-section hidden">
         <div class="panel-header-flex">
           <div class="panel-title">ADIOS WEATHERING MASS BALANCE</div>
-          <div class="badge-gold">ASTM F2464 MODEL</div>
+          <div class="badge-gold">ASTM F2464</div>
         </div>
         
         <div class="weathering-bar-container">
@@ -372,7 +373,7 @@
         </div>
 
         <div class="weathering-bar-container">
-          <div class="w-label-row"><span>🧪 Water Content (Emulsion / Mousse)</span><span id="wWaterPercent">--%</span></div>
+          <div class="w-label-row"><span>🧪 Water Content (Emulsion)</span><span id="wWaterPercent">--%</span></div>
           <div class="w-bar-bg"><div id="wWaterBar" class="w-bar fill-orange" style="width: 0%"></div></div>
         </div>
 
@@ -383,12 +384,12 @@
 
         <div class="weathering-footer">
           <div class="w-footer-box">
-            <div class="w-footer-label">MOUSSE VISCOSITY</div>
-            <div class="w-footer-value"><span id="wViscosity" style="color:#ffd740;">--</span> <span style="font-size:12px;color:#888;">cSt</span></div>
+            <div class="w-footer-label">Mousse Viscosity</div>
+            <div class="w-footer-value"><span id="wViscosity" style="color:#ffd740;">--</span> <span style="font-size:11px;color:#666;">cSt</span></div>
           </div>
           <div class="w-footer-box">
-            <div class="w-footer-label">SLICK SURFACE AREA</div>
-            <div class="w-footer-value"><span id="wArea" style="color:#00e5ff;">--</span> <span style="font-size:12px;color:#888;">km²</span></div>
+            <div class="w-footer-label">Slick Surface Area</div>
+            <div class="w-footer-value"><span id="wArea" style="color:#00e5ff;">--</span> <span style="font-size:11px;color:#666;">km²</span></div>
           </div>
         </div>
       </div>
@@ -398,7 +399,7 @@
         <div class="culprit-card">
           <div class="culprit-header">
             <span class="culprit-icon">🚨</span>
-            <span class="culprit-title">BACKTRACK CULPRIT CORRELATION</span>
+            <span class="culprit-title">Backtrack Culprit Correlation</span>
           </div>
           <div class="culprit-body" id="culpritText">
             Hydrodynamic reverse-integration places initial discharge at <strong>15.17°N, 53.68°E</strong> (-24h). Correlated AIS crossing identified in transit corridor.
@@ -409,72 +410,122 @@
   </div>
 </main>
 
-<!-- ─── Spill Investigation View (hidden by default) ─── -->
+<!-- ─── Spill Investigation View (M1–M2) ─── -->
 <div id="spillView" class="overlay-view hidden">
   <div class="overlay-header">
     <button class="back-btn" id="backToMonitoring">← Back</button>
-    <h2>Spill Investigation — Module 1 & 2 Results</h2>
+    <div>
+      <h2>Spill Investigation — M1 &amp; M2 Results</h2>
+      <div class="overlay-sub">SAR Detection · Look-Alike Verification · Spill Geometry</div>
+    </div>
   </div>
   <div class="spill-grid">
+    <!-- Case 01 -->
     <div class="spill-case-panel" id="spillCase01">
-      <div class="spill-case-title">
-        <span class="case-badge">Case 01</span>
-        Al-Mahra Corridor
+      <div class="spill-case-header">
+        <div class="spill-case-title">
+          <span class="case-badge">CASE 01</span>
+          Al-Mahra Corridor
+        </div>
+        <span class="spill-pass-chip pass">✓ PASS</span>
       </div>
+      <div class="spill-section-label">SAR Detection Scores</div>
       <div class="spill-metrics">
-        <div class="spill-metric"><label>IoU</label><value>0.8991</value></div>
-        <div class="spill-metric"><label>F1</label><value>0.9469</value></div>
+        <div class="spill-metric accent"><label>IoU</label><value>0.8991</value></div>
+        <div class="spill-metric accent"><label>F1 Score</label><value>0.9469</value></div>
         <div class="spill-metric"><label>Precision</label><value>0.9397</value></div>
         <div class="spill-metric"><label>Recall</label><value>0.9541</value></div>
-        <div class="spill-metric"><label>Area</label><value>3.92 km²*</value></div>
-        <div class="spill-metric"><label>Contrast Ratio</label><value>0.58 ✓</value></div>
+      </div>
+      <div class="spill-section-label">Spill Geometry (M2)</div>
+      <div class="spill-metrics">
+        <div class="spill-metric accent"><label>Area</label><value>3.92 km²</value></div>
+        <div class="spill-metric success"><label>Contrast Ratio</label><value>0.58 ✓</value></div>
         <div class="spill-metric"><label>Orientation</label><value>64.82°</value></div>
         <div class="spill-metric"><label>Major Axis</label><value>1.57 km</value></div>
       </div>
       <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
       <div class="lookalike-result pass">
-        <span>▲ LOOK-ALIKE CHECK</span><span class="lk-status">PASS — Darker than local background</span>
+        <span>▲ LOOK-ALIKE VERIFICATION</span>
+        <span class="lk-status">PASS — Darker than background</span>
       </div>
     </div>
+    <!-- Case 02 -->
     <div class="spill-case-panel" id="spillCase02">
-      <div class="spill-case-title">
-        <span class="case-badge">Case 02</span>
-        Lakshadweep Passage
+      <div class="spill-case-header">
+        <div class="spill-case-title">
+          <span class="case-badge">CASE 02</span>
+          Lakshadweep Passage
+        </div>
+        <span class="spill-pass-chip pass">✓ PASS</span>
       </div>
+      <div class="spill-section-label">SAR Detection Scores</div>
       <div class="spill-metrics">
-        <div class="spill-metric"><label>IoU</label><value>0.8985</value></div>
-        <div class="spill-metric"><label>F1</label><value>0.9465</value></div>
+        <div class="spill-metric accent"><label>IoU</label><value>0.8985</value></div>
+        <div class="spill-metric accent"><label>F1 Score</label><value>0.9465</value></div>
         <div class="spill-metric"><label>Precision</label><value>0.9082</value></div>
         <div class="spill-metric"><label>Recall</label><value>0.9882</value></div>
-        <div class="spill-metric"><label>Area</label><value>5.21 km²*</value></div>
-        <div class="spill-metric"><label>Contrast Ratio</label><value>0.48 ✓</value></div>
+      </div>
+      <div class="spill-section-label">Spill Geometry (M2)</div>
+      <div class="spill-metrics">
+        <div class="spill-metric accent"><label>Area</label><value>5.21 km²</value></div>
+        <div class="spill-metric success"><label>Contrast Ratio</label><value>0.48 ✓</value></div>
         <div class="spill-metric"><label>Orientation</label><value>82.28°</value></div>
         <div class="spill-metric"><label>Major Axis</label><value>1.47 km</value></div>
       </div>
       <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
       <div class="lookalike-result pass">
-        <span>▲ LOOK-ALIKE CHECK</span><span class="lk-status">PASS — Darker than local background</span>
+        <span>▲ LOOK-ALIKE VERIFICATION</span>
+        <span class="lk-status">PASS — Darker than background</span>
       </div>
     </div>
+    <!-- Case 03 -->
     <div class="spill-case-panel" id="spillCase03">
-      <div class="spill-case-title">
-        <span class="case-badge">Case 03</span>
-        Oman Basin
+      <div class="spill-case-header">
+        <div class="spill-case-title">
+          <span class="case-badge">CASE 03</span>
+          Oman Basin
+        </div>
+        <span class="spill-pass-chip pass">✓ PASS</span>
       </div>
+      <div class="spill-section-label">SAR Detection Scores</div>
       <div class="spill-metrics">
-        <div class="spill-metric"><label>IoU</label><value>0.8975</value></div>
-        <div class="spill-metric"><label>F1</label><value>0.9460</value></div>
+        <div class="spill-metric accent"><label>IoU</label><value>0.8975</value></div>
+        <div class="spill-metric accent"><label>F1 Score</label><value>0.9460</value></div>
         <div class="spill-metric"><label>Precision</label><value>0.9520</value></div>
         <div class="spill-metric"><label>Recall</label><value>0.9400</value></div>
-        <div class="spill-metric"><label>Area</label><value>4.29 km²*</value></div>
-        <div class="spill-metric"><label>Contrast Ratio</label><value>0.57 ✓</value></div>
+      </div>
+      <div class="spill-section-label">Spill Geometry (M2)</div>
+      <div class="spill-metrics">
+        <div class="spill-metric accent"><label>Area</label><value>4.29 km²</value></div>
+        <div class="spill-metric success"><label>Contrast Ratio</label><value>0.57 ✓</value></div>
         <div class="spill-metric"><label>Orientation</label><value>54.58°</value></div>
         <div class="spill-metric"><label>Major Axis</label><value>1.59 km</value></div>
       </div>
       <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
       <div class="lookalike-result pass">
-        <span>▲ LOOK-ALIKE CHECK</span><span class="lk-status">PASS — Darker than local background</span>
+        <span>▲ LOOK-ALIKE VERIFICATION</span>
+        <span class="lk-status">PASS — Darker than background</span>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SpillSplit View (M4) ─── -->
+<div id="spillSplitView" class="overlay-view hidden">
+  <div class="overlay-header">
+    <button class="back-btn" id="backToMonitoringFromSplit">← Back</button>
+    <div>
+      <h2>SpillSplit — Module 4 · Source Hypothesis Testing</h2>
+      <div class="overlay-sub">One-vs-Two Source BIC Comparison · K-Means Cluster Stability · Origin Zone Triangulation</div>
+    </div>
+  </div>
+  <div class="spillsplit-grid" id="spillSplitGrid">
+    <!-- Populated by app.js from case_0X_spillsplit.json -->
+    <div class="pending-module-empty">
+      <div class="pme-icon">⚗️</div>
+      <div class="pme-title">Loading SpillSplit Data…</div>
+      <div class="pme-sub">Fetching Module 4 analysis results</div>
+      <div class="pme-badge">LOADING</div>
     </div>
   </div>
 </div>

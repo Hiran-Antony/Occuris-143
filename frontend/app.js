@@ -243,26 +243,41 @@ document.querySelectorAll('.case-card').forEach(card => {
 });
 
 // ─── Navigation (sidebar) ─────────────────────────────────────────────────────
-const monitoringMain = document.querySelector('.main');
-const spillView      = document.getElementById('spillView');
+const monitoringMain    = document.querySelector('.main');
+const spillView         = document.getElementById('spillView');
+const spillSplitView    = document.getElementById('spillSplitView');
 
 window.setView = function(view) {
-  // Clear active state
+  // Clear active state on all nav items
   document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
   const navItem = document.querySelector(`.nav-item[data-view="${view}"]`);
   if (navItem) navItem.classList.add('active');
 
+  // Hide all overlays first
+  spillView.classList.add('hidden');
+  spillSplitView.classList.add('hidden');
+
   if (view === 'spill') {
     monitoringMain.classList.add('hidden');
     spillView.classList.remove('hidden');
+  } else if (view === 'spillsplit') {
+    monitoringMain.classList.add('hidden');
+    spillSplitView.classList.remove('hidden');
+    // Load SpillSplit data for all cases
+    renderSpillSplit();
+    // Update page header
+    const icon = document.getElementById('pageTitleIcon');
+    const title = document.getElementById('pageTitle');
+    const sub = document.getElementById('pageSubtitle');
+    if (icon)  icon.textContent  = '✂️';
+    if (title) title.textContent = 'SpillSplit — Source Hypothesis Testing';
+    if (sub)   sub.textContent   = 'Arabian Sea · One vs Two Source BIC Comparison · Module 4';
   } else {
-    spillView.classList.add('hidden');
     monitoringMain.classList.remove('hidden');
     setTimeout(() => {
       if (typeof map !== 'undefined' && map) map.invalidateSize();
     }, 50);
-
-    // Dispatch a custom event so module3 can react
+    // Dispatch so module3 can react
     window.dispatchEvent(new CustomEvent('viewChanged', { detail: { view } }));
   }
 };
@@ -277,6 +292,112 @@ document.querySelectorAll('.nav-item:not(.disabled)').forEach(item => {
 document.getElementById('backToMonitoring').addEventListener('click', () => {
   window.setView('monitoring');
 });
+document.getElementById('backToMonitoringFromSplit').addEventListener('click', () => {
+  window.setView('monitoring');
+});
+
+// ─── SpillSplit Renderer (M4) ─────────────────────────────────────────────────
+let spillSplitLoaded = false;
+
+async function renderSpillSplit() {
+  if (spillSplitLoaded) return;
+  const grid = document.getElementById('spillSplitGrid');
+  const cases = ['case_01', 'case_02', 'case_03'];
+  const labels = ['Al-Mahra Corridor', 'Lakshadweep Passage', 'Oman Basin'];
+
+  try {
+    const results = await Promise.all(
+      cases.map(c => fetch(`data/processed/${c}_spillsplit.json`).then(r => r.json()))
+    );
+    grid.innerHTML = '';
+
+    results.forEach((d, i) => {
+      const isOne   = d.result.toLowerCase().includes('one');
+      const hypClass = isOne ? 'one' : 'multi';
+      const hypLabel = isOne ? 'Single Source' : 'Multiple Sources';
+
+      // BIC bar widths (normalize: lower BIC = better)
+      const maxBIC = Math.max(d.one_source.bic, d.two_source.bic);
+      const h1w = ((d.one_source.bic / maxBIC) * 100).toFixed(1);
+      const h2w = ((d.two_source.bic / maxBIC) * 100).toFixed(1);
+
+      // Source zone coords
+      const sz = d.source_zones[0];
+      const szLabel = sz
+        ? `${sz.latitude.toFixed(4)}°N, ${sz.longitude.toFixed(4)}°E`
+        : '--';
+
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="spillsplit-panel ${hypClass}">
+          <div class="spillsplit-header">
+            <div class="spill-case-title">
+              <span class="case-badge">CASE ${String(i+1).padStart(2,'0')}</span>
+              ${labels[i]}
+            </div>
+            <span class="spillsplit-hypothesis ${isOne ? 'one' : 'multi'}">${hypLabel}</span>
+          </div>
+
+          <div class="spillsplit-stats">
+            <div class="ss-stat">
+              <div class="ss-stat-label">Stability Score</div>
+              <div class="ss-stat-value ${isOne ? 'green' : 'orange'}">${d.stability.score.toFixed(3)}</div>
+            </div>
+            <div class="ss-stat">
+              <div class="ss-stat-label">Separation</div>
+              <div class="ss-stat-value yellow">${d.source_separation_km.toFixed(1)} <span style="font-size:11px;font-weight:400;color:var(--text-dim)">km</span></div>
+            </div>
+            <div class="ss-stat">
+              <div class="ss-stat-label">Bootstrap Runs</div>
+              <div class="ss-stat-value cyan">${d.stability.n_bootstrap_runs}</div>
+            </div>
+            <div class="ss-stat">
+              <div class="ss-stat-label">Variation ±</div>
+              <div class="ss-stat-value">${d.stability.variation_km.toFixed(2)} <span style="font-size:11px;font-weight:400;color:var(--text-dim)">km</span></div>
+            </div>
+          </div>
+
+          <div class="bic-compare-label">BIC Model Comparison (lower = better fit)</div>
+          <div class="bic-compare-row">
+            <span class="bic-compare-name">H1</span>
+            <div class="bic-bar-bg"><div class="bic-bar h1" style="width:${h1w}%"></div></div>
+            <span class="bic-score">${d.one_source.bic.toFixed(1)}</span>
+          </div>
+          <div class="bic-compare-row">
+            <span class="bic-compare-name">H2</span>
+            <div class="bic-bar-bg"><div class="bic-bar h2" style="width:${h2w}%"></div></div>
+            <span class="bic-score">${d.two_source.bic.toFixed(1)}</span>
+          </div>
+
+          <div class="source-zone-info">
+            <div class="source-zone-row">
+              <span>Primary Origin Zone</span>
+              <span>${szLabel}</span>
+            </div>
+            <div class="source-zone-row">
+              <span>H1 IoU</span>
+              <span>${d.one_source.iou.toFixed(4)}</span>
+            </div>
+            <div class="source-zone-row">
+              <span>BIC Δ (H1-H2)</span>
+              <span style="color:${isOne ? 'var(--done)' : 'var(--orange)'}">
+                ${(d.one_source.bic - d.two_source.bic).toFixed(2)}
+              </span>
+            </div>
+          </div>
+        </div>
+      `);
+    });
+
+    spillSplitLoaded = true;
+  } catch(err) {
+    console.error('SpillSplit load error:', err);
+    grid.innerHTML = `<div class="pending-module-empty">
+      <div class="pme-icon">⚠️</div>
+      <div class="pme-title">Load Error</div>
+      <div class="pme-sub">Could not fetch SpillSplit JSON. Run the HTTP server in the frontend/ directory.</div>
+    </div>`;
+  }
+}
 
 // ─── Start with dark marine layer ────────────────────────────────────────────
 mapBtns.dark.click();
@@ -284,9 +405,9 @@ mapBtns.dark.click();
 // ─── Inject pulse keyframe into document ─────────────────────────────────────
 const style = document.createElement('style');
 style.textContent = `
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 0 0 4px transparent; }
-    50%      { box-shadow: 0 0 0 8px transparent; opacity: 0.7; }
+  @keyframes glow {
+    0%,100% { box-shadow: 0 0 0 2px transparent; }
+    50%      { box-shadow: 0 0 8px 2px rgba(0,200,255,0.3); }
   }
 `;
 document.head.appendChild(style);
