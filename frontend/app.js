@@ -79,8 +79,8 @@ const TILE_LAYERS = {
     { attribution: '© Esri World Imagery', maxZoom: 18 }
   ),
   dark: L.tileLayer(
-    'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-    { attribution: '© CartoDB', maxZoom: 19 }
+    'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+    { attribution: '© Esri Dark Gray Base', maxZoom: 19 }
   ),
   street: L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -246,27 +246,36 @@ document.querySelectorAll('.case-card').forEach(card => {
 const monitoringMain = document.querySelector('.main');
 const spillView      = document.getElementById('spillView');
 
+window.setView = function(view) {
+  // Clear active state
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  const navItem = document.querySelector(`.nav-item[data-view="${view}"]`);
+  if (navItem) navItem.classList.add('active');
+
+  if (view === 'spill') {
+    monitoringMain.classList.add('hidden');
+    spillView.classList.remove('hidden');
+  } else {
+    spillView.classList.add('hidden');
+    monitoringMain.classList.remove('hidden');
+    setTimeout(() => {
+      if (typeof map !== 'undefined' && map) map.invalidateSize();
+    }, 50);
+
+    // Dispatch a custom event so module3 can react
+    window.dispatchEvent(new CustomEvent('viewChanged', { detail: { view } }));
+  }
+};
+
 document.querySelectorAll('.nav-item:not(.disabled)').forEach(item => {
   item.addEventListener('click', e => {
     e.preventDefault();
-    const view = item.dataset.view;
-
-    // Clear active state
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-
-    if (view === 'spill') {
-      spillView.classList.remove('hidden');
-    } else {
-      spillView.classList.add('hidden');
-    }
+    window.setView(item.dataset.view);
   });
 });
 
 document.getElementById('backToMonitoring').addEventListener('click', () => {
-  spillView.classList.add('hidden');
-  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-  document.querySelector('[data-view="monitoring"]').classList.add('active');
+  window.setView('monitoring');
 });
 
 // ─── Start with dark marine layer ────────────────────────────────────────────
