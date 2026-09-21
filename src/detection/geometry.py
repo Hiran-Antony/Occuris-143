@@ -17,9 +17,11 @@ ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
 from config import CASES, DATA_PROCESSED
+from geo_transform import GeoTransform
 
-# MVP Config parameters
-PIXEL_SCALE_M = 10.0  # Assumed SAR resolution (m/pixel) for synthetic cases
+# MVP Config parameters (PIXEL_SCALE_M is the SAR sensor resolution; it is NOT
+# used for spatial calculations here — see geo_transform.py for the authoritative
+# pixel-to-geographic mapping derived from spill_bbox / image dimensions).
 LOOKALIKE_RATIO_THRESH = 0.85
 MIN_SPILL_AREA_PX = 100  # Reject components smaller than this
 
@@ -61,7 +63,15 @@ def clean_mask(mask: np.ndarray) -> np.ndarray:
 
 
 def extract_geometry(case_id: str, mask: np.ndarray) -> dict:
-    """Calculate geometric properties from actual mask pixels."""
+    """Calculate geometric properties from actual mask pixels.
+    
+    All spatial quantities (area, axes, perimeter in km) are derived from
+    the shared GeoTransform — pixel scale comes from the spill_bbox geographic
+    extents, not from the SAR sensor resolution (PIXEL_SCALE_M).
+    """
+    gt = GeoTransform(case_id)
+    m_per_row, m_per_col = gt.metres_per_pixel()
+
     spill_pixels = np.argwhere(mask == 1)  # (row, col)
     n_pix = len(spill_pixels)
     
@@ -74,25 +84,20 @@ def extract_geometry(case_id: str, mask: np.ndarray) -> dict:
             "contour": None
         }
 
-    # 1. Area
-    area_px2 = float(n_pix)
-    area_km2 = (area_px2 * (PIXEL_SCALE_M ** 2)) / 1e6
+    # 1. Area — bbox-derived pixel scale
+    area_km2 = gt.pixel_area_km2(n_pix)
 
     # 2. Centroid (pixel)
     row_mean, col_mean = float(spill_pixels[:, 0].mean()), float(spill_pixels[:, 1].mean())
 
-    # Centroid (geo)
-    bbox = CASES[case_id]["spill_bbox"]
-    H, W = mask.shape
-    lat = bbox["lat_max"] - (row_mean / H) * (bbox["lat_max"] - bbox["lat_min"])
-    lon = bbox["lon_min"] + (col_mean / W) * (bbox["lon_max"] - bbox["lon_min"])
+    # Centroid (geo) — via shared transform
+    lat, lon = gt.pixel_to_latlon(row_mean, col_mean)
 
     # 3. Perimeter
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     perimeter_px = 0.0
     main_contour = None
     if contours:
-        # Sum perimeter of all valid components, save largest for drawing
         main_contour = max(contours, key=cv2.contourArea)
         for c in contours:
             perimeter_px += cv2.arcLength(c, closed=True)
@@ -100,17 +105,16 @@ def extract_geometry(case_id: str, mask: np.ndarray) -> dict:
     # 4. PCA for Orientation and Axes
     if n_pix >= 3:
         pca = PCA(n_components=2).fit(spill_pixels.astype(np.float64))
-        # Note: PCA components are [row, col], equivalent to [-y, x] in standard math
         v_row, v_col = pca.components_[0]
-        # orientation angle from positive x-axis (col axis)
         angle_rad = np.arctan2(v_row, v_col)
         orientation_deg = float(np.degrees(angle_rad)) % 180.0
         
-        # Axes (2 * std_dev) -> converting to real distance
+        # Pixel-space std → physical km using bbox-derived scale
         major_px = float(np.sqrt(pca.explained_variance_[0]) * 2)
         minor_px = float(np.sqrt(pca.explained_variance_[1]) * 2)
-        major_km = (major_px * PIXEL_SCALE_M) / 1000.0
-        minor_km = (minor_px * PIXEL_SCALE_M) / 1000.0
+        # Treat as predominantly row-axis deviation for both (conservative estimate)
+        major_km = (major_px * m_per_row) / 1000.0
+        minor_km = (minor_px * m_per_row) / 1000.0
     else:
         orientation_deg = major_km = minor_km = 0.0
 
@@ -118,7 +122,29 @@ def extract_geometry(case_id: str, mask: np.ndarray) -> dict:
         "spill_pixels": int(n_pix),
         "area_px2": int(n_pix),
         "area_km2": round(area_km2, 4),
-        "area_caveat": "MVP geospatial estimate assuming configured 10 m/pixel scale. Requires verified Sentinel-1 metadata for real-world validation.",
+        "area_status": "PROVISIONAL",
+        "area_caveat": (
+            "PROVISIONAL GEOSPATIAL ESTIMATE. "
+            "The 256x256 image represents a surveillance scene of ~{:.0f}x{:.0f} km (spill_bbox). "
+            "Pixel scale: {:.1f} m/px (lat) x {:.1f} m/px (lon). "
+            "This maps each pixel to its geographic location within the scene, which is correct "
+            "for centroid and drift seeding, but the spill patch area derived from pixel count "
+            "conflates spill extent with scene coverage. "
+            "Do NOT present this as a measured oil-spill area. "
+            "Requires real Sentinel-1 geotransform + tight spill crop for a valid area estimate."
+        ).format(
+            gt.summary()["geographic_height_km"],
+            gt.summary()["geographic_width_km"],
+            m_per_row, m_per_col
+        ),
+        "pixel_scale": {
+            **gt.summary(),
+            "scene_vs_spill_note": (
+                "The bbox is the monitoring scene (~170x190 km), NOT the spill footprint. "
+                "The spill patch is a localised object within this scene. "
+                "Centroid and coordinate transforms are valid; area_km2 is not."
+            )
+        },
         "perimeter_px": round(perimeter_px, 2),
         "centroid_pixel": {"x": round(col_mean, 2), "y": round(row_mean, 2)},
         "centroid_geo": {"latitude": round(lat, 5), "longitude": round(lon, 5)},

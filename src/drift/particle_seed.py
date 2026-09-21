@@ -16,6 +16,7 @@ from config import (
     CASES, DATA_PROCESSED, N_PARTICLES,
     STRATIFIED_INTERIOR_RATIO, PIXEL_SCALE_M
 )
+from geo_transform import GeoTransform
 
 M_PER_DEG_LAT = 111_320.0
 
@@ -83,41 +84,48 @@ def sample_stratified_seed_points(
         extra = spill_coords[rng.choice(len(spill_coords), remaining, replace=True)]
         chosen = np.vstack([chosen, extra])
 
-    # 3. Determine geographic center: prefer Module 2 geometry.json, fallback to config
-    geom_path = DATA_PROCESSED / f"{case_id}_geometry.json"
-    if geom_path.exists():
-        geom_data = json.loads(geom_path.read_text())
-        center_lat = geom_data["geometry"]["centroid_geo"]["latitude"]
-        center_lon = geom_data["geometry"]["centroid_geo"]["longitude"]
-    else:
-        center_lat = CASES[case_id]["spill_center"]["lat"]
-        center_lon = CASES[case_id]["spill_center"]["lon"]
+    # 3. Map pixels to geographic coordinates using the shared GeoTransform.
+    #    This uses the spill_bbox geographic extents / image dimensions — NOT
+    #    PIXEL_SCALE_M (the SAR sensor resolution), which would compress all
+    #    50 particles into a ~2.5 km domain regardless of the real spill extent.
+    gt = GeoTransform(case_id, image_h=mask.shape[0], image_w=mask.shape[1])
+    rows = chosen[:, 0].astype(np.float64)
+    cols = chosen[:, 1].astype(np.float64)
+    seed_lats, seed_lons = gt.pixels_to_latlons(rows, cols)
 
-    # Centroid of the mask in pixel coordinates
-    c_row = float(spill_coords[:, 0].mean())
-    c_col = float(spill_coords[:, 1].mean())
-
-    # Map each chosen pixel to physical metric offset, then to (lat, lon)
-    rows = chosen[:, 0]
-    cols = chosen[:, 1]
-
-    dy_meters = - (rows - c_row) * PIXEL_SCALE_M  # negative row = North
-    dx_meters = (cols - c_col) * PIXEL_SCALE_M    # positive col = East
-
-    m_per_deg_lon = M_PER_DEG_LAT * math.cos(math.radians(center_lat))
-
-    seed_lats = center_lat + (dy_meters / M_PER_DEG_LAT)
-    seed_lons = center_lon + (dx_meters / (m_per_deg_lon + 1e-12))
+    # Pre-seeding diagnostic (mandatory — validates spread before any drift)
+    lat_span_km = (seed_lats.max() - seed_lats.min()) * 111.32
+    lon_span_km = (seed_lons.max() - seed_lons.min()) * 111.32
+    m_row, m_col = gt.metres_per_pixel()
+    geo_w_km, geo_h_km = gt.summary()["geographic_width_km"], gt.summary()["geographic_height_km"]
 
     meta = {
-        "case_id": case_id,
-        "center_geo": {"latitude": center_lat, "longitude": center_lon},
+        "case_id":           case_id,
+        "center_geo":        {"latitude": float(seed_lats.mean()), "longitude": float(seed_lons.mean())},
         "total_spill_pixels": total_spill_pixels,
-        "pixel_scale_m": PIXEL_SCALE_M,
-        "n_particles": len(chosen),
-        "n_interior": len(chosen_interior),
-        "n_boundary": len(chosen_boundary),
-        "seed": seed,
+        "n_particles":       len(chosen),
+        "n_interior":        len(chosen_interior),
+        "n_boundary":        len(chosen_boundary),
+        "seed":              seed,
+        "transform":         gt.summary(),
+        "pre_seed_validation": {
+            "lat_span_km":   round(float(lat_span_km), 3),
+            "lon_span_km":   round(float(lon_span_km), 3),
+            "geographic_width_km":  geo_w_km,
+            "geographic_height_km": geo_h_km,
+            "m_per_px_lat":  round(m_row, 2),
+            "m_per_px_lon":  round(m_col, 2),
+            "particles_span_expected": (
+                f"~{lat_span_km:.1f} km × ~{lon_span_km:.1f} km  "
+                f"(geo extent = {geo_h_km} × {geo_w_km} km)"
+            ),
+            "pass": bool(lat_span_km > 0.5 and lon_span_km > 0.5),
+            "note": (
+                "PASS: particles distributed across spill geographic extent"
+                if lat_span_km > 0.5
+                else "FAIL: particle span too small — check GeoTransform bbox"
+            ),
+        },
     }
 
     return seed_lats, seed_lons, meta
