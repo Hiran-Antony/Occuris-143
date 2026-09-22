@@ -1,0 +1,53 @@
+# Module 7 — Counterfactual Trajectory Reasoning
+# All simulation parameters. Weights are initial estimates — calibrate before use.
+
+release:
+  # Time sampling across the release window
+  time_step_hours: 1                    # step at which release times are sampled
+  modes: [POINT]                        # PATH not implemented until POINT is validated
+
+particles:
+  count: 300                            # particles per hypothesis per ensemble member
+  # Gaussian spread around the release point (initial position uncertainty)
+  initial_spread_m: 500.0              # 1-sigma, metres — documented uncertainty
+
+ensemble:
+  members: 5                            # number of environmental perturbation members
+  random_seed: 42                       # fixed for reproducibility
+
+transport:
+  dt_minutes: 10                        # integration timestep
+  # The RK45DriftEngine (Dormand-Prince) from src/drift/rk4.py is used directly.
+  # backward: false  (Module 7 is forward-only; Module 3 uses backward: true)
+
+uncertainty:
+  windage_perturbation_fraction: 0.10   # ±10% of wind-drift coefficient
+  current_perturbation_fraction: 0.10   # ±10% of current U, V magnitude
+  diffusion_scale: 1.0                  # multiplier on Smagorinsky Kh
+
+rasterization:
+  # Occupancy threshold: cells with >= this many particles are considered "occupied".
+  # Must be identical for all candidates AND the baseline.
+  occupancy_threshold: 2
+
+physical_match:
+  # All weights must sum to 1.0.
+  # These are INITIAL values only — validate sensitivity before publishing.
+  weights:
+    iou: 0.35
+    centroid: 0.25
+    area: 0.15
+    shape: 0.15
+    orientation: 0.10
+  # Characteristic decay distance for centroid similarity: exp(-d / D)
+  # Chosen to give ~0.5 similarity at d ≈ 10 km for Arabian Sea scale.
+  centroid_decay_km: 15.0
+  # Characteristic length scale for Hausdorff distance normalisation.
+  hausdorff_decay_km: 20.0
+
+baseline:
+  n_samples: 100                        # number of random origin-zone hypothesis samples
+  random_seed: 7                        # separate seed from ensemble for independence
+
+time_sensitivity:
+  offsets_hours: [-12, -6, 0, 6, 12]   # hours relative to best hypothesis release time

@@ -423,93 +423,150 @@
       <h2>Spill Investigation — M1 &amp; M2 Results</h2>
       <div class="overlay-sub">SAR Detection · Look-Alike Verification · Spill Geometry</div>
     </div>
+    
+    <!-- M1/M2 Investigation Case Selection -->
+    <div class="investigation-controls" style="margin-left: auto; display: flex; gap: 10px; align-items: center;">
+      <select id="investigationCaseSelect" style="padding: 8px 12px; border-radius: 6px; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); outline: none;">
+        <option value="case_01">Case 01 · Al-Mahra Corridor</option>
+        <option value="case_02">Case 02 · Lakshadweep Passage</option>
+        <option value="case_03">Case 03 · Oman Basin</option>
+      </select>
+      <button id="runInvestigationBtn" class="pill active" style="margin: 0; padding: 8px 16px;">Run Investigation</button>
+    </div>
   </div>
   <div class="spill-grid">
+    <div id="investigationEmptyState" class="pending-module-empty" style="grid-column: 1 / -1; margin-top: 50px;">
+      <div class="pme-icon">🔍</div>
+      <div class="pme-title">Select a case to investigate</div>
+      <div class="pme-sub">Choose a case from the dropdown above and click Run to execute Modules 1 & 2.</div>
+    </div>
     <!-- Case 01 -->
-    <div class="spill-case-panel" id="spillCase01">
-      <div class="spill-case-header">
-        <div class="spill-case-title">
-          <span class="case-badge">CASE 01</span>
-          Al-Mahra Corridor
+    <div class="spill-case-panel hidden" id="spillCase01" style="grid-column: 1 / -1; display: flex; gap: 30px; align-items: flex-start;">
+      <!-- Left side: Stats -->
+      <div style="flex: 1.2;">
+        <div class="spill-case-header">
+          <div class="spill-case-title">
+            <span class="case-badge">CASE 01</span>
+            Al-Mahra Corridor
+          </div>
+          <span class="spill-pass-chip pass">✓ PASS</span>
         </div>
-        <span class="spill-pass-chip pass">✓ PASS</span>
+        <div class="spill-section-label">SAR Detection Scores</div>
+        <div class="spill-metrics">
+          <div class="spill-metric accent"><label>IoU</label><value>0.8991</value></div>
+          <div class="spill-metric accent"><label>F1 Score</label><value>0.9469</value></div>
+          <div class="spill-metric"><label>Precision</label><value>0.9397</value></div>
+          <div class="spill-metric"><label>Recall</label><value>0.9541</value></div>
+        </div>
+        <div class="spill-section-label">Spill Geometry (M2)</div>
+        <div class="spill-metrics">
+          <div class="spill-metric accent"><label>Area</label><value>3.92 km²</value></div>
+          <div class="spill-metric success"><label>Contrast Ratio</label><value>0.58 ✓</value></div>
+          <div class="spill-metric"><label>Orientation</label><value>64.82°</value></div>
+          <div class="spill-metric"><label>Major Axis</label><value>1.57 km</value></div>
+        </div>
+        <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
+        <div class="lookalike-result pass" style="margin-top: 15px;">
+          <span>▲ LOOK-ALIKE VERIFICATION</span>
+          <span class="lk-status">PASS — Darker than background</span>
+        </div>
       </div>
-      <div class="spill-section-label">SAR Detection Scores</div>
-      <div class="spill-metrics">
-        <div class="spill-metric accent"><label>IoU</label><value>0.8991</value></div>
-        <div class="spill-metric accent"><label>F1 Score</label><value>0.9469</value></div>
-        <div class="spill-metric"><label>Precision</label><value>0.9397</value></div>
-        <div class="spill-metric"><label>Recall</label><value>0.9541</value></div>
-      </div>
-      <div class="spill-section-label">Spill Geometry (M2)</div>
-      <div class="spill-metrics">
-        <div class="spill-metric accent"><label>Area</label><value>3.92 km²</value></div>
-        <div class="spill-metric success"><label>Contrast Ratio</label><value>0.58 ✓</value></div>
-        <div class="spill-metric"><label>Orientation</label><value>64.82°</value></div>
-        <div class="spill-metric"><label>Major Axis</label><value>1.57 km</value></div>
-      </div>
-      <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
-      <div class="lookalike-result pass">
-        <span>▲ LOOK-ALIKE VERIFICATION</span>
-        <span class="lk-status">PASS — Darker than background</span>
+      <!-- Right side: Images side-by-side -->
+      <div style="flex: 1; display: flex; gap: 15px;">
+        <div style="flex: 1; text-align: center;">
+          <div style="font-size: 10px; color: #8b949e; margin-bottom: 5px; font-weight: 600; letter-spacing: 0.5px;">RAW SAR IMAGE</div>
+          <img src="data/images/sar_01.png" style="width: 100%; border-radius: 4px; border: 1px solid #30363d;" alt="SAR Image">
+        </div>
+        <div style="flex: 1; text-align: center;">
+          <div style="font-size: 10px; color: #8b949e; margin-bottom: 5px; font-weight: 600; letter-spacing: 0.5px;">PREDICTED MASK</div>
+          <img src="data/images/case_01_pred_mask.png" style="width: 100%; border-radius: 4px; border: 1px solid #30363d;" alt="Predicted Mask">
+        </div>
       </div>
     </div>
     <!-- Case 02 -->
-    <div class="spill-case-panel" id="spillCase02">
-      <div class="spill-case-header">
-        <div class="spill-case-title">
-          <span class="case-badge">CASE 02</span>
-          Lakshadweep Passage
+    <div class="spill-case-panel hidden" id="spillCase02" style="grid-column: 1 / -1; display: flex; gap: 30px; align-items: flex-start;">
+      <!-- Left side: Stats -->
+      <div style="flex: 1.2;">
+        <div class="spill-case-header">
+          <div class="spill-case-title">
+            <span class="case-badge">CASE 02</span>
+            Lakshadweep Passage
+          </div>
+          <span class="spill-pass-chip pass">✓ PASS</span>
         </div>
-        <span class="spill-pass-chip pass">✓ PASS</span>
+        <div class="spill-section-label">SAR Detection Scores</div>
+        <div class="spill-metrics">
+          <div class="spill-metric accent"><label>IoU</label><value>0.8985</value></div>
+          <div class="spill-metric accent"><label>F1 Score</label><value>0.9465</value></div>
+          <div class="spill-metric"><label>Precision</label><value>0.9082</value></div>
+          <div class="spill-metric"><label>Recall</label><value>0.9882</value></div>
+        </div>
+        <div class="spill-section-label">Spill Geometry (M2)</div>
+        <div class="spill-metrics">
+          <div class="spill-metric accent"><label>Area</label><value>5.21 km²</value></div>
+          <div class="spill-metric success"><label>Contrast Ratio</label><value>0.48 ✓</value></div>
+          <div class="spill-metric"><label>Orientation</label><value>82.28°</value></div>
+          <div class="spill-metric"><label>Major Axis</label><value>1.47 km</value></div>
+        </div>
+        <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
+        <div class="lookalike-result pass" style="margin-top: 15px;">
+          <span>▲ LOOK-ALIKE VERIFICATION</span>
+          <span class="lk-status">PASS — Darker than background</span>
+        </div>
       </div>
-      <div class="spill-section-label">SAR Detection Scores</div>
-      <div class="spill-metrics">
-        <div class="spill-metric accent"><label>IoU</label><value>0.8985</value></div>
-        <div class="spill-metric accent"><label>F1 Score</label><value>0.9465</value></div>
-        <div class="spill-metric"><label>Precision</label><value>0.9082</value></div>
-        <div class="spill-metric"><label>Recall</label><value>0.9882</value></div>
-      </div>
-      <div class="spill-section-label">Spill Geometry (M2)</div>
-      <div class="spill-metrics">
-        <div class="spill-metric accent"><label>Area</label><value>5.21 km²</value></div>
-        <div class="spill-metric success"><label>Contrast Ratio</label><value>0.48 ✓</value></div>
-        <div class="spill-metric"><label>Orientation</label><value>82.28°</value></div>
-        <div class="spill-metric"><label>Major Axis</label><value>1.47 km</value></div>
-      </div>
-      <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
-      <div class="lookalike-result pass">
-        <span>▲ LOOK-ALIKE VERIFICATION</span>
-        <span class="lk-status">PASS — Darker than background</span>
+      <!-- Right side: Images side-by-side -->
+      <div style="flex: 1; display: flex; gap: 15px;">
+        <div style="flex: 1; text-align: center;">
+          <div style="font-size: 10px; color: #8b949e; margin-bottom: 5px; font-weight: 600; letter-spacing: 0.5px;">RAW SAR IMAGE</div>
+          <img src="data/images/sar_02.png" style="width: 100%; border-radius: 4px; border: 1px solid #30363d;" alt="SAR Image">
+        </div>
+        <div style="flex: 1; text-align: center;">
+          <div style="font-size: 10px; color: #8b949e; margin-bottom: 5px; font-weight: 600; letter-spacing: 0.5px;">PREDICTED MASK</div>
+          <img src="data/images/case_02_pred_mask.png" style="width: 100%; border-radius: 4px; border: 1px solid #30363d;" alt="Predicted Mask">
+        </div>
       </div>
     </div>
     <!-- Case 03 -->
-    <div class="spill-case-panel" id="spillCase03">
-      <div class="spill-case-header">
-        <div class="spill-case-title">
-          <span class="case-badge">CASE 03</span>
-          Oman Basin
+    <div class="spill-case-panel hidden" id="spillCase03" style="grid-column: 1 / -1; display: flex; gap: 30px; align-items: flex-start;">
+      <!-- Left side: Stats -->
+      <div style="flex: 1.2;">
+        <div class="spill-case-header">
+          <div class="spill-case-title">
+            <span class="case-badge">CASE 03</span>
+            Oman Basin
+          </div>
+          <span class="spill-pass-chip pass">✓ PASS</span>
         </div>
-        <span class="spill-pass-chip pass">✓ PASS</span>
+        <div class="spill-section-label">SAR Detection Scores</div>
+        <div class="spill-metrics">
+          <div class="spill-metric accent"><label>IoU</label><value>0.8975</value></div>
+          <div class="spill-metric accent"><label>F1 Score</label><value>0.9460</value></div>
+          <div class="spill-metric"><label>Precision</label><value>0.9520</value></div>
+          <div class="spill-metric"><label>Recall</label><value>0.9400</value></div>
+        </div>
+        <div class="spill-section-label">Spill Geometry (M2)</div>
+        <div class="spill-metrics">
+          <div class="spill-metric accent"><label>Area</label><value>4.29 km²</value></div>
+          <div class="spill-metric success"><label>Contrast Ratio</label><value>0.57 ✓</value></div>
+          <div class="spill-metric"><label>Orientation</label><value>54.58°</value></div>
+          <div class="spill-metric"><label>Major Axis</label><value>1.59 km</value></div>
+        </div>
+        <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
+        <div class="lookalike-result pass" style="margin-top: 15px;">
+          <span>▲ LOOK-ALIKE VERIFICATION</span>
+          <span class="lk-status">PASS — Darker than background</span>
+        </div>
       </div>
-      <div class="spill-section-label">SAR Detection Scores</div>
-      <div class="spill-metrics">
-        <div class="spill-metric accent"><label>IoU</label><value>0.8975</value></div>
-        <div class="spill-metric accent"><label>F1 Score</label><value>0.9460</value></div>
-        <div class="spill-metric"><label>Precision</label><value>0.9520</value></div>
-        <div class="spill-metric"><label>Recall</label><value>0.9400</value></div>
-      </div>
-      <div class="spill-section-label">Spill Geometry (M2)</div>
-      <div class="spill-metrics">
-        <div class="spill-metric accent"><label>Area</label><value>4.29 km²</value></div>
-        <div class="spill-metric success"><label>Contrast Ratio</label><value>0.57 ✓</value></div>
-        <div class="spill-metric"><label>Orientation</label><value>54.58°</value></div>
-        <div class="spill-metric"><label>Major Axis</label><value>1.59 km</value></div>
-      </div>
-      <div class="spill-caveat">* MVP geospatial estimate — 10 m/pixel scale assumed</div>
-      <div class="lookalike-result pass">
-        <span>▲ LOOK-ALIKE VERIFICATION</span>
-        <span class="lk-status">PASS — Darker than background</span>
+      <!-- Right side: Images side-by-side -->
+      <div style="flex: 1; display: flex; gap: 15px;">
+        <div style="flex: 1; text-align: center;">
+          <div style="font-size: 10px; color: #8b949e; margin-bottom: 5px; font-weight: 600; letter-spacing: 0.5px;">RAW SAR IMAGE</div>
+          <img src="data/images/sar_03.png" style="width: 100%; border-radius: 4px; border: 1px solid #30363d;" alt="SAR Image">
+        </div>
+        <div style="flex: 1; text-align: center;">
+          <div style="font-size: 10px; color: #8b949e; margin-bottom: 5px; font-weight: 600; letter-spacing: 0.5px;">PREDICTED MASK</div>
+          <img src="data/images/case_03_pred_mask.png" style="width: 100%; border-radius: 4px; border: 1px solid #30363d;" alt="Predicted Mask">
+        </div>
       </div>
     </div>
   </div>

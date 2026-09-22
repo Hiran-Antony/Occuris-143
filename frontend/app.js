@@ -300,6 +300,30 @@ document.querySelectorAll('.nav-item:not(.disabled)').forEach(item => {
 document.getElementById('backToMonitoring').addEventListener('click', () => {
   window.setView('monitoring');
 });
+
+// ─── Spill Investigation (M1-M2) case selector ───
+const btnRunInvestigation = document.getElementById('runInvestigationBtn');
+const selInvestigationCase = document.getElementById('investigationCaseSelect');
+const emptyStateInvestigation = document.getElementById('investigationEmptyState');
+
+if (btnRunInvestigation) {
+  btnRunInvestigation.addEventListener('click', () => {
+    const selectedCase = selInvestigationCase.value;
+    
+    // Hide empty state
+    if (emptyStateInvestigation) emptyStateInvestigation.classList.add('hidden');
+    
+    // Hide all spill panels
+    document.querySelectorAll('.spill-case-panel').forEach(p => p.classList.add('hidden'));
+    
+    // Show selected
+    const targetPanel = document.getElementById('spillCase' + selectedCase.replace('case_', ''));
+    if (targetPanel) {
+      targetPanel.classList.remove('hidden');
+    }
+  });
+}
+
 document.getElementById('backToMonitoringFromSplit').addEventListener('click', () => {
   window.setView('monitoring');
 });
