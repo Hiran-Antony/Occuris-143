@@ -479,3 +479,243 @@ class SourceInfo(BaseModel):
     total_pings: int
     active_vessels: int
 
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MODULE 6 — AIS Verification Engine — Frozen Schemas
+# Consumed by Module 6 pipeline; snapshot-tested for contract stability.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# ── Module 6 Enums ────────────────────────────────────────────────────────────
+
+class VerificationStageStatus(str, Enum):
+    """Completion status of each verification stage."""
+    PASSED = "PASSED"
+    FLAGGED = "FLAGGED"
+    SKIPPED = "SKIPPED"
+    ERROR = "ERROR"
+
+
+class AnomalyClassification(str, Enum):
+    """Per-anomaly forensic classification. NEVER implies guilt or intent."""
+    EXPLAINED = "EXPLAINED"
+    UNEXPLAINED = "UNEXPLAINED"
+    INSUFFICIENT_DATA = "INSUFFICIENT_DATA"
+
+
+class KinematicFlag(str, Enum):
+    """EKF-detected kinematic anomaly type."""
+    TELEPORT_JUMP = "TELEPORT_JUMP"
+    SPEED_IMPOSSIBLE = "SPEED_IMPOSSIBLE"
+    COURSE_DISCONTINUITY = "COURSE_DISCONTINUITY"
+    TURN_RATE_OUTLIER = "TURN_RATE_OUTLIER"
+
+
+class AisState(str, Enum):
+    """Per-vessel AIS record integrity state. REPORTING_ANOMALY displays as
+    'possible spoofing / reporting anomaly — verification required'."""
+    NORMAL = "NORMAL"
+    AIS_GAP_DARK = "AIS_GAP_DARK"
+    REPORTING_ANOMALY = "REPORTING_ANOMALY"
+    AMBIGUOUS = "AMBIGUOUS"
+
+
+class ReachabilityVerdict(str, Enum):
+    """Physical reachability assessment between reported positions."""
+    REACHABLE = "REACHABLE"
+    POSSIBLY_REACHABLE = "POSSIBLY_REACHABLE"
+    IMPLAUSIBLE = "IMPLAUSIBLE"
+
+
+# ── Module 6 Input Contract ──────────────────────────────────────────────────
+
+class CaseContextV1(BaseModel):
+    """Investigation case context consumed by Module 6.
+    Origin-zone data arrives ONLY via this contract — never via imports."""
+    case_id: str
+    origin_zones: List[Dict[str, Any]] = []       # GeoJSON polygon(s)
+    release_window_start: datetime
+    release_window_end: datetime
+    sar_acquisition_time: Optional[datetime] = None
+    source_mode: AisSourceMode = AisSourceMode.SYNTHETIC_REPLAY
+    spill_center: Optional[Dict[str, float]] = None  # {lat, lon}
+
+
+# ── Module 6 Stage Result Models ─────────────────────────────────────────────
+
+class WindowResolution(BaseModel):
+    """Stage 1: Investigation window resolved per-vessel."""
+    vessel_id: str
+    window_start: datetime
+    window_end: datetime
+    overlap_minutes: float
+    vessel_present: bool
+    origin_zone_ref: Optional[str] = None
+    status: VerificationStageStatus = VerificationStageStatus.PASSED
+
+
+class GapConcurrencyRecord(BaseModel):
+    """Per-gap concurrency analysis: how many other vessels had overlapping gaps."""
+    gap_start: datetime
+    gap_end: datetime
+    duration_minutes: float
+    concurrent_vessel_count: int
+    concurrent_vessel_ids: List[str] = []
+    coverage_flag: bool = False
+
+
+class ContinuityReport(BaseModel):
+    """Stage 2: AIS continuity analysis with windowed statistics."""
+    vessel_id: str
+    total_gaps: int
+    total_dark_minutes: float
+    max_gap_minutes: float
+    gap_concurrency_index: float        # Fraction of OTHER vessels with overlapping gaps
+    gap_concurrency_records: List[GapConcurrencyRecord] = []
+    coverage_support: bool = False      # True when ≥ coverage_min_vessels concurrent
+    status: VerificationStageStatus = VerificationStageStatus.PASSED
+
+
+class KinematicEvent(BaseModel):
+    """Stage 3: Single EKF-detected kinematic anomaly event."""
+    event_id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    vessel_id: str
+    ping_index: int
+    timestamp: datetime
+    lat: float
+    lon: float
+    nis_value: float                    # Normalised Innovation Squared
+    p_value: float                      # chi²(2) p-value
+    flag: KinematicFlag
+    implied_speed_kn: Optional[float] = None
+    implied_course_change_deg: Optional[float] = None
+    detail: str = ""
+
+
+class KinematicEpisode(BaseModel):
+    """Consecutive kinematic anomaly events forming an episode."""
+    episode_id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    vessel_id: str
+    events: List[KinematicEvent] = []
+    episode_type: KinematicFlag = KinematicFlag.TELEPORT_JUMP
+    start_index: int = 0
+    end_index: int = 0
+    duration_minutes: float = 0.0
+
+
+class IdentityConflict(BaseModel):
+    """Same MMSI appearing at impossibly separated locations simultaneously."""
+    vessel_id: str
+    mmsi: int
+    position_a: Dict[str, Any]        # {lat, lon, timestamp}
+    position_b: Dict[str, Any]
+    separation_km: float
+    dt_minutes: float
+
+
+class KinematicReport(BaseModel):
+    """Stage 3: Full kinematic consistency report."""
+    vessel_id: str
+    total_pings_analyzed: int
+    anomalous_pings: int
+    episodes: List[KinematicEpisode] = []
+    identity_conflicts: List[IdentityConflict] = []
+    events: List[KinematicEvent] = []
+    status: VerificationStageStatus = VerificationStageStatus.PASSED
+
+
+class ReachabilityResult(BaseModel):
+    """Stage 4: Physical reachability assessment."""
+    vessel_id: str
+    inter_ping_violations: int = 0
+    round_trip_dark_checks: List[Dict[str, Any]] = []   # {gap_id, d1_km, d2_km, required_kn, limit_kn, margin_pct, verdict}
+    overall_verdict: ReachabilityVerdict = ReachabilityVerdict.REACHABLE
+    status: VerificationStageStatus = VerificationStageStatus.PASSED
+
+
+class DarkPathValidationEntry(BaseModel):
+    """Per-hypothesis dark-path validation result."""
+    hypothesis_id: str
+    valid: bool
+    intersects_origin: bool
+    implied_speed_kn: float
+    probability: float
+    notes: str = ""
+    disclaimer: str = "HYPOTHESIS — reconstructed, not observed"
+
+
+class DarkPathValidation(BaseModel):
+    """Stage 5: Aggregate dark-path validation result."""
+    vessel_id: str
+    hypotheses_evaluated: int = 0
+    entries: List[DarkPathValidationEntry] = []
+    dark_path_support: bool = False     # Any feasible path intersects origin zone
+    status: VerificationStageStatus = VerificationStageStatus.PASSED
+
+
+class AnomalyState(BaseModel):
+    """Per-anomaly classification with explanation."""
+    anomaly_id: str = Field(default_factory=lambda: str(uuid.uuid4())[:8])
+    anomaly_type: str                   # 'AIS_GAP' | 'KINEMATIC_EPISODE' | 'IDENTITY_CONFLICT'
+    classification: AnomalyClassification
+    cause: Optional[str] = None         # Explanation cause when EXPLAINED
+    explanation_distribution: Dict[str, float] = {}   # Softmax distribution over hypotheses
+    detail: str = ""
+
+
+# ── Module 6 Output Contract ─────────────────────────────────────────────────
+
+class Module6VerificationBundleV1(BaseModel):
+    """
+    Frozen downstream contract for Module 6 verification results.
+    Consumed by Modules 7/8 and future OccurisBench.
+    schema_version must be bumped on any breaking change.
+
+    FORENSIC BOUNDARY: This bundle NEVER contains guilt, causation, or intent.
+    ais_state REPORTING_ANOMALY displays as:
+        'possible spoofing / reporting anomaly — verification required'
+    """
+    schema_version: str = "1.0.0"
+    case_id: str
+    vessel_id: str
+    module6_version: str = "6.0.0"
+
+    # Stage results
+    window: Optional[WindowResolution] = None
+    continuity: Optional[ContinuityReport] = None
+    kinematic: Optional[KinematicReport] = None
+    reachability: Optional[ReachabilityResult] = None
+    dark_path: Optional[DarkPathValidation] = None
+
+    # Classifications
+    anomaly_classifications: List[AnomalyState] = []
+    ais_state: AisState = AisState.NORMAL
+
+    # Integrity (Bayesian posterior)
+    integrity_score: float = 0.9        # P(AIS reliable | evidence)
+    integrity_interval: List[float] = [0.7, 0.95]  # [lower, upper] from sensitivity analysis
+    integrity_method: str = "bayesian_odds_lr"
+
+    # Concealment pattern (separate axis from integrity)
+    concealment_pattern_likelihood: float = 0.0
+    concealment_interval: List[float] = [0.0, 0.0]
+    explanation_distribution: Dict[str, float] = {}
+
+    # Review
+    review_priority: float = 0.0       # Interval width; higher = more ambiguous
+
+    # Provenance
+    ledger_hash: Optional[str] = None
+    source_mode: AisSourceMode = AisSourceMode.SYNTHETIC_REPLAY
+    generated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+# ── Analyst Label (storage-only, no ML feedback loop) ─────────────────────────
+
+class AnalystLabel(BaseModel):
+    """Human analyst label for review queue. STORAGE ONLY — no feedback into scoring."""
+    vessel_id: str
+    case_id: str
+    label: str                          # INNOCENT_PATTERN | SUSPICIOUS_PATTERN | UNKNOWN
+    note: str = ""
+    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+

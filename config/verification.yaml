@@ -1,0 +1,82 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Module 6 — AIS Verification Engine — Configuration
+# Single source of truth for all thresholds. Zero magic numbers.
+# Every value has a rationale comment citing its origin.
+# ─────────────────────────────────────────────────────────────────────────────
+
+module6_version: "6.0.0"
+
+# ── Extended Kalman Filter (constant-velocity model in local ENU) ─────────────
+ekf:
+  dt_s: 600                    # Default ping interval (10 min) per IMO Class-A mandate
+  process_noise_q: 0.01        # Process noise spectral density (m²/s³); tuned for commercial vessels
+  measurement_sigma_m: 15.0    # GPS measurement std (metres); typical DGPS 1σ = 10–20 m
+  chi2_alpha: 0.01             # NIS p-value threshold; chi²(2) 99th percentile = 9.21
+  episode_min_pings: 3         # Min consecutive anomalous pings to declare an episode
+  extreme_p: 1.0e-6            # Single-ping extreme anomaly threshold (one-in-a-million)
+
+# ── AIS Integrity (Bayesian odds-form posterior) ──────────────────────────────
+integrity:
+  prior_reliable: 0.90         # Base prior P(AIS reliable); ITU-R M.1371 compliance rate ~90%
+  prior_sensitivity_range:     # Sensitivity analysis bounds for robust interval
+    - 0.70                     # Conservative lower bound
+    - 0.95                     # Optimistic upper bound
+  lr_table:                    # Likelihood ratios per evidence factor (LR > 1 favours reliable)
+    continuous_ais:
+      value: 3.0               # Continuous reporting triples confidence in reliability
+      rationale: "Uninterrupted AIS suggests no tampering; calibrated from EMSA 2023 compliance data"
+    gap_short:
+      value: 0.7               # Short gap (<30 min) mildly suggests unreliability
+      rationale: "Short gaps common in congested waters; IALA VTS handbook Table 4.2"
+    gap_long:
+      value: 0.3               # Long gap (>60 min) strongly suggests unreliability
+      rationale: "Extended silence rare for compliant Class-A transponders; IMO MSC.1/Circ.1598"
+    ekf_clean:
+      value: 2.0               # Clean kinematic track doubles reliability confidence
+      rationale: "Passing CV-EKF NIS test indicates physically consistent positions"
+    ekf_episode:
+      value: 0.2               # Kinematic anomaly episode strongly suggests unreliability
+      rationale: "Multiple consecutive implausible positions indicate sensor or data integrity issue"
+    speed_impossible:
+      value: 0.15              # Physically impossible speed strongly reduces reliability
+      rationale: "Exceeding vessel class max speed by >20% is implausible; DNV Maritime 2023"
+    identity_conflict:
+      value: 0.1               # Same MMSI at impossible separation is near-certain spoofing indicator
+      rationale: "Simultaneous positions >50km apart violate physics; EMSA AIS spoof detection guideline"
+    nav_status_normal:
+      value: 1.5               # Normal nav status mildly supports reliability
+      rationale: "Appropriate nav status reporting indicates compliant transponder"
+    nav_status_anomalous:
+      value: 0.5               # Inappropriate nav status mildly suggests unreliability
+      rationale: "Mismatched nav status (e.g., 'moored' while moving) suggests configuration error or tampering"
+  dependency_discount:
+    gap_family_exponent: 0.7   # Gap-related LRs correlated; discount exponent for combining
+    ekf_family_exponent: 0.7   # EKF-related LRs correlated; discount exponent for combining
+
+# ── Reachability Engine ───────────────────────────────────────────────────────
+reachability:
+  margin_band_pct: 10          # Percentage margin for POSSIBLY_REACHABLE band (±10%)
+  current_assist: true         # Enable CMEMS ocean current assistance in speed limits
+  current_boost_kn: 2.0        # Max current contribution to vessel speed (knots); Arabian Sea avg ~1.5 kn
+
+# ── Concurrency (gap concurrency index) ───────────────────────────────────────
+concurrency:
+  window_min: 15               # Temporal overlap window for concurrent gap detection (minutes)
+  coverage_min_vessels: 3      # Minimum concurrent gapped vessels to trigger COVERAGE explanation
+  radius_nm: 20                # Spatial radius for concurrent gap search (nautical miles)
+
+# ── Identity Conflict Detection ───────────────────────────────────────────────
+identity_conflict:
+  min_sep_km: 50               # Minimum separation (km) to flag simultaneous identity conflict
+  max_dt_min: 30               # Maximum time delta (minutes) for positions to be considered "simultaneous"
+
+# ── Explanation Weights (softmax competition) ─────────────────────────────────
+explanation_weights:
+  COVERAGE: 1.0                # Regional AIS infrastructure gap (multiple vessels affected)
+  WEATHER: 0.8                 # ERA5 wind overlap with anomaly window
+  TRAFFIC: 0.6                 # High corridor traffic density during anomaly
+  OPERATIONAL: 0.9             # Legitimate nav status (anchor, moored, restricted manoeuvrability)
+  CONCEALMENT_PATTERN: 0.7     # Solo gap in covered area + window overlap + proximity to origin
+
+# ── Investigation Window ─────────────────────────────────────────────────────
+window_pad_min: 60             # Minutes to pad release window on each side for margin

@@ -173,3 +173,30 @@ flowchart TD
 4. Achiri et al., 2018 — Collaborative Use of SAR and AIS Data for Maritime Surveillance.
 5. Wolsing et al., 2022 — Anomaly Detection in Maritime AIS Tracks: Review.
 6. Ocean Engineering, 2023 — Detection of AIS Message Falsification and Spoofing.
+
+---
+
+## 📖 Deep Dive: Core Forensic Engines
+
+### Module 5: Maritime Memory & Virtual Gateways Engine
+
+Module 5 reconstructs and audits all vessel movements through monitored maritime corridors. It operates with **zero guilt language**, never outputs accusations, and focuses strictly on empirical evidence, physical constraints, and verifiable provenance.
+
+* **Virtual Corridor Gateways & Exact Sub-Second Crossing:** Monitored corridors defined strictly via `config/region.yaml`.
+* **Maritime Memory (5-State Journey Tracking):** Tracks vessels through mutually exclusive states (`COMPLETED`, `IN_REGION`, `ENTRY_ONLY_PARTIAL`, etc).
+* **Multi-Factor Delay Explanation:** 3-tier expected duration precedence using historical profiles and corridor baselines.
+* **Innovation Layer A — Behavioral DNA Kinematic Signatures:** Extracts 8 kinematic features (speed, acceleration, turn-rate moments).
+* **Innovation Layer B — Collective Fleet Anomaly Detection:** Rules for coordinated dark vessels and rendezvous at sea.
+* **Innovation Layer C — Physics-Informed Dark-Path Reconstruction:** Reconstructs unobserved trajectories during AIS coverage gaps.
+* **Innovation Layer D — Tamper-Evident Merkle Audit Ledger:** Hash-chains all crossing events from genesis to instantly detect database tampering.
+
+### Module 6: AIS Verification Engine
+
+Module 6 conducts an empirical, six-stage forensic verification of vessel AIS records during the spill investigation window. Built on frozen Module 5 `EvidenceBundleV1` outputs.
+
+1. **Stage 1 — Investigation Window Resolver:** Computes the temporal and spatial intersection between the release window and the vessel's journey.
+2. **Stage 2 — AIS Continuity Analyzer:** Computes the regional gap concurrency index against other nearby vessels.
+3. **Stage 3 — Kinematic Consistency Engine:** Evaluates Normalized Innovation Squared (NIS) against $\chi^2(2)$ and flags teleport jumps.
+4. **Stage 4 — Physical Reachability Engine:** Evaluates whether reported positions are physically reachable under vessel class speed limits.
+5. **Stage 5 — Dark-Path Hypothesis Validator:** Validates kinematic plausibility for unobserved blackout intervals.
+6. **Stage 6 — State Classifier & Evidential Aggregator:** Executes evidential competition using softmax and emits `NORMAL`, `AIS_GAP_DARK`, `REPORTING_ANOMALY`, or `AMBIGUOUS`.
