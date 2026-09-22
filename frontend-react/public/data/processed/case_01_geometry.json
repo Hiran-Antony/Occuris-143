@@ -1,0 +1,32 @@
+{
+  "case_id": "case_01",
+  "look_alike": {
+    "spill_mean_intensity": 0.1322,
+    "spill_std": 0.0751,
+    "background_mean_intensity": 0.2278,
+    "background_std": 0.0845,
+    "contrast_ratio": 0.5803,
+    "threshold": 0.85,
+    "passed": true,
+    "interpretation": "Darker than local background",
+    "caveat": "This consistency check confirms SAR darkness relative to background. It does not definitively prove the presence of oil."
+  },
+  "geometry": {
+    "spill_pixels": 39160,
+    "area_px2": 39160,
+    "area_km2": 3.916,
+    "area_caveat": "MVP geospatial estimate assuming configured 10 m/pixel scale. Requires verified Sentinel-1 metadata for real-world validation.",
+    "perimeter_px": 1364.68,
+    "centroid_pixel": {
+      "x": 149.05,
+      "y": 102.67
+    },
+    "centroid_geo": {
+      "latitude": 14.95828,
+      "longitude": 53.24803
+    },
+    "orientation_deg": 64.82,
+    "major_axis_km": 1.5682,
+    "minor_axis_km": 1.324
+  }
+}

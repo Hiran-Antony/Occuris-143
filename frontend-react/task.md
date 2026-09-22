@@ -1,0 +1,15 @@
+- [x] Create React/Vite scaffolding
+- [x] Copy data assets to public directory
+- [x] Create TypeScript typings mirroring Python schemas
+- [x] Build data store (cases, mapConfig)
+- [x] Create Zustand dashboardStore
+- [x] Implement Layout shell (Sidebar, TopHeader, DashboardShell, SyntheticBanner)
+- [x] Implement MapLibre base component (OccurisMap)
+- [x] Build static MapLibre layers (SpillLayer, VesselTrackLayer, SourceZoneLayer)
+- [x] Implement MonitoringView (KpiStrip, CaseSummaryPanel, ModulePipeline)
+- [x] Implement SpillView (SpillCasePanel, Split Image View)
+- [/] Implement SpillSplitView
+- [ ] Implement MaritimeView (Phase 1 part: vessel list, gateway feed)
+- [ ] Implement InvestigationView (M6-M8 panel, CandidateEvidence, EvidenceGraph)
+- [ ] Implement CaseReportView
+- [ ] Add base CSS for the React dashboard
