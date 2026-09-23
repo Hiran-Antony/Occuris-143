@@ -55,7 +55,7 @@ def evaluate_temporal_evidence(
         overlap_status=status,
         release_window_start_iso=start_iso,
         release_window_end_iso=end_iso,
-        vessel_presence_start_iso=window_data.vessel_first_seen,
-        vessel_presence_end_iso=window_data.vessel_last_seen,
+        vessel_presence_start_iso=None,
+        vessel_presence_end_iso=None,
         overlap_minutes=overlap_mins
     )
