@@ -1,0 +1,92 @@
+[
+  {
+    "mmsi": "477001001",
+    "vessel_id": "V001",
+    "name": "NORMAL TRADER",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": "GATE_D",
+      "exit_gateway": "GATE_D",
+      "actual_duration_hours": 11.9,
+      "expected_duration_hours": 14.02,
+      "delay_hours": -2.12,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 4,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001002",
+    "vessel_id": "V002",
+    "name": "GULF CARRIER",
+    "vessel_type": "cargo",
+    "ais_continuity": "GAP_DETECTED",
+    "journey": {
+      "entry_gateway": "GATE_D",
+      "exit_gateway": "GATE_D",
+      "actual_duration_hours": 11.95,
+      "expected_duration_hours": 11.54,
+      "delay_hours": 0.41,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 2,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001003",
+    "vessel_id": "V003",
+    "name": "ARABIAN PHANTOM",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": "GATE_A",
+      "exit_gateway": "GATE_A",
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 26.7,
+      "delay_hours": -14.73,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 2,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001004",
+    "vessel_id": "V004",
+    "name": "TRUE SOURCE",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": "GATE_C",
+      "exit_gateway": "GATE_C",
+      "actual_duration_hours": 11.98,
+      "expected_duration_hours": 11.97,
+      "delay_hours": 0.01,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 2,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001005",
+    "vessel_id": "V005",
+    "name": "INNOCENT TRANSIT",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": "GATE_A",
+      "exit_gateway": "GATE_A",
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 9.8,
+      "delay_hours": 2.17,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 2,
+    "unexplained_event_count": 0
+  }
+]

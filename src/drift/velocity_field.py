@@ -8,9 +8,9 @@ from pathlib import Path
 from typing import Tuple, Union, Optional
 import numpy as np
 
-from config import OCEAN_DIR, WIND_DIR, WIND_DRIFT_COEFFICIENT
-from drift.interpolation import bilinear_interpolate_vector
-from drift.schemas import (
+from src.config import OCEAN_DIR, WIND_DIR, WIND_DRIFT_COEFFICIENT
+from src.drift.interpolation import bilinear_interpolate_vector
+from src.drift.schemas import (
     VectorHydrodynamics, SurfaceCurrentInfo, WindLeewayInfo, NetAdvectionInfo
 )
 

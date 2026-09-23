@@ -25,6 +25,7 @@ export const caseApi = {
   getDrift: (caseId: string) => api.get(`/api/cases/${caseId}/drift`).then(r => r.data),
   getVessels: (caseId: string) => api.get(`/api/cases/${caseId}/vessels`).then(r => r.data),
   getVesselTrack: (caseId: string, vesselId: string) => api.get(`/api/cases/${caseId}/vessels/${vesselId}/track`).then(r => r.data),
+  getGateways: (caseId: string) => api.get(`/api/cases/${caseId}/gateways`).then(r => r.data),
   getGatewayEvents: (caseId: string) => api.get(`/api/cases/${caseId}/gateway-events`).then(r => r.data),
   getInvestigation: (caseId: string) => api.get(`/api/cases/${caseId}/investigation`).then(r => r.data),
   getCandidates: (caseId: string) => api.get(`/api/cases/${caseId}/candidates`).then(r => r.data),

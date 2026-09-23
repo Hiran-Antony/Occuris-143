@@ -1,0 +1,4162 @@
+[
+  {
+    "vessel_id": "V001",
+    "vessel_name": "NORMAL TRADER",
+    "mmsi": 477001001,
+    "total_distance_km": 311.528,
+    "journey": {
+      "entry_gateway": "GATE_D",
+      "exit_gateway": "GATE_D",
+      "actual_duration_hours": 11.9,
+      "expected_duration_hours": 14.02,
+      "delay_hours": -2.12,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "positions": [
+      {
+        "timestamp": "2024-03-15T00:00:00+00:00",
+        "lat": 19.04825,
+        "lon": 65.91128,
+        "sog": 13.8,
+        "cog": 182.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:11:00+00:00",
+        "lat": 19.00771,
+        "lon": 65.90859,
+        "sog": 13.5,
+        "cog": 181.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:20:00+00:00",
+        "lat": 18.97486,
+        "lon": 65.90823,
+        "sog": 13.8,
+        "cog": 184.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:27:00+00:00",
+        "lat": 18.94845,
+        "lon": 65.90711,
+        "sog": 13.8,
+        "cog": 182.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:34:00+00:00",
+        "lat": 18.92208,
+        "lon": 65.90547,
+        "sog": 13.7,
+        "cog": 183.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:39:00+00:00",
+        "lat": 18.90328,
+        "lon": 65.90459,
+        "sog": 13.4,
+        "cog": 180.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:47:00+00:00",
+        "lat": 18.87483,
+        "lon": 65.90432,
+        "sog": 13.7,
+        "cog": 180.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:52:00+00:00",
+        "lat": 18.85576,
+        "lon": 65.90345,
+        "sog": 13.9,
+        "cog": 184.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:57:00+00:00",
+        "lat": 18.83493,
+        "lon": 65.90267,
+        "sog": 14.1,
+        "cog": 186.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:07:00+00:00",
+        "lat": 18.79732,
+        "lon": 65.8975,
+        "sog": 14.2,
+        "cog": 188.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:14:00+00:00",
+        "lat": 18.77164,
+        "lon": 65.89278,
+        "sog": 14.5,
+        "cog": 189.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:20:00+00:00",
+        "lat": 18.74739,
+        "lon": 65.88806,
+        "sog": 14.4,
+        "cog": 189.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:30:00+00:00",
+        "lat": 18.70856,
+        "lon": 65.88147,
+        "sog": 14.5,
+        "cog": 189.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:35:00+00:00",
+        "lat": 18.68821,
+        "lon": 65.8761,
+        "sog": 14.3,
+        "cog": 187.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:45:00+00:00",
+        "lat": 18.64898,
+        "lon": 65.87251,
+        "sog": 14.3,
+        "cog": 187.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:52:00+00:00",
+        "lat": 18.62002,
+        "lon": 65.8687,
+        "sog": 14.1,
+        "cog": 185.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:59:00+00:00",
+        "lat": 18.59474,
+        "lon": 65.86762,
+        "sog": 14.3,
+        "cog": 187.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:04:00+00:00",
+        "lat": 18.57411,
+        "lon": 65.86353,
+        "sog": 14.2,
+        "cog": 188.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:11:00+00:00",
+        "lat": 18.54611,
+        "lon": 65.85919,
+        "sog": 14.2,
+        "cog": 188.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:17:00+00:00",
+        "lat": 18.52269,
+        "lon": 65.85435,
+        "sog": 14.7,
+        "cog": 190.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:28:00+00:00",
+        "lat": 18.47757,
+        "lon": 65.84597,
+        "sog": 14.7,
+        "cog": 190.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:37:00+00:00",
+        "lat": 18.4426,
+        "lon": 65.83959,
+        "sog": 14.7,
+        "cog": 188.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:44:00+00:00",
+        "lat": 18.41428,
+        "lon": 65.8343,
+        "sog": 14.7,
+        "cog": 189.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:52:00+00:00",
+        "lat": 18.38179,
+        "lon": 65.82936,
+        "sog": 14.2,
+        "cog": 184.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:57:00+00:00",
+        "lat": 18.36244,
+        "lon": 65.82787,
+        "sog": 13.9,
+        "cog": 186.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:06:00+00:00",
+        "lat": 18.32548,
+        "lon": 65.82302,
+        "sog": 13.8,
+        "cog": 185.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:16:00+00:00",
+        "lat": 18.28666,
+        "lon": 65.82014,
+        "sog": 13.5,
+        "cog": 182.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:24:00+00:00",
+        "lat": 18.25642,
+        "lon": 65.82009,
+        "sog": 13.6,
+        "cog": 183.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:34:00+00:00",
+        "lat": 18.21714,
+        "lon": 65.81677,
+        "sog": 13.4,
+        "cog": 184.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:43:00+00:00",
+        "lat": 18.18414,
+        "lon": 65.81321,
+        "sog": 13.7,
+        "cog": 182.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:49:00+00:00",
+        "lat": 18.16146,
+        "lon": 65.81233,
+        "sog": 14.2,
+        "cog": 184.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:55:00+00:00",
+        "lat": 18.13936,
+        "lon": 65.81154,
+        "sog": 14.5,
+        "cog": 183.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:06:00+00:00",
+        "lat": 18.09498,
+        "lon": 65.81024,
+        "sog": 14.6,
+        "cog": 185.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:16:00+00:00",
+        "lat": 18.05459,
+        "lon": 65.80501,
+        "sog": 14.7,
+        "cog": 184.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:26:00+00:00",
+        "lat": 18.01374,
+        "lon": 65.80103,
+        "sog": 14.5,
+        "cog": 187.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:31:00+00:00",
+        "lat": 17.99374,
+        "lon": 65.79599,
+        "sog": 14.4,
+        "cog": 193.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:38:00+00:00",
+        "lat": 17.96726,
+        "lon": 65.78725,
+        "sog": 13.9,
+        "cog": 192.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:48:00+00:00",
+        "lat": 17.93092,
+        "lon": 65.77918,
+        "sog": 14.0,
+        "cog": 193.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:55:00+00:00",
+        "lat": 17.9027,
+        "lon": 65.77118,
+        "sog": 14.4,
+        "cog": 195.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:00:00+00:00",
+        "lat": 17.8839,
+        "lon": 65.76629,
+        "sog": 14.6,
+        "cog": 196.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:07:00+00:00",
+        "lat": 17.85561,
+        "lon": 65.75888,
+        "sog": 14.1,
+        "cog": 194.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:12:00+00:00",
+        "lat": 17.83527,
+        "lon": 65.75261,
+        "sog": 13.9,
+        "cog": 194.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:20:00+00:00",
+        "lat": 17.80454,
+        "lon": 65.74482,
+        "sog": 14.1,
+        "cog": 197.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:27:00+00:00",
+        "lat": 17.77683,
+        "lon": 65.73706,
+        "sog": 13.9,
+        "cog": 196.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:37:00+00:00",
+        "lat": 17.73962,
+        "lon": 65.72487,
+        "sog": 13.3,
+        "cog": 194.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:44:00+00:00",
+        "lat": 17.71486,
+        "lon": 65.71924,
+        "sog": 13.4,
+        "cog": 197.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:50:00+00:00",
+        "lat": 17.69443,
+        "lon": 65.71389,
+        "sog": 13.3,
+        "cog": 195.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:57:00+00:00",
+        "lat": 17.66822,
+        "lon": 65.70545,
+        "sog": 13.2,
+        "cog": 197.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:04:00+00:00",
+        "lat": 17.64422,
+        "lon": 65.69746,
+        "sog": 13.2,
+        "cog": 199.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:15:00+00:00",
+        "lat": 17.60583,
+        "lon": 65.68225,
+        "sog": 14.0,
+        "cog": 196.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:23:00+00:00",
+        "lat": 17.57623,
+        "lon": 65.67403,
+        "sog": 14.2,
+        "cog": 194.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:34:00+00:00",
+        "lat": 17.53487,
+        "lon": 65.6629,
+        "sog": 14.8,
+        "cog": 192.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:41:00+00:00",
+        "lat": 17.50835,
+        "lon": 65.656,
+        "sog": 15.1,
+        "cog": 195.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:46:00+00:00",
+        "lat": 17.4886,
+        "lon": 65.65037,
+        "sog": 14.7,
+        "cog": 195.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:54:00+00:00",
+        "lat": 17.45663,
+        "lon": 65.64186,
+        "sog": 15.0,
+        "cog": 194.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:03:00+00:00",
+        "lat": 17.41943,
+        "lon": 65.63061,
+        "sog": 15.0,
+        "cog": 192.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:08:00+00:00",
+        "lat": 17.39886,
+        "lon": 65.62302,
+        "sog": 15.5,
+        "cog": 193.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:14:00+00:00",
+        "lat": 17.37424,
+        "lon": 65.61573,
+        "sog": 15.3,
+        "cog": 196.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:21:00+00:00",
+        "lat": 17.34561,
+        "lon": 65.60831,
+        "sog": 15.2,
+        "cog": 198.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:31:00+00:00",
+        "lat": 17.30626,
+        "lon": 65.59543,
+        "sog": 15.7,
+        "cog": 201.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:42:00+00:00",
+        "lat": 17.26083,
+        "lon": 65.57624,
+        "sog": 15.6,
+        "cog": 202.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:50:00+00:00",
+        "lat": 17.2279,
+        "lon": 65.56333,
+        "sog": 15.5,
+        "cog": 200.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:01:00+00:00",
+        "lat": 17.18276,
+        "lon": 65.54602,
+        "sog": 14.9,
+        "cog": 201.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:10:00+00:00",
+        "lat": 17.14641,
+        "lon": 65.53151,
+        "sog": 15.2,
+        "cog": 201.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:17:00+00:00",
+        "lat": 17.11867,
+        "lon": 65.52249,
+        "sog": 15.6,
+        "cog": 203.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:27:00+00:00",
+        "lat": 17.07871,
+        "lon": 65.50381,
+        "sog": 15.6,
+        "cog": 201.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:34:00+00:00",
+        "lat": 17.04748,
+        "lon": 65.49152,
+        "sog": 15.2,
+        "cog": 201.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:40:00+00:00",
+        "lat": 17.02437,
+        "lon": 65.48231,
+        "sog": 14.5,
+        "cog": 202.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:46:00+00:00",
+        "lat": 17.00386,
+        "lon": 65.47244,
+        "sog": 14.5,
+        "cog": 208.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:54:00+00:00",
+        "lat": 16.97507,
+        "lon": 65.45705,
+        "sog": 14.6,
+        "cog": 211.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:03:00+00:00",
+        "lat": 16.94499,
+        "lon": 65.43752,
+        "sog": 14.8,
+        "cog": 208.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:13:00+00:00",
+        "lat": 16.90927,
+        "lon": 65.41596,
+        "sog": 14.7,
+        "cog": 211.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:24:00+00:00",
+        "lat": 16.87304,
+        "lon": 65.39133,
+        "sog": 14.3,
+        "cog": 213.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:32:00+00:00",
+        "lat": 16.84567,
+        "lon": 65.37389,
+        "sog": 14.6,
+        "cog": 215.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:39:00+00:00",
+        "lat": 16.82204,
+        "lon": 65.35529,
+        "sog": 14.3,
+        "cog": 215.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:46:00+00:00",
+        "lat": 16.79966,
+        "lon": 65.33915,
+        "sog": 14.0,
+        "cog": 212.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:52:00+00:00",
+        "lat": 16.77895,
+        "lon": 65.32645,
+        "sog": 13.3,
+        "cog": 213.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:00:00+00:00",
+        "lat": 16.75603,
+        "lon": 65.30778,
+        "sog": 13.6,
+        "cog": 211.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:07:00+00:00",
+        "lat": 16.73269,
+        "lon": 65.29313,
+        "sog": 13.0,
+        "cog": 210.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:15:00+00:00",
+        "lat": 16.70659,
+        "lon": 65.27727,
+        "sog": 13.1,
+        "cog": 210.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:20:00+00:00",
+        "lat": 16.69104,
+        "lon": 65.2668,
+        "sog": 13.7,
+        "cog": 211.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:27:00+00:00",
+        "lat": 16.66509,
+        "lon": 65.25129,
+        "sog": 13.2,
+        "cog": 208.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:34:00+00:00",
+        "lat": 16.64204,
+        "lon": 65.23756,
+        "sog": 13.3,
+        "cog": 208.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:42:00+00:00",
+        "lat": 16.61669,
+        "lon": 65.22273,
+        "sog": 12.8,
+        "cog": 204.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:53:00+00:00",
+        "lat": 16.57975,
+        "lon": 65.20539,
+        "sog": 12.9,
+        "cog": 200.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:01:00+00:00",
+        "lat": 16.55339,
+        "lon": 65.19627,
+        "sog": 13.0,
+        "cog": 199.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:12:00+00:00",
+        "lat": 16.51598,
+        "lon": 65.1828,
+        "sog": 12.7,
+        "cog": 201.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:20:00+00:00",
+        "lat": 16.48873,
+        "lon": 65.17294,
+        "sog": 13.0,
+        "cog": 202.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:29:00+00:00",
+        "lat": 16.4579,
+        "lon": 65.15992,
+        "sog": 12.4,
+        "cog": 203.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:35:00+00:00",
+        "lat": 16.43929,
+        "lon": 65.15146,
+        "sog": 12.4,
+        "cog": 202.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:40:00+00:00",
+        "lat": 16.42411,
+        "lon": 65.14521,
+        "sog": 12.5,
+        "cog": 203.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:47:00+00:00",
+        "lat": 16.40243,
+        "lon": 65.13485,
+        "sog": 12.6,
+        "cog": 200.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:54:00+00:00",
+        "lat": 16.37809,
+        "lon": 65.12489,
+        "sog": 12.8,
+        "cog": 199.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      }
+    ],
+    "gaps": []
+  },
+  {
+    "vessel_id": "V002",
+    "vessel_name": "GULF CARRIER",
+    "mmsi": 477001002,
+    "total_distance_km": 256.517,
+    "journey": {
+      "entry_gateway": "GATE_D",
+      "exit_gateway": "GATE_D",
+      "actual_duration_hours": 11.95,
+      "expected_duration_hours": 11.54,
+      "delay_hours": 0.41,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "positions": [
+      {
+        "timestamp": "2024-03-15T00:00:00+00:00",
+        "lat": 17.52645,
+        "lon": 67.27416,
+        "sog": 11.9,
+        "cog": 246.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:06:00+00:00",
+        "lat": 17.51821,
+        "lon": 67.25567,
+        "sog": 11.5,
+        "cog": 244.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:16:00+00:00",
+        "lat": 17.50388,
+        "lon": 67.22489,
+        "sog": 12.0,
+        "cog": 245.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:27:00+00:00",
+        "lat": 17.49041,
+        "lon": 67.19071,
+        "sog": 12.4,
+        "cog": 241.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:32:00+00:00",
+        "lat": 17.48233,
+        "lon": 67.17551,
+        "sog": 12.2,
+        "cog": 239.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:38:00+00:00",
+        "lat": 17.47192,
+        "lon": 67.15704,
+        "sog": 12.4,
+        "cog": 239.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:49:00+00:00",
+        "lat": 17.45415,
+        "lon": 67.1213,
+        "sog": 12.7,
+        "cog": 242.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:55:00+00:00",
+        "lat": 17.44432,
+        "lon": 67.10144,
+        "sog": 12.5,
+        "cog": 243.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:05:00+00:00",
+        "lat": 17.42908,
+        "lon": 67.06788,
+        "sog": 12.8,
+        "cog": 246.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:16:00+00:00",
+        "lat": 17.41391,
+        "lon": 67.03207,
+        "sog": 12.7,
+        "cog": 249.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:26:00+00:00",
+        "lat": 17.4018,
+        "lon": 66.99791,
+        "sog": 12.9,
+        "cog": 251.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:31:00+00:00",
+        "lat": 17.39628,
+        "lon": 66.97883,
+        "sog": 12.7,
+        "cog": 250.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:42:00+00:00",
+        "lat": 17.38279,
+        "lon": 66.93992,
+        "sog": 12.8,
+        "cog": 248.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:51:00+00:00",
+        "lat": 17.37,
+        "lon": 66.91042,
+        "sog": 13.2,
+        "cog": 247.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:58:00+00:00",
+        "lat": 17.36048,
+        "lon": 66.88702,
+        "sog": 13.7,
+        "cog": 247.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:09:00+00:00",
+        "lat": 17.34377,
+        "lon": 66.84685,
+        "sog": 13.8,
+        "cog": 248.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:16:00+00:00",
+        "lat": 17.3356,
+        "lon": 66.82032,
+        "sog": 13.4,
+        "cog": 249.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:22:00+00:00",
+        "lat": 17.32762,
+        "lon": 66.79686,
+        "sog": 13.5,
+        "cog": 251.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:31:00+00:00",
+        "lat": 17.31686,
+        "lon": 66.76434,
+        "sog": 13.2,
+        "cog": 254.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:40:00+00:00",
+        "lat": 17.30748,
+        "lon": 66.7301,
+        "sog": 13.6,
+        "cog": 256.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:51:00+00:00",
+        "lat": 17.29654,
+        "lon": 66.68784,
+        "sog": 13.2,
+        "cog": 255.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:57:00+00:00",
+        "lat": 17.29227,
+        "lon": 66.66755,
+        "sog": 13.1,
+        "cog": 259.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:43:00+00:00",
+        "lat": 17.28292,
+        "lon": 66.62529,
+        "sog": 12.8,
+        "cog": 260.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:48:00+00:00",
+        "lat": 17.28166,
+        "lon": 66.60673,
+        "sog": 12.8,
+        "cog": 261.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:56:00+00:00",
+        "lat": 17.27815,
+        "lon": 66.57824,
+        "sog": 12.5,
+        "cog": 261.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:05:00+00:00",
+        "lat": 17.27215,
+        "lon": 66.54687,
+        "sog": 12.7,
+        "cog": 261.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:13:00+00:00",
+        "lat": 17.26654,
+        "lon": 66.51903,
+        "sog": 12.6,
+        "cog": 260.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:18:00+00:00",
+        "lat": 17.26333,
+        "lon": 66.4999,
+        "sog": 12.5,
+        "cog": 262.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:25:00+00:00",
+        "lat": 17.25963,
+        "lon": 66.4758,
+        "sog": 12.2,
+        "cog": 260.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:32:00+00:00",
+        "lat": 17.25663,
+        "lon": 66.45069,
+        "sog": 12.0,
+        "cog": 259.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:39:00+00:00",
+        "lat": 17.25136,
+        "lon": 66.4264,
+        "sog": 11.5,
+        "cog": 260.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:46:00+00:00",
+        "lat": 17.24704,
+        "lon": 66.40087,
+        "sog": 11.8,
+        "cog": 258.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:56:00+00:00",
+        "lat": 17.24002,
+        "lon": 66.36792,
+        "sog": 12.0,
+        "cog": 260.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:06:00+00:00",
+        "lat": 17.23505,
+        "lon": 66.33371,
+        "sog": 12.2,
+        "cog": 259.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:11:00+00:00",
+        "lat": 17.23238,
+        "lon": 66.31645,
+        "sog": 12.3,
+        "cog": 262.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:22:00+00:00",
+        "lat": 17.2262,
+        "lon": 66.27852,
+        "sog": 12.6,
+        "cog": 262.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:29:00+00:00",
+        "lat": 17.22271,
+        "lon": 66.25456,
+        "sog": 12.7,
+        "cog": 265.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:40:00+00:00",
+        "lat": 17.2195,
+        "lon": 66.21326,
+        "sog": 12.3,
+        "cog": 265.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:50:00+00:00",
+        "lat": 17.21559,
+        "lon": 66.1763,
+        "sog": 12.4,
+        "cog": 267.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:57:00+00:00",
+        "lat": 17.2142,
+        "lon": 66.15247,
+        "sog": 12.0,
+        "cog": 266.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:03:00+00:00",
+        "lat": 17.21249,
+        "lon": 66.13177,
+        "sog": 11.8,
+        "cog": 269.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:14:00+00:00",
+        "lat": 17.21236,
+        "lon": 66.09385,
+        "sog": 11.3,
+        "cog": 266.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:23:00+00:00",
+        "lat": 17.20993,
+        "lon": 66.06269,
+        "sog": 11.5,
+        "cog": 263.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:34:00+00:00",
+        "lat": 17.20638,
+        "lon": 66.02541,
+        "sog": 11.1,
+        "cog": 264.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:41:00+00:00",
+        "lat": 17.20485,
+        "lon": 66.00255,
+        "sog": 11.3,
+        "cog": 268.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:51:00+00:00",
+        "lat": 17.20446,
+        "lon": 65.97116,
+        "sog": 11.2,
+        "cog": 267.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:57:00+00:00",
+        "lat": 17.20279,
+        "lon": 65.95224,
+        "sog": 11.2,
+        "cog": 266.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:06:00+00:00",
+        "lat": 17.20227,
+        "lon": 65.92099,
+        "sog": 11.5,
+        "cog": 263.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:13:00+00:00",
+        "lat": 17.20179,
+        "lon": 65.89804,
+        "sog": 11.4,
+        "cog": 263.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:24:00+00:00",
+        "lat": 17.19794,
+        "lon": 65.86075,
+        "sog": 11.1,
+        "cog": 265.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:33:00+00:00",
+        "lat": 17.19619,
+        "lon": 65.83163,
+        "sog": 11.1,
+        "cog": 263.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:39:00+00:00",
+        "lat": 17.19505,
+        "lon": 65.81351,
+        "sog": 11.4,
+        "cog": 264.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:46:00+00:00",
+        "lat": 17.19352,
+        "lon": 65.78853,
+        "sog": 11.4,
+        "cog": 263.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:56:00+00:00",
+        "lat": 17.19049,
+        "lon": 65.75497,
+        "sog": 11.2,
+        "cog": 265.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:05:00+00:00",
+        "lat": 17.18697,
+        "lon": 65.72606,
+        "sog": 11.1,
+        "cog": 264.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:10:00+00:00",
+        "lat": 17.18593,
+        "lon": 65.71035,
+        "sog": 10.7,
+        "cog": 265.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:19:00+00:00",
+        "lat": 17.18326,
+        "lon": 65.6817,
+        "sog": 10.7,
+        "cog": 267.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:26:00+00:00",
+        "lat": 17.18239,
+        "lon": 65.65936,
+        "sog": 11.1,
+        "cog": 270.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:37:00+00:00",
+        "lat": 17.1837,
+        "lon": 65.62523,
+        "sog": 11.3,
+        "cog": 269.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:46:00+00:00",
+        "lat": 17.18459,
+        "lon": 65.59416,
+        "sog": 11.6,
+        "cog": 266.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:54:00+00:00",
+        "lat": 17.18233,
+        "lon": 65.56622,
+        "sog": 11.9,
+        "cog": 265.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:00:00+00:00",
+        "lat": 17.1804,
+        "lon": 65.54536,
+        "sog": 11.7,
+        "cog": 267.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:07:00+00:00",
+        "lat": 17.17909,
+        "lon": 65.5197,
+        "sog": 11.8,
+        "cog": 269.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:17:00+00:00",
+        "lat": 17.17822,
+        "lon": 65.48279,
+        "sog": 11.9,
+        "cog": 267.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:24:00+00:00",
+        "lat": 17.17555,
+        "lon": 65.45703,
+        "sog": 11.6,
+        "cog": 268.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:34:00+00:00",
+        "lat": 17.17528,
+        "lon": 65.42491,
+        "sog": 11.8,
+        "cog": 267.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:42:00+00:00",
+        "lat": 17.17615,
+        "lon": 65.39787,
+        "sog": 11.5,
+        "cog": 267.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:53:00+00:00",
+        "lat": 17.17422,
+        "lon": 65.36207,
+        "sog": 11.4,
+        "cog": 270.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:02:00+00:00",
+        "lat": 17.17452,
+        "lon": 65.33255,
+        "sog": 11.4,
+        "cog": 271.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:11:00+00:00",
+        "lat": 17.17513,
+        "lon": 65.30274,
+        "sog": 11.1,
+        "cog": 271.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:17:00+00:00",
+        "lat": 17.17476,
+        "lon": 65.28397,
+        "sog": 11.3,
+        "cog": 267.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:24:00+00:00",
+        "lat": 17.17356,
+        "lon": 65.25951,
+        "sog": 11.1,
+        "cog": 266.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:35:00+00:00",
+        "lat": 17.17279,
+        "lon": 65.226,
+        "sog": 11.8,
+        "cog": 266.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:44:00+00:00",
+        "lat": 17.17101,
+        "lon": 65.196,
+        "sog": 12.1,
+        "cog": 266.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:49:00+00:00",
+        "lat": 17.17142,
+        "lon": 65.17792,
+        "sog": 12.4,
+        "cog": 266.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:58:00+00:00",
+        "lat": 17.16788,
+        "lon": 65.14485,
+        "sog": 12.5,
+        "cog": 266.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:08:00+00:00",
+        "lat": 17.16624,
+        "lon": 65.10939,
+        "sog": 12.9,
+        "cog": 266.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:13:00+00:00",
+        "lat": 17.16514,
+        "lon": 65.08982,
+        "sog": 13.2,
+        "cog": 266.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:22:00+00:00",
+        "lat": 17.16191,
+        "lon": 65.05605,
+        "sog": 13.3,
+        "cog": 264.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:29:00+00:00",
+        "lat": 17.15987,
+        "lon": 65.03093,
+        "sog": 13.1,
+        "cog": 265.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:39:00+00:00",
+        "lat": 17.15686,
+        "lon": 64.99323,
+        "sog": 13.2,
+        "cog": 266.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:47:00+00:00",
+        "lat": 17.1558,
+        "lon": 64.96105,
+        "sog": 13.2,
+        "cog": 265.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:52:00+00:00",
+        "lat": 17.15511,
+        "lon": 64.94101,
+        "sog": 13.7,
+        "cog": 266.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:57:00+00:00",
+        "lat": 17.15469,
+        "lon": 64.92087,
+        "sog": 13.3,
+        "cog": 269.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      }
+    ],
+    "gaps": [
+      {
+        "gap_start": "2024-03-15T02:57:00+00:00",
+        "gap_end": "2024-03-15T03:43:00+00:00",
+        "duration_minutes": 46.0,
+        "start_lat": 17.29227,
+        "start_lon": 66.66755,
+        "end_lat": 17.28292,
+        "end_lon": 66.62529,
+        "implied_speed_knots": 3.25
+      }
+    ]
+  },
+  {
+    "vessel_id": "V003",
+    "vessel_name": "ARABIAN PHANTOM",
+    "mmsi": 477001003,
+    "total_distance_km": 593.315,
+    "journey": {
+      "entry_gateway": "GATE_A",
+      "exit_gateway": "GATE_A",
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 26.7,
+      "delay_hours": -14.73,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "positions": [
+      {
+        "timestamp": "2024-03-15T00:00:00+00:00",
+        "lat": 15.32711,
+        "lon": 61.88898,
+        "sog": 13.0,
+        "cog": 193.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:06:00+00:00",
+        "lat": 15.30517,
+        "lon": 61.88262,
+        "sog": 12.7,
+        "cog": 190.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:16:00+00:00",
+        "lat": 15.26848,
+        "lon": 61.87551,
+        "sog": 12.9,
+        "cog": 188.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:21:00+00:00",
+        "lat": 15.24952,
+        "lon": 61.87364,
+        "sog": 12.8,
+        "cog": 186.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:28:00+00:00",
+        "lat": 15.2245,
+        "lon": 61.87042,
+        "sog": 12.4,
+        "cog": 187.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:33:00+00:00",
+        "lat": 15.2061,
+        "lon": 61.86858,
+        "sog": 12.7,
+        "cog": 185.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:40:00+00:00",
+        "lat": 15.18155,
+        "lon": 61.86583,
+        "sog": 12.6,
+        "cog": 189.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:50:00+00:00",
+        "lat": 15.14718,
+        "lon": 61.8603,
+        "sog": 12.9,
+        "cog": 190.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:00:00+00:00",
+        "lat": 15.11256,
+        "lon": 61.85211,
+        "sog": 12.9,
+        "cog": 190.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:10:00+00:00",
+        "lat": 15.07598,
+        "lon": 61.84572,
+        "sog": 12.5,
+        "cog": 190.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:16:00+00:00",
+        "lat": 15.05554,
+        "lon": 61.84175,
+        "sog": 12.4,
+        "cog": 190.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:27:00+00:00",
+        "lat": 15.01699,
+        "lon": 61.83468,
+        "sog": 12.1,
+        "cog": 190.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:34:00+00:00",
+        "lat": 14.99389,
+        "lon": 61.82935,
+        "sog": 13.0,
+        "cog": 192.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:40:00+00:00",
+        "lat": 14.97449,
+        "lon": 61.82338,
+        "sog": 12.1,
+        "cog": 192.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:46:00+00:00",
+        "lat": 14.9542,
+        "lon": 61.81957,
+        "sog": 12.2,
+        "cog": 190.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:53:00+00:00",
+        "lat": 14.93125,
+        "lon": 61.81531,
+        "sog": 12.4,
+        "cog": 189.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:58:00+00:00",
+        "lat": 14.91495,
+        "lon": 61.81095,
+        "sog": 11.9,
+        "cog": 190.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:09:00+00:00",
+        "lat": 17.06834,
+        "lon": 63.71644,
+        "sog": 11.8,
+        "cog": 191.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:15:00+00:00",
+        "lat": 17.04822,
+        "lon": 63.71282,
+        "sog": 11.8,
+        "cog": 190.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:25:00+00:00",
+        "lat": 17.01468,
+        "lon": 63.70675,
+        "sog": 12.2,
+        "cog": 190.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:34:00+00:00",
+        "lat": 16.98497,
+        "lon": 63.70023,
+        "sog": 12.4,
+        "cog": 190.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:39:00+00:00",
+        "lat": 16.96769,
+        "lon": 63.69674,
+        "sog": 12.5,
+        "cog": 188.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:46:00+00:00",
+        "lat": 16.94316,
+        "lon": 63.6919,
+        "sog": 12.6,
+        "cog": 188.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:57:00+00:00",
+        "lat": 16.90577,
+        "lon": 63.68502,
+        "sog": 12.9,
+        "cog": 187.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:06:00+00:00",
+        "lat": 16.87313,
+        "lon": 63.68144,
+        "sog": 13.1,
+        "cog": 191.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:16:00+00:00",
+        "lat": 16.83709,
+        "lon": 63.67515,
+        "sog": 12.8,
+        "cog": 192.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:22:00+00:00",
+        "lat": 16.81554,
+        "lon": 63.67115,
+        "sog": 13.5,
+        "cog": 192.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:31:00+00:00",
+        "lat": 16.78221,
+        "lon": 63.66514,
+        "sog": 13.5,
+        "cog": 193.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:37:00+00:00",
+        "lat": 16.7606,
+        "lon": 63.65929,
+        "sog": 13.4,
+        "cog": 193.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:47:00+00:00",
+        "lat": 16.72379,
+        "lon": 63.65026,
+        "sog": 14.0,
+        "cog": 191.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:58:00+00:00",
+        "lat": 16.68217,
+        "lon": 63.63956,
+        "sog": 13.8,
+        "cog": 187.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:09:00+00:00",
+        "lat": 16.64064,
+        "lon": 63.633,
+        "sog": 14.0,
+        "cog": 190.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:19:00+00:00",
+        "lat": 16.60184,
+        "lon": 63.626,
+        "sog": 13.6,
+        "cog": 188.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:29:00+00:00",
+        "lat": 16.56586,
+        "lon": 63.61929,
+        "sog": 13.0,
+        "cog": 190.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:35:00+00:00",
+        "lat": 16.54285,
+        "lon": 63.61622,
+        "sog": 12.9,
+        "cog": 190.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:41:00+00:00",
+        "lat": 16.52228,
+        "lon": 63.6122,
+        "sog": 12.6,
+        "cog": 191.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:52:00+00:00",
+        "lat": 16.48419,
+        "lon": 63.60425,
+        "sog": 12.7,
+        "cog": 190.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:01:00+00:00",
+        "lat": 16.45485,
+        "lon": 63.59733,
+        "sog": 12.8,
+        "cog": 188.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:12:00+00:00",
+        "lat": 16.41691,
+        "lon": 63.59045,
+        "sog": 12.6,
+        "cog": 188.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:21:00+00:00",
+        "lat": 16.38545,
+        "lon": 63.58586,
+        "sog": 12.4,
+        "cog": 188.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:30:00+00:00",
+        "lat": 16.35503,
+        "lon": 63.58093,
+        "sog": 12.4,
+        "cog": 191.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:38:00+00:00",
+        "lat": 16.32841,
+        "lon": 63.57475,
+        "sog": 12.8,
+        "cog": 192.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:43:00+00:00",
+        "lat": 16.31269,
+        "lon": 63.57013,
+        "sog": 12.8,
+        "cog": 191.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:49:00+00:00",
+        "lat": 16.29062,
+        "lon": 63.56427,
+        "sog": 12.7,
+        "cog": 191.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:57:00+00:00",
+        "lat": 16.26315,
+        "lon": 63.55937,
+        "sog": 12.8,
+        "cog": 188.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:08:00+00:00",
+        "lat": 16.2241,
+        "lon": 63.55299,
+        "sog": 12.6,
+        "cog": 190.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:19:00+00:00",
+        "lat": 16.18488,
+        "lon": 63.5469,
+        "sog": 13.0,
+        "cog": 186.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:25:00+00:00",
+        "lat": 16.16223,
+        "lon": 63.54377,
+        "sog": 13.0,
+        "cog": 181.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:33:00+00:00",
+        "lat": 16.13416,
+        "lon": 63.54244,
+        "sog": 13.0,
+        "cog": 178.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:42:00+00:00",
+        "lat": 16.10177,
+        "lon": 63.54256,
+        "sog": 13.2,
+        "cog": 174.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:47:00+00:00",
+        "lat": 16.0835,
+        "lon": 63.54367,
+        "sog": 13.4,
+        "cog": 175.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:54:00+00:00",
+        "lat": 16.05817,
+        "lon": 63.54751,
+        "sog": 13.3,
+        "cog": 178.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:59:00+00:00",
+        "lat": 16.03833,
+        "lon": 63.54768,
+        "sog": 13.8,
+        "cog": 183.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:06:00+00:00",
+        "lat": 16.01377,
+        "lon": 63.54552,
+        "sog": 13.6,
+        "cog": 183.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:17:00+00:00",
+        "lat": 15.97175,
+        "lon": 63.54296,
+        "sog": 13.2,
+        "cog": 183.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:27:00+00:00",
+        "lat": 15.93437,
+        "lon": 63.54004,
+        "sog": 12.9,
+        "cog": 183.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:33:00+00:00",
+        "lat": 15.91268,
+        "lon": 63.53982,
+        "sog": 12.7,
+        "cog": 184.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:39:00+00:00",
+        "lat": 15.89149,
+        "lon": 63.53792,
+        "sog": 12.6,
+        "cog": 181.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:44:00+00:00",
+        "lat": 15.87431,
+        "lon": 63.53631,
+        "sog": 12.9,
+        "cog": 177.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:50:00+00:00",
+        "lat": 15.85401,
+        "lon": 63.53918,
+        "sog": 12.9,
+        "cog": 181.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:58:00+00:00",
+        "lat": 15.82605,
+        "lon": 63.53843,
+        "sog": 13.0,
+        "cog": 181.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:05:00+00:00",
+        "lat": 15.80047,
+        "lon": 63.53838,
+        "sog": 12.5,
+        "cog": 179.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:10:00+00:00",
+        "lat": 15.78287,
+        "lon": 63.53937,
+        "sog": 12.2,
+        "cog": 178.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:20:00+00:00",
+        "lat": 15.74847,
+        "lon": 63.54025,
+        "sog": 12.3,
+        "cog": 180.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:27:00+00:00",
+        "lat": 15.72612,
+        "lon": 63.54005,
+        "sog": 12.5,
+        "cog": 179.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:34:00+00:00",
+        "lat": 15.70151,
+        "lon": 63.53878,
+        "sog": 12.1,
+        "cog": 177.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:39:00+00:00",
+        "lat": 15.68431,
+        "lon": 63.53951,
+        "sog": 12.5,
+        "cog": 176.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:44:00+00:00",
+        "lat": 15.66809,
+        "lon": 63.5401,
+        "sog": 12.8,
+        "cog": 175.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:53:00+00:00",
+        "lat": 15.63485,
+        "lon": 63.54106,
+        "sog": 13.0,
+        "cog": 173.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:01:00+00:00",
+        "lat": 15.60611,
+        "lon": 63.5456,
+        "sog": 12.8,
+        "cog": 173.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:08:00+00:00",
+        "lat": 15.58309,
+        "lon": 63.54961,
+        "sog": 12.9,
+        "cog": 176.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:14:00+00:00",
+        "lat": 15.56122,
+        "lon": 63.55193,
+        "sog": 12.9,
+        "cog": 177.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:24:00+00:00",
+        "lat": 15.52436,
+        "lon": 63.55394,
+        "sog": 13.0,
+        "cog": 175.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:29:00+00:00",
+        "lat": 15.50482,
+        "lon": 63.55595,
+        "sog": 12.5,
+        "cog": 173.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:36:00+00:00",
+        "lat": 15.4806,
+        "lon": 63.56004,
+        "sog": 12.6,
+        "cog": 174.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:46:00+00:00",
+        "lat": 15.446,
+        "lon": 63.5625,
+        "sog": 13.1,
+        "cog": 171.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:51:00+00:00",
+        "lat": 15.42852,
+        "lon": 63.56647,
+        "sog": 12.8,
+        "cog": 175.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:01:00+00:00",
+        "lat": 15.39181,
+        "lon": 63.57102,
+        "sog": 12.9,
+        "cog": 176.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:11:00+00:00",
+        "lat": 15.35607,
+        "lon": 63.57297,
+        "sog": 12.7,
+        "cog": 172.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:18:00+00:00",
+        "lat": 15.33152,
+        "lon": 63.57747,
+        "sog": 12.5,
+        "cog": 174.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:28:00+00:00",
+        "lat": 15.29685,
+        "lon": 63.5815,
+        "sog": 12.8,
+        "cog": 174.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:36:00+00:00",
+        "lat": 15.26962,
+        "lon": 63.58549,
+        "sog": 12.3,
+        "cog": 173.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:43:00+00:00",
+        "lat": 15.24658,
+        "lon": 63.59026,
+        "sog": 12.4,
+        "cog": 175.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:49:00+00:00",
+        "lat": 15.22738,
+        "lon": 63.59021,
+        "sog": 12.6,
+        "cog": 176.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:58:00+00:00",
+        "lat": 15.19678,
+        "lon": 63.59266,
+        "sog": 12.4,
+        "cog": 173.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:05:00+00:00",
+        "lat": 15.17275,
+        "lon": 63.59498,
+        "sog": 12.5,
+        "cog": 174.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:11:00+00:00",
+        "lat": 15.15271,
+        "lon": 63.5978,
+        "sog": 12.3,
+        "cog": 174.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:19:00+00:00",
+        "lat": 15.12657,
+        "lon": 63.60274,
+        "sog": 12.8,
+        "cog": 176.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:30:00+00:00",
+        "lat": 15.08668,
+        "lon": 63.60429,
+        "sog": 12.8,
+        "cog": 177.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:39:00+00:00",
+        "lat": 15.05309,
+        "lon": 63.605,
+        "sog": 13.4,
+        "cog": 180.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:50:00+00:00",
+        "lat": 15.01228,
+        "lon": 63.60336,
+        "sog": 13.3,
+        "cog": 180.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:58:00+00:00",
+        "lat": 14.98188,
+        "lon": 63.60211,
+        "sog": 13.4,
+        "cog": 178.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      }
+    ],
+    "gaps": []
+  },
+  {
+    "vessel_id": "V004",
+    "vessel_name": "TRUE SOURCE",
+    "mmsi": 477001004,
+    "total_distance_km": 266.113,
+    "journey": {
+      "entry_gateway": "GATE_C",
+      "exit_gateway": "GATE_C",
+      "actual_duration_hours": 11.98,
+      "expected_duration_hours": 11.97,
+      "delay_hours": 0.01,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "positions": [
+      {
+        "timestamp": "2024-03-15T00:00:00+00:00",
+        "lat": 16.97964,
+        "lon": 69.16911,
+        "sog": 13.8,
+        "cog": 120.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:08:00+00:00",
+        "lat": 16.9633,
+        "lon": 69.1973,
+        "sog": 13.8,
+        "cog": 117.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:17:00+00:00",
+        "lat": 16.94701,
+        "lon": 69.22964,
+        "sog": 13.6,
+        "cog": 121.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:23:00+00:00",
+        "lat": 16.93516,
+        "lon": 69.25148,
+        "sog": 13.6,
+        "cog": 122.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:28:00+00:00",
+        "lat": 16.92494,
+        "lon": 69.26804,
+        "sog": 13.5,
+        "cog": 123.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:33:00+00:00",
+        "lat": 16.91501,
+        "lon": 69.28375,
+        "sog": 13.7,
+        "cog": 123.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:41:00+00:00",
+        "lat": 16.8984,
+        "lon": 69.30991,
+        "sog": 14.1,
+        "cog": 123.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:51:00+00:00",
+        "lat": 16.87601,
+        "lon": 69.34429,
+        "sog": 14.2,
+        "cog": 123.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:02:00+00:00",
+        "lat": 16.85265,
+        "lon": 69.38157,
+        "sog": 13.7,
+        "cog": 123.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:10:00+00:00",
+        "lat": 16.83563,
+        "lon": 69.40968,
+        "sog": 13.3,
+        "cog": 124.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:19:00+00:00",
+        "lat": 16.81706,
+        "lon": 69.43879,
+        "sog": 12.9,
+        "cog": 126.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:29:00+00:00",
+        "lat": 16.79685,
+        "lon": 69.46795,
+        "sog": 12.9,
+        "cog": 126.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:34:00+00:00",
+        "lat": 16.78663,
+        "lon": 69.48193,
+        "sog": 12.5,
+        "cog": 125.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:42:00+00:00",
+        "lat": 16.77138,
+        "lon": 69.50538,
+        "sog": 12.7,
+        "cog": 126.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:48:00+00:00",
+        "lat": 16.75971,
+        "lon": 69.52263,
+        "sog": 12.3,
+        "cog": 125.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:56:00+00:00",
+        "lat": 16.74244,
+        "lon": 69.54751,
+        "sog": 12.5,
+        "cog": 124.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:04:00+00:00",
+        "lat": 16.72794,
+        "lon": 69.57125,
+        "sog": 12.1,
+        "cog": 124.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:11:00+00:00",
+        "lat": 16.7138,
+        "lon": 69.59167,
+        "sog": 11.9,
+        "cog": 124.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:22:00+00:00",
+        "lat": 16.69311,
+        "lon": 69.62215,
+        "sog": 11.8,
+        "cog": 123.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:27:00+00:00",
+        "lat": 16.68373,
+        "lon": 69.63786,
+        "sog": 11.7,
+        "cog": 126.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:38:00+00:00",
+        "lat": 16.6624,
+        "lon": 69.6686,
+        "sog": 11.5,
+        "cog": 125.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:48:00+00:00",
+        "lat": 16.6437,
+        "lon": 69.69504,
+        "sog": 11.8,
+        "cog": 127.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:53:00+00:00",
+        "lat": 16.63522,
+        "lon": 69.70839,
+        "sog": 12.3,
+        "cog": 127.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:01:00+00:00",
+        "lat": 16.6189,
+        "lon": 69.73211,
+        "sog": 12.3,
+        "cog": 125.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:08:00+00:00",
+        "lat": 16.60584,
+        "lon": 69.75141,
+        "sog": 12.4,
+        "cog": 125.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:16:00+00:00",
+        "lat": 16.58925,
+        "lon": 69.77608,
+        "sog": 12.1,
+        "cog": 130.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:21:00+00:00",
+        "lat": 16.57784,
+        "lon": 69.78878,
+        "sog": 12.3,
+        "cog": 129.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:28:00+00:00",
+        "lat": 16.56387,
+        "lon": 69.80687,
+        "sog": 11.6,
+        "cog": 133.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:37:00+00:00",
+        "lat": 16.54301,
+        "lon": 69.82996,
+        "sog": 11.6,
+        "cog": 134.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:42:00+00:00",
+        "lat": 16.53183,
+        "lon": 69.8419,
+        "sog": 11.6,
+        "cog": 134.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:51:00+00:00",
+        "lat": 16.51113,
+        "lon": 69.86474,
+        "sog": 11.6,
+        "cog": 134.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:56:00+00:00",
+        "lat": 16.50184,
+        "lon": 69.87532,
+        "sog": 11.8,
+        "cog": 135.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:02:00+00:00",
+        "lat": 16.48769,
+        "lon": 69.89059,
+        "sog": 11.6,
+        "cog": 133.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:09:00+00:00",
+        "lat": 16.4732,
+        "lon": 69.90625,
+        "sog": 11.4,
+        "cog": 132.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:19:00+00:00",
+        "lat": 16.45212,
+        "lon": 69.93145,
+        "sog": 11.8,
+        "cog": 132.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:26:00+00:00",
+        "lat": 16.43597,
+        "lon": 69.94973,
+        "sog": 11.8,
+        "cog": 132.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:34:00+00:00",
+        "lat": 16.41806,
+        "lon": 69.97034,
+        "sog": 11.1,
+        "cog": 132.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:41:00+00:00",
+        "lat": 16.40226,
+        "lon": 69.98632,
+        "sog": 11.0,
+        "cog": 135.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:52:00+00:00",
+        "lat": 16.37732,
+        "lon": 70.00827,
+        "sog": 10.9,
+        "cog": 134.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:58:00+00:00",
+        "lat": 16.36488,
+        "lon": 70.02233,
+        "sog": 10.9,
+        "cog": 131.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:07:00+00:00",
+        "lat": 16.34807,
+        "lon": 70.0451,
+        "sog": 10.9,
+        "cog": 128.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:15:00+00:00",
+        "lat": 16.33204,
+        "lon": 70.06337,
+        "sog": 10.7,
+        "cog": 129.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:23:00+00:00",
+        "lat": 16.31623,
+        "lon": 70.08277,
+        "sog": 10.5,
+        "cog": 131.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:30:00+00:00",
+        "lat": 16.30095,
+        "lon": 70.09883,
+        "sog": 10.9,
+        "cog": 129.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:35:00+00:00",
+        "lat": 16.29184,
+        "lon": 70.11137,
+        "sog": 11.0,
+        "cog": 130.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:41:00+00:00",
+        "lat": 16.27978,
+        "lon": 70.12719,
+        "sog": 11.1,
+        "cog": 130.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:46:00+00:00",
+        "lat": 16.26959,
+        "lon": 70.14003,
+        "sog": 11.1,
+        "cog": 131.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:54:00+00:00",
+        "lat": 16.25199,
+        "lon": 70.16133,
+        "sog": 11.5,
+        "cog": 131.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:04:00+00:00",
+        "lat": 16.23116,
+        "lon": 70.18664,
+        "sog": 11.2,
+        "cog": 130.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:10:00+00:00",
+        "lat": 16.21809,
+        "lon": 70.19968,
+        "sog": 10.6,
+        "cog": 132.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:20:00+00:00",
+        "lat": 16.19714,
+        "lon": 70.22213,
+        "sog": 10.2,
+        "cog": 138.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:25:00+00:00",
+        "lat": 16.18594,
+        "lon": 70.23151,
+        "sog": 10.2,
+        "cog": 140.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:32:00+00:00",
+        "lat": 16.171,
+        "lon": 70.24376,
+        "sog": 10.5,
+        "cog": 139.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:39:00+00:00",
+        "lat": 16.15548,
+        "lon": 70.2562,
+        "sog": 10.2,
+        "cog": 141.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:48:00+00:00",
+        "lat": 16.13515,
+        "lon": 70.2741,
+        "sog": 10.4,
+        "cog": 143.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:58:00+00:00",
+        "lat": 16.11227,
+        "lon": 70.29247,
+        "sog": 10.8,
+        "cog": 146.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:08:00+00:00",
+        "lat": 16.08683,
+        "lon": 70.30862,
+        "sog": 11.0,
+        "cog": 146.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:18:00+00:00",
+        "lat": 16.06073,
+        "lon": 70.32697,
+        "sog": 11.1,
+        "cog": 147.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:27:00+00:00",
+        "lat": 16.03796,
+        "lon": 70.34216,
+        "sog": 10.8,
+        "cog": 145.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:32:00+00:00",
+        "lat": 16.02729,
+        "lon": 70.35099,
+        "sog": 11.5,
+        "cog": 146.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:40:00+00:00",
+        "lat": 16.00663,
+        "lon": 70.36693,
+        "sog": 11.5,
+        "cog": 148.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:47:00+00:00",
+        "lat": 15.98785,
+        "lon": 70.38127,
+        "sog": 11.1,
+        "cog": 148.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:55:00+00:00",
+        "lat": 15.96676,
+        "lon": 70.39401,
+        "sog": 11.3,
+        "cog": 147.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:05:00+00:00",
+        "lat": 15.93946,
+        "lon": 70.41215,
+        "sog": 11.5,
+        "cog": 146.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:11:00+00:00",
+        "lat": 15.92196,
+        "lon": 70.42414,
+        "sog": 11.6,
+        "cog": 144.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:22:00+00:00",
+        "lat": 15.89216,
+        "lon": 70.44658,
+        "sog": 11.8,
+        "cog": 143.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:27:00+00:00",
+        "lat": 15.87882,
+        "lon": 70.45787,
+        "sog": 11.7,
+        "cog": 144.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:35:00+00:00",
+        "lat": 15.85732,
+        "lon": 70.47474,
+        "sog": 11.5,
+        "cog": 141.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:46:00+00:00",
+        "lat": 15.83,
+        "lon": 70.49575,
+        "sog": 10.9,
+        "cog": 140.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:57:00+00:00",
+        "lat": 15.80409,
+        "lon": 70.51958,
+        "sog": 11.1,
+        "cog": 141.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:04:00+00:00",
+        "lat": 15.78382,
+        "lon": 70.53402,
+        "sog": 11.4,
+        "cog": 141.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:13:00+00:00",
+        "lat": 15.76303,
+        "lon": 70.55386,
+        "sog": 11.7,
+        "cog": 138.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:19:00+00:00",
+        "lat": 15.74963,
+        "lon": 70.56697,
+        "sog": 11.9,
+        "cog": 136.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:25:00+00:00",
+        "lat": 15.73498,
+        "lon": 70.58277,
+        "sog": 11.9,
+        "cog": 138.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:31:00+00:00",
+        "lat": 15.72075,
+        "lon": 70.59596,
+        "sog": 11.9,
+        "cog": 135.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:40:00+00:00",
+        "lat": 15.69757,
+        "lon": 70.61393,
+        "sog": 12.6,
+        "cog": 137.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:50:00+00:00",
+        "lat": 15.67173,
+        "lon": 70.63931,
+        "sog": 13.1,
+        "cog": 138.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:00:00+00:00",
+        "lat": 15.64357,
+        "lon": 70.66323,
+        "sog": 12.9,
+        "cog": 138.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:09:00+00:00",
+        "lat": 15.61882,
+        "lon": 70.68631,
+        "sog": 12.8,
+        "cog": 138.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:14:00+00:00",
+        "lat": 15.6055,
+        "lon": 70.69853,
+        "sog": 13.1,
+        "cog": 140.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:25:00+00:00",
+        "lat": 15.57554,
+        "lon": 70.72615,
+        "sog": 12.6,
+        "cog": 138.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:32:00+00:00",
+        "lat": 15.55679,
+        "lon": 70.74356,
+        "sog": 13.2,
+        "cog": 138.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:43:00+00:00",
+        "lat": 15.52791,
+        "lon": 70.77103,
+        "sog": 13.5,
+        "cog": 140.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:51:00+00:00",
+        "lat": 15.50574,
+        "lon": 70.78931,
+        "sog": 13.2,
+        "cog": 138.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:59:00+00:00",
+        "lat": 15.48526,
+        "lon": 70.80938,
+        "sog": 12.8,
+        "cog": 138.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:10:00+00:00",
+        "lat": 15.45646,
+        "lon": 70.83423,
+        "sog": 12.7,
+        "cog": 140.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:17:00+00:00",
+        "lat": 15.43814,
+        "lon": 70.85266,
+        "sog": 12.4,
+        "cog": 140.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:26:00+00:00",
+        "lat": 15.41431,
+        "lon": 70.87239,
+        "sog": 12.4,
+        "cog": 141.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:31:00+00:00",
+        "lat": 15.40148,
+        "lon": 70.8832,
+        "sog": 12.3,
+        "cog": 141.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:39:00+00:00",
+        "lat": 15.37966,
+        "lon": 70.90094,
+        "sog": 12.4,
+        "cog": 140.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:49:00+00:00",
+        "lat": 15.3546,
+        "lon": 70.92276,
+        "sog": 12.4,
+        "cog": 139.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:59:00+00:00",
+        "lat": 15.32835,
+        "lon": 70.94517,
+        "sog": 12.8,
+        "cog": 140.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      }
+    ],
+    "gaps": []
+  },
+  {
+    "vessel_id": "V005",
+    "vessel_name": "INNOCENT TRANSIT",
+    "mmsi": 477001005,
+    "total_distance_km": 217.799,
+    "journey": {
+      "entry_gateway": "GATE_A",
+      "exit_gateway": "GATE_A",
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 9.8,
+      "delay_hours": 2.17,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "positions": [
+      {
+        "timestamp": "2024-03-15T00:00:00+00:00",
+        "lat": 21.63555,
+        "lon": 64.06494,
+        "sog": 10.2,
+        "cog": 272.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:06:00+00:00",
+        "lat": 21.63557,
+        "lon": 64.04678,
+        "sog": 10.9,
+        "cog": 272.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:15:00+00:00",
+        "lat": 21.6354,
+        "lon": 64.01809,
+        "sog": 10.8,
+        "cog": 274.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:21:00+00:00",
+        "lat": 21.63672,
+        "lon": 63.99887,
+        "sog": 10.8,
+        "cog": 276.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:32:00+00:00",
+        "lat": 21.6392,
+        "lon": 63.96422,
+        "sog": 10.4,
+        "cog": 278.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:38:00+00:00",
+        "lat": 21.64219,
+        "lon": 63.94553,
+        "sog": 10.0,
+        "cog": 276.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:43:00+00:00",
+        "lat": 21.64442,
+        "lon": 63.93021,
+        "sog": 9.9,
+        "cog": 275.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T00:52:00+00:00",
+        "lat": 21.64606,
+        "lon": 63.90354,
+        "sog": 9.8,
+        "cog": 276.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:01:00+00:00",
+        "lat": 21.64691,
+        "lon": 63.87635,
+        "sog": 9.9,
+        "cog": 277.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:09:00+00:00",
+        "lat": 21.65168,
+        "lon": 63.8511,
+        "sog": 9.9,
+        "cog": 279.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:17:00+00:00",
+        "lat": 21.65502,
+        "lon": 63.82612,
+        "sog": 9.8,
+        "cog": 277.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:24:00+00:00",
+        "lat": 21.65788,
+        "lon": 63.80579,
+        "sog": 9.3,
+        "cog": 275.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:32:00+00:00",
+        "lat": 21.6612,
+        "lon": 63.78281,
+        "sog": 9.3,
+        "cog": 273.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:37:00+00:00",
+        "lat": 21.66383,
+        "lon": 63.7673,
+        "sog": 8.9,
+        "cog": 274.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:48:00+00:00",
+        "lat": 21.66552,
+        "lon": 63.73793,
+        "sog": 8.9,
+        "cog": 275.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T01:53:00+00:00",
+        "lat": 21.66563,
+        "lon": 63.7253,
+        "sog": 8.2,
+        "cog": 274.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:02:00+00:00",
+        "lat": 21.66739,
+        "lon": 63.70352,
+        "sog": 8.6,
+        "cog": 275.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:07:00+00:00",
+        "lat": 21.66834,
+        "lon": 63.69142,
+        "sog": 8.9,
+        "cog": 276.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:15:00+00:00",
+        "lat": 21.66956,
+        "lon": 63.671,
+        "sog": 8.5,
+        "cog": 276.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:26:00+00:00",
+        "lat": 21.67125,
+        "lon": 63.64171,
+        "sog": 8.5,
+        "cog": 276.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:36:00+00:00",
+        "lat": 21.67469,
+        "lon": 63.61661,
+        "sog": 8.6,
+        "cog": 277.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:46:00+00:00",
+        "lat": 21.67769,
+        "lon": 63.59083,
+        "sog": 8.5,
+        "cog": 274.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:53:00+00:00",
+        "lat": 21.6773,
+        "lon": 63.57149,
+        "sog": 8.8,
+        "cog": 276.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T02:58:00+00:00",
+        "lat": 21.67756,
+        "lon": 63.5583,
+        "sog": 9.0,
+        "cog": 279.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:07:00+00:00",
+        "lat": 21.68154,
+        "lon": 63.53474,
+        "sog": 8.8,
+        "cog": 278.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:16:00+00:00",
+        "lat": 21.68605,
+        "lon": 63.51127,
+        "sog": 9.3,
+        "cog": 282.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:24:00+00:00",
+        "lat": 21.6902,
+        "lon": 63.48877,
+        "sog": 9.6,
+        "cog": 279.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:35:00+00:00",
+        "lat": 21.69474,
+        "lon": 63.45896,
+        "sog": 9.8,
+        "cog": 278.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:44:00+00:00",
+        "lat": 21.69822,
+        "lon": 63.43193,
+        "sog": 10.1,
+        "cog": 275.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T03:51:00+00:00",
+        "lat": 21.7008,
+        "lon": 63.41087,
+        "sog": 10.4,
+        "cog": 274.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:00:00+00:00",
+        "lat": 21.70166,
+        "lon": 63.38406,
+        "sog": 9.9,
+        "cog": 275.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:11:00+00:00",
+        "lat": 21.70574,
+        "lon": 63.35273,
+        "sog": 9.8,
+        "cog": 275.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:21:00+00:00",
+        "lat": 21.71059,
+        "lon": 63.32367,
+        "sog": 10.0,
+        "cog": 280.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:32:00+00:00",
+        "lat": 21.71672,
+        "lon": 63.29095,
+        "sog": 10.4,
+        "cog": 278.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:39:00+00:00",
+        "lat": 21.72019,
+        "lon": 63.26906,
+        "sog": 10.1,
+        "cog": 278.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T04:50:00+00:00",
+        "lat": 21.7261,
+        "lon": 63.23676,
+        "sog": 10.0,
+        "cog": 278.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:01:00+00:00",
+        "lat": 21.72908,
+        "lon": 63.20377,
+        "sog": 9.8,
+        "cog": 280.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:06:00+00:00",
+        "lat": 21.733,
+        "lon": 63.18824,
+        "sog": 9.8,
+        "cog": 280.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:12:00+00:00",
+        "lat": 21.73656,
+        "lon": 63.17162,
+        "sog": 9.3,
+        "cog": 280.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:18:00+00:00",
+        "lat": 21.74125,
+        "lon": 63.15502,
+        "sog": 9.9,
+        "cog": 281.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:23:00+00:00",
+        "lat": 21.7434,
+        "lon": 63.14092,
+        "sog": 9.8,
+        "cog": 279.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:33:00+00:00",
+        "lat": 21.7484,
+        "lon": 63.11232,
+        "sog": 9.4,
+        "cog": 279.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:44:00+00:00",
+        "lat": 21.75391,
+        "lon": 63.08148,
+        "sog": 9.2,
+        "cog": 277.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T05:51:00+00:00",
+        "lat": 21.75681,
+        "lon": 63.06326,
+        "sog": 9.7,
+        "cog": 281.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:02:00+00:00",
+        "lat": 21.76279,
+        "lon": 63.03171,
+        "sog": 9.4,
+        "cog": 283.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:07:00+00:00",
+        "lat": 21.76491,
+        "lon": 63.01788,
+        "sog": 9.1,
+        "cog": 282.1,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:18:00+00:00",
+        "lat": 21.77203,
+        "lon": 62.98715,
+        "sog": 9.0,
+        "cog": 280.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:27:00+00:00",
+        "lat": 21.77606,
+        "lon": 62.96354,
+        "sog": 8.9,
+        "cog": 282.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:34:00+00:00",
+        "lat": 21.77981,
+        "lon": 62.9439,
+        "sog": 9.1,
+        "cog": 278.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:42:00+00:00",
+        "lat": 21.7831,
+        "lon": 62.92231,
+        "sog": 9.4,
+        "cog": 275.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T06:53:00+00:00",
+        "lat": 21.78405,
+        "lon": 62.89029,
+        "sog": 9.9,
+        "cog": 275.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:00:00+00:00",
+        "lat": 21.78558,
+        "lon": 62.86944,
+        "sog": 9.8,
+        "cog": 274.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:08:00+00:00",
+        "lat": 21.78808,
+        "lon": 62.8452,
+        "sog": 10.0,
+        "cog": 278.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:19:00+00:00",
+        "lat": 21.79156,
+        "lon": 62.81364,
+        "sog": 9.4,
+        "cog": 278.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:29:00+00:00",
+        "lat": 21.79455,
+        "lon": 62.78483,
+        "sog": 9.6,
+        "cog": 275.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:39:00+00:00",
+        "lat": 21.79714,
+        "lon": 62.75625,
+        "sog": 9.5,
+        "cog": 277.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:49:00+00:00",
+        "lat": 21.80125,
+        "lon": 62.72742,
+        "sog": 10.2,
+        "cog": 277.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T07:54:00+00:00",
+        "lat": 21.80463,
+        "lon": 62.71228,
+        "sog": 9.6,
+        "cog": 278.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:03:00+00:00",
+        "lat": 21.80745,
+        "lon": 62.68645,
+        "sog": 9.3,
+        "cog": 276.9,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:08:00+00:00",
+        "lat": 21.80997,
+        "lon": 62.67281,
+        "sog": 9.2,
+        "cog": 274.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:17:00+00:00",
+        "lat": 21.81044,
+        "lon": 62.64752,
+        "sog": 9.6,
+        "cog": 272.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:24:00+00:00",
+        "lat": 21.81019,
+        "lon": 62.6275,
+        "sog": 10.3,
+        "cog": 270.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:31:00+00:00",
+        "lat": 21.81063,
+        "lon": 62.60568,
+        "sog": 10.3,
+        "cog": 270.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:42:00+00:00",
+        "lat": 21.8095,
+        "lon": 62.57261,
+        "sog": 10.3,
+        "cog": 269.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:49:00+00:00",
+        "lat": 21.8097,
+        "lon": 62.55211,
+        "sog": 10.6,
+        "cog": 269.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T08:58:00+00:00",
+        "lat": 21.81013,
+        "lon": 62.52335,
+        "sog": 10.5,
+        "cog": 268.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:07:00+00:00",
+        "lat": 21.80914,
+        "lon": 62.49398,
+        "sog": 10.0,
+        "cog": 265.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:15:00+00:00",
+        "lat": 21.80821,
+        "lon": 62.46944,
+        "sog": 10.0,
+        "cog": 267.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:23:00+00:00",
+        "lat": 21.8064,
+        "lon": 62.44434,
+        "sog": 9.6,
+        "cog": 266.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:32:00+00:00",
+        "lat": 21.80588,
+        "lon": 62.41909,
+        "sog": 9.9,
+        "cog": 267.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:37:00+00:00",
+        "lat": 21.80435,
+        "lon": 62.40124,
+        "sog": 10.3,
+        "cog": 268.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:43:00+00:00",
+        "lat": 21.80441,
+        "lon": 62.38238,
+        "sog": 10.5,
+        "cog": 265.3,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:50:00+00:00",
+        "lat": 21.8012,
+        "lon": 62.36221,
+        "sog": 10.2,
+        "cog": 265.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T09:57:00+00:00",
+        "lat": 21.7999,
+        "lon": 62.3415,
+        "sog": 10.3,
+        "cog": 264.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:04:00+00:00",
+        "lat": 21.79779,
+        "lon": 62.3198,
+        "sog": 10.4,
+        "cog": 263.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:13:00+00:00",
+        "lat": 21.79621,
+        "lon": 62.29299,
+        "sog": 9.8,
+        "cog": 262.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:18:00+00:00",
+        "lat": 21.79337,
+        "lon": 62.27743,
+        "sog": 9.7,
+        "cog": 261.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:25:00+00:00",
+        "lat": 21.79154,
+        "lon": 62.2586,
+        "sog": 10.0,
+        "cog": 261.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:30:00+00:00",
+        "lat": 21.78939,
+        "lon": 62.24433,
+        "sog": 10.0,
+        "cog": 260.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:37:00+00:00",
+        "lat": 21.78564,
+        "lon": 62.22397,
+        "sog": 10.1,
+        "cog": 259.4,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:45:00+00:00",
+        "lat": 21.78124,
+        "lon": 62.19986,
+        "sog": 9.7,
+        "cog": 259.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T10:55:00+00:00",
+        "lat": 21.77659,
+        "lon": 62.17167,
+        "sog": 10.3,
+        "cog": 260.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:02:00+00:00",
+        "lat": 21.77285,
+        "lon": 62.15149,
+        "sog": 10.5,
+        "cog": 257.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:08:00+00:00",
+        "lat": 21.76975,
+        "lon": 62.13415,
+        "sog": 10.9,
+        "cog": 262.2,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:14:00+00:00",
+        "lat": 21.76652,
+        "lon": 62.11364,
+        "sog": 11.0,
+        "cog": 264.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:22:00+00:00",
+        "lat": 21.76282,
+        "lon": 62.08724,
+        "sog": 10.6,
+        "cog": 263.5,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:32:00+00:00",
+        "lat": 21.76003,
+        "lon": 62.05612,
+        "sog": 10.5,
+        "cog": 259.8,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:41:00+00:00",
+        "lat": 21.7567,
+        "lon": 62.02911,
+        "sog": 10.3,
+        "cog": 262.7,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:50:00+00:00",
+        "lat": 21.75538,
+        "lon": 62.00248,
+        "sog": 10.0,
+        "cog": 264.6,
+        "nav_status": 0,
+        "physically_impossible": false
+      },
+      {
+        "timestamp": "2024-03-15T11:58:00+00:00",
+        "lat": 21.75415,
+        "lon": 61.97957,
+        "sog": 10.4,
+        "cog": 267.0,
+        "nav_status": 0,
+        "physically_impossible": false
+      }
+    ],
+    "gaps": []
+  }
+]

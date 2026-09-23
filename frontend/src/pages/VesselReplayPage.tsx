@@ -62,9 +62,9 @@ const SUSPECT_VESSELS: SuspectConfig[] = [
     mapZoom: 7.5,
     anomalyStart: '2024-01-15T17:15:00Z',
     anomalyEnd: '2024-01-15T19:30:00Z',
-    anomalyLabel: '⚠️ UNDERWAY BILGE DISCHARGE & SPEED REDUCTION (8.5 KTS) AT CHOKEPOINT',
+    anomalyLabel: 'UNDERWAY BILGE DISCHARGE & SPEED REDUCTION (8.5 KTS) AT CHOKEPOINT',
     normalLabel: 'TRANSPONDER ONLINE · FAIRWAY TRANSIT 11.5 KTS',
-    anomalyBadge: '⚠️ BILGE DISCHARGE EVENT',
+    anomalyBadge: 'BILGE DISCHARGE EVENT',
     associatedSar: 'S1A_IW_GRDH_20240115_SLICK_FILAMENT.jpg',
     milestones: [
       { time: '00:30 UTC', label: 'Corridor Ingress (89.2°E)' },
@@ -87,9 +87,9 @@ const SUSPECT_VESSELS: SuspectConfig[] = [
     mapZoom: 7.5,
     anomalyStart: '2024-01-15T16:15:00Z',
     anomalyEnd: '2024-01-15T19:15:00Z',
-    anomalyLabel: '⚠️ SEVERE SLOWDOWN (6.0 KTS) OVER Oman Basin WEATHERED EMULSION',
+    anomalyLabel: 'SEVERE SLOWDOWN (6.0 KTS) OVER Oman Basin WEATHERED EMULSION',
     normalLabel: 'TRANSPONDER ONLINE · SHELF CRUISE 10.0 KTS',
-    anomalyBadge: '⚠️ RIG WASHING / SLOWDOWN',
+    anomalyBadge: 'RIG WASHING / SLOWDOWN',
     associatedSar: 'S1B_IW_GRDH_20240115_SLICK_EMULSION.jpg',
     milestones: [
       { time: '08:45 UTC', label: 'Basin Entry (17.8°N)' },

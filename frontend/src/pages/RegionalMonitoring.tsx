@@ -1,87 +1,27 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { MapContainer, TileLayer, Polygon, Polyline, CircleMarker, Marker, Popup, useMap, ImageOverlay, Rectangle } from 'react-leaflet';
+import { Map, Globe, AlertTriangle, Ship, Zap, Waves } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Polygon, CircleMarker, Popup, useMap, ImageOverlay, Rectangle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
 
-import { regionApi, vesselApi, dashboardApi, forensicsApi, caseApi } from '../api/client';
-import type { Vessel, AISPosition, DashboardStats, GatewayId } from '../types';
-import { GATEWAY_COLORS, VESSEL_TYPE_COLORS } from '../types';
+import { regionApi, dashboardApi, forensicsApi, caseApi } from '../api/client';
+import type { DashboardStats } from '../types';
+import { GATEWAY_COLORS } from '../types';
+import GatewayLayer from '../components/maritime/GatewayLayer';
 
-// ── Types ────────────────────────────────────────────────────────────────
-interface VesselTrackData {
-  mmsi: string;
-  positions: AISPosition[];
-}
+import VesselLayer from '../components/maritime/VesselLayer';
+import type { VesselTrack as M5VesselTrack } from '../components/maritime/VesselLayer';
+import VesselTrackLayer from '../components/maritime/VesselTrackLayer';
+import GatewayEventPanel from '../components/maritime/GatewayEventPanel';
+import MaritimePlayback from '../components/maritime/MaritimePlayback';
 
-interface GatewayFeature {
-  properties: { id: string; name: string; color: string };
-  geometry: { coordinates: [number, number][] };
-}
-
-// ── Helpers ──────────────────────────────────────────────────────────────
-function formatTime(iso: string) {
-  return new Date(iso).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
-}
-
-function getVesselPositionAt(positions: AISPosition[], demoTime: Date): AISPosition | null {
-  if (!positions || positions.length === 0) return null;
-  const t = demoTime.getTime();
-  const tFirst = new Date(positions[0].timestamp).getTime();
-  const tLast = new Date(positions[positions.length - 1].timestamp).getTime();
-
-  // If before vessel enters the surveillance sector
-  if (t < tFirst) return null;
-
-  // If after vessel departed the surveillance sector (clean exit, don't stick to border)
-  if (t > tLast + 10 * 60 * 1000) return null;
-
-  // At or past final waypoint
-  if (t >= tLast) {
-    return positions[positions.length - 1];
-  }
-
-  // Smooth linear interpolation between adjacent pings
-  for (let i = 0; i < positions.length - 1; i++) {
-    const t0 = new Date(positions[i].timestamp).getTime();
-    const t1 = new Date(positions[i + 1].timestamp).getTime();
-    if (t >= t0 && t <= t1) {
-      const dt = t1 - t0;
-      const frac = dt > 0 ? (t - t0) / dt : 0;
-      const p0 = positions[i];
-      const p1 = positions[i + 1];
-
-      return {
-        ...p0,
-        latitude: p0.latitude + (p1.latitude - p0.latitude) * frac,
-        longitude: p0.longitude + (p1.longitude - p0.longitude) * frac,
-        speed: p0.speed + (p1.speed - p0.speed) * frac,
-        course: p0.course,
-        heading: p0.heading,
-        timestamp: demoTime.toISOString()
-      };
-    }
-  }
-
-  return positions[positions.length - 1];
-}
-
-function getRecentTrail(positions: AISPosition[], demoTime: Date, hoursBack = 2): AISPosition[] {
-  const cutoff = new Date(demoTime.getTime() - hoursBack * 3600 * 1000);
-  return positions.filter(p => {
-    const t = new Date(p.timestamp);
-    return t <= demoTime && t >= cutoff;
-  });
-}
-
-// ── Demo Time Controller ──────────────────────────────────────────────────
-const DEMO_START = new Date('2024-01-15T06:00:00Z');
-const DEMO_END   = new Date('2024-01-15T22:00:00Z');
-const INCIDENT   = new Date('2024-01-15T18:40:00Z');
-const TOTAL_MS   = DEMO_END.getTime() - DEMO_START.getTime();
+// A fallback initial timestamp is set to the known dataset start.
+// The actual playback range is derived by MaritimePlayback from the loaded tracks.
+const AIS_INITIAL_TS = new Date('2024-03-15T00:00:00Z');
+const INCIDENT = new Date('2024-01-15T18:40:00Z'); // kept for incident indicator display
 
 type MonitoringViewMode = 'all' | 'bayofbengal' | 'filament' | 'emulsion' | 'clean';
 
-// ── Map Controller ────────────────────────────────────────────────────────
+// ── Map Controller ──────────────────────────────────────────────────────────
 function MapController({ viewMode, casesData }: { viewMode: string, casesData: any[] }) {
   const map = useMap();
   useEffect(() => {
@@ -104,21 +44,16 @@ export default function RegionalMonitoring() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [casesData, setCasesData] = useState<any[]>([]);
   const [region, setRegion] = useState<any>(null);
-  const [gateways, setGateways] = useState<GatewayFeature[]>([]);
-  const [tracks, setTracks] = useState<VesselTrackData[]>([]);
-  const [vessels, setVessels] = useState<Vessel[]>([]);
-  const [crossings, setCrossings] = useState<any[]>([]);
+  const [m5Tracks, setM5Tracks] = useState<M5VesselTrack[]>([]);
+  const [selectedVesselId, setSelectedVesselId] = useState<string | null>(null);
   const [incidents, setIncidents] = useState<any[]>([]);
   const [viewMode, setViewMode] = useState<MonitoringViewMode>('all');
   const [mapLayer, setMapLayer] = useState<'sentinel' | 'dark' | 'osm'>('sentinel');
   const [inspectedIncident, setInspectedIncident] = useState<any | null>(null);
   const [sarTab, setSarTab] = useState<'overlay' | 'raw' | 'mask'>('overlay');
-  const [demoTime, setDemoTime] = useState(DEMO_START);
+  const [demoTime, setDemoTime] = useState<Date>(AIS_INITIAL_TS);
   const [playing, setPlaying] = useState(false);
-  const [sliderVal, setSliderVal] = useState(0);
-  const animRef = useRef<number | null>(null);
-  const lastRef = useRef<number>(0);
-  const SPEED = 120; // 1 screen-second = 2 demo-minutes (smooth and readable)
+  const ACTIVE_CASE_ID = 'case_01'; // The case whose AIS data drives the visualization
 
   // ── Fetch data ──────────────────────────────────────────────────────────
   useEffect(() => {
@@ -129,78 +64,37 @@ export default function RegionalMonitoring() {
         .then(setCasesData);
     }).catch(() => {});
     regionApi.getRegion().then(d => setRegion(d)).catch(() => {});
-    regionApi.getGateways().then(d => setGateways(d.features || [])).catch(() => {});
-    vesselApi.list().then(setVessels).catch(() => {});
-    vesselApi.recentCrossings(50).then(setCrossings).catch(() => {});
     forensicsApi.getIncidents().then(setIncidents).catch(() => {});
 
-    // Fetch all vessel tracks
-    vesselApi.list().then(vs => {
-      Promise.all(vs.map(v => vesselApi.getTrack(v.mmsi).catch(() => null)))
-        .then(results => {
-          const valid = results
-            .filter(Boolean)
-            .map(r => ({ mmsi: r!.mmsi, positions: r!.positions }));
-          setTracks(valid);
-        });
-    }).catch(() => {});
-  }, []);
-
-  // ── Clock loop ──────────────────────────────────────────────────────────
-  const animate = useCallback((now: number) => {
-    if (lastRef.current === 0) lastRef.current = now;
-    const elapsed_real_ms = now - lastRef.current;
-    lastRef.current = now;
-    const demo_ms = elapsed_real_ms * SPEED;
-    setDemoTime(prev => {
-      const next = new Date(prev.getTime() + demo_ms);
-      if (next >= DEMO_END) {
-        setPlaying(false);
-        return DEMO_END;
-      }
-      const frac = (next.getTime() - DEMO_START.getTime()) / TOTAL_MS;
-      setSliderVal(Math.round(frac * 1000));
-      return next;
+    // Fetch M5 real tracks for all 5 vessels (V001–V005)
+    const vesselIds = ['V001', 'V002', 'V003', 'V004', 'V005'];
+    Promise.all(
+      vesselIds.map(vid =>
+        caseApi.getVesselTrack(ACTIVE_CASE_ID, vid).catch(() => null)
+      )
+    ).then(results => {
+      const valid = results.filter(Boolean) as M5VesselTrack[];
+      setM5Tracks(valid);
     });
-    animRef.current = requestAnimationFrame(animate);
   }, []);
-
-  useEffect(() => {
-    if (playing) {
-      lastRef.current = 0;
-      animRef.current = requestAnimationFrame(animate);
-    } else {
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-    }
-    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
-  }, [playing, animate]);
-
-  const onSlider = (v: number) => {
-    const t = new Date(DEMO_START.getTime() + (v / 1000) * TOTAL_MS);
-    setDemoTime(t);
-    setSliderVal(v);
-  };
 
   // ── Region polygon coordinates ──────────────────────────────────────────
   const regionCoords: [number, number][] = region
     ? region.features[0].geometry.coordinates[0].map(([lon, lat]: [number, number]) => [lat, lon])
     : [];
 
-  // ── Crossings to show in feed (before current demo time) ────────────────
-  const visibleCrossings = crossings
-    .filter(c => new Date(c.timestamp) <= demoTime)
-    .slice(-20)
-    .reverse();
-
   // ── Past incident indicator ──────────────────────────────────────────────
   const incidentPassed = demoTime >= INCIDENT;
+
+  // Selected vessel track for detailed rendering
+  const selectedTrack = m5Tracks.find(t => t.vessel_id === selectedVesselId) || null;
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', minWidth: 0 }}>
       {/* Header */}
       <div className="page-header">
         <div>
-          <div className="page-title">🗺️ Regional Monitoring</div>
+          <div className="page-title"><Map size={18} style={{marginRight: 6}} /> Regional Monitoring</div>
           <div className="page-subtitle">Arabian Sea · 4 Virtual Gateways · Continuous Vessel Tracking</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -224,7 +118,7 @@ export default function RegionalMonitoring() {
                 gap: 5
               }}
             >
-              <span>🌐</span>
+              <span><Globe size={14} /></span>
               <span>Entire Bay</span>
             </button>
             <button
@@ -245,7 +139,7 @@ export default function RegionalMonitoring() {
                 gap: 5
               }}
             >
-              <span>🚨</span>
+              <span><AlertTriangle size={14} /></span>
               <span>Al-Mahra (1.76 km²)</span>
             </button>
             <button
@@ -266,7 +160,7 @@ export default function RegionalMonitoring() {
                 gap: 5
               }}
             >
-              <span>🚢</span>
+              <span><Ship size={14} /></span>
               <span>Lakshadweep (3.67 km²)</span>
             </button>
             <button
@@ -287,7 +181,7 @@ export default function RegionalMonitoring() {
                 gap: 5
               }}
             >
-              <span>⚡</span>
+              <span><Zap size={14} /></span>
               <span>Oman Basin (0.52 km²)</span>
             </button>
             <button
@@ -308,14 +202,14 @@ export default function RegionalMonitoring() {
                 gap: 5
               }}
             >
-              <span>🌊</span>
+              <span><Waves size={14} /></span>
               <span>Clean Baseline (0 km²)</span>
             </button>
           </div>
 
           {incidentPassed && (
             <div style={{ padding: '6px 14px', background: 'rgba(255,51,102,0.15)', border: '1px solid rgba(255,51,102,0.4)', borderRadius: 8, fontSize: 12, color: '#ff3366', fontWeight: 600 }}>
-              ⚠️ INCIDENT DETECTED — 18:40 UTC
+              INCIDENT DETECTED — 18:40 UTC
             </div>
           )}
           <div style={{ fontSize: 13, fontFamily: 'JetBrains Mono', color: 'var(--cyan)', background: 'var(--bg-card)', padding: '6px 14px', borderRadius: 8, border: '1px solid var(--border)' }}>
@@ -408,14 +302,8 @@ export default function RegionalMonitoring() {
               />
             )}
 
-            {/* Gateways */}
-            {gateways.map(gw => (
-              <Polyline
-                key={gw.properties.id}
-                positions={gw.geometry.coordinates.map(([lon, lat]) => [lat, lon] as [number, number])}
-                pathOptions={{ color: gw.properties.color, weight: 2, opacity: 0.9, dashArray: '6 8', lineCap: 'round' }}
-              />
-            ))}
+            <GatewayLayer caseId={ACTIVE_CASE_ID} />
+
 
             {/* Detected Real Sentinel-1 SAR Oil Spill Footprints & Overlays (4 Forensic Scenes) */}
             {incidents.map((inc: any) => {
@@ -540,7 +428,7 @@ export default function RegionalMonitoring() {
                     <Popup>
                       <div className="vessel-popup" style={{ minWidth: 270 }}>
                         <div className="vessel-popup-header" style={{ color: themeColor, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <span>🛰️ {sceneTitle}</span>
+                          <span>{sceneTitle}</span>
                           <span style={{ fontSize: 9, padding: '2px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.08)', color: themeColor, fontWeight: 700 }}>
                             {badgeText}
                           </span>
@@ -628,102 +516,21 @@ export default function RegionalMonitoring() {
               );
             })}
 
-            {/* Vessel Trails + Current Positions (Correlated with Forensic Scenes) */}
-            {tracks.map(track => {
-              const trail = getRecentTrail(track.positions, demoTime);
-              const current = getVesselPositionAt(track.positions, demoTime);
-              if (!current) return null;
+            {/* Selected vessel historical track with AIS gap rendering */}
+            {selectedTrack && (
+              <VesselTrackLayer
+                track={selectedTrack}
+                upToTimestamp={demoTime}
+              />
+            )}
 
-              const vessel = vessels.find(v => v.mmsi === track.mmsi);
-              const vtype = vessel?.vessel_type || 'unknown';
-              const color = VESSEL_TYPE_COLORS[vtype] || '#7ba7c0';
-              
-              // Multi-Incident Suspect Correlation Registry (All 3 Oil Spill Incidents)
-              const SUSPECT_REGISTRY: Record<string, { tag: string; label: string; color: string; incident: string }> = {
-                '419000042': {
-                  tag: '⚠️ Selected Candidate',
-                  label: 'Crude Discharge Correlated',
-                  color: '#ff3366',
-                  incident: 'Central Arabian Sea'
-                },
-                '419000040': {
-                  tag: '⚠️ Selected Candidate',
-                  label: 'Bilge Filament Correlated',
-                  color: '#ffb800',
-                  incident: 'Lakshadweep Channel'
-                },
-                '419000041': {
-                  tag: '⚠️ Selected Candidate',
-                  label: 'Rig Tank-Wash Correlated',
-                  color: '#ff8800',
-                  incident: 'Oman Basin Offshore'
-                }
-              };
-
-              const suspectMeta = SUSPECT_REGISTRY[track.mmsi];
-              const isSuspect = Boolean(suspectMeta);
-              const suspectColor = suspectMeta ? suspectMeta.color : '#ff3366';
-
-              const polyCoords: [number, number][] = [
-                ...trail.map(p => [p.latitude, p.longitude] as [number, number]),
-                [current.latitude, current.longitude] as [number, number]
-              ];
-
-              return (
-                <div key={track.mmsi}>
-                  {/* Seamless Wake Trail */}
-                  {polyCoords.length > 1 && (
-                    <Polyline
-                      positions={polyCoords}
-                      pathOptions={{ color: isSuspect ? suspectColor : color, weight: isSuspect ? 2.4 : 1.4, opacity: isSuspect ? 0.8 : 0.55 }}
-                    />
-                  )}
-                  {/* Suspect Warning Beacon Ring */}
-                  {isSuspect && (
-                    <CircleMarker
-                      center={[current.latitude, current.longitude]}
-                      radius={14}
-                      pathOptions={{
-                        color: suspectColor,
-                        fillColor: 'transparent',
-                        weight: 2,
-                        dashArray: '3 3',
-                      }}
-                    />
-                  )}
-                  {/* Current position marker */}
-                  <Marker
-                    position={[current.latitude, current.longitude]}
-                    icon={L.divIcon({
-                      html: `<div style="font-size: 14px; line-height: 14px; text-align: center;">🚢</div>`,
-                      className: 'ship-emoji-icon',
-                      iconSize: [14, 14],
-                      iconAnchor: [7, 7]
-                    })}
-                  >
-                    <Popup>
-                      <div className="vessel-popup" style={{ minWidth: 230 }}>
-                        <div className="vessel-popup-header" style={{ color: isSuspect ? suspectColor : 'inherit' }}>
-                          {vessel?.name || track.mmsi}
-                          {isSuspect && <span style={{ color: suspectColor, marginLeft: 6, fontWeight: 700 }}>{suspectMeta.tag}</span>}
-                        </div>
-                        {isSuspect && (
-                          <div className="vessel-popup-row" style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '4px 8px', borderRadius: 4, margin: '6px 0', border: `1px solid ${suspectColor}` }}>
-                            <span style={{ color: suspectColor, fontSize: 10, fontWeight: 600 }}>Forensic Correlation</span>
-                            <span className="mono" style={{ color: suspectColor, fontWeight: 'bold', fontSize: 10 }}>{suspectMeta.label}</span>
-                          </div>
-                        )}
-                        <div className="vessel-popup-row"><span>MMSI</span><span className="mono">{track.mmsi}</span></div>
-                        <div className="vessel-popup-row"><span>Type</span><span>{vtype}</span></div>
-                        <div className="vessel-popup-row"><span>Speed</span><span className="mono">{current.speed.toFixed(1)} kn</span></div>
-                        <div className="vessel-popup-row"><span>Course</span><span className="mono">{current.course.toFixed(0)}°</span></div>
-                        <div className="vessel-popup-row"><span>Status</span><span>{current.nav_status || 'underway'}</span></div>
-                      </div>
-                    </Popup>
-                  </Marker>
-                </div>
-              );
-            })}
+            {/* All 5 AIS vessels — positions from real M5 track data */}
+            <VesselLayer
+              tracks={m5Tracks}
+              currentTimestamp={demoTime}
+              selectedVesselId={selectedVesselId}
+              onSelectVessel={setSelectedVesselId}
+            />
           </MapContainer>
 
           {/* Map Layer Switcher (Top-Right Floating Overlay) */}
@@ -746,7 +553,7 @@ export default function RegionalMonitoring() {
                   transition: 'all 0.2s'
                 }}
               >
-                🛰️ Sentinel-2
+                Sentinel-2
               </button>
               <button
                 onClick={() => setMapLayer('dark')}
@@ -765,7 +572,7 @@ export default function RegionalMonitoring() {
                   transition: 'all 0.2s'
                 }}
               >
-                🌊 Dark Marine
+                <Waves size={14} /> Dark Marine
               </button>
               <button
                 onClick={() => setMapLayer('osm')}
@@ -784,7 +591,7 @@ export default function RegionalMonitoring() {
                   transition: 'all 0.2s'
                 }}
               >
-                🗺️ Street Map
+                <Map size={14} /> Street Map
               </button>
             </div>
           </div>
@@ -819,50 +626,26 @@ export default function RegionalMonitoring() {
             </div>
           </div>
 
-          {/* Demo controls */}
+          {/* AIS Replay controls — timeline range is derived from actual AIS data */}
           <div style={{ position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
             <div className="glass-panel" style={{ padding: '10px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
-              <button
-                onClick={() => setPlaying(p => !p)}
-                style={{ background: playing ? 'rgba(255,51,102,0.2)' : 'rgba(0,255,136,0.2)', border: `1px solid ${playing ? '#ff3366' : '#00ff88'}`, color: playing ? '#ff3366' : '#00ff88', borderRadius: 8, padding: '6px 16px', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}
-              >
-                {playing ? '⏸ Pause' : '▶ Play Demo'}
-              </button>
-              <input
-                type="range" min={0} max={1000} value={sliderVal}
-                onChange={e => onSlider(Number(e.target.value))}
-                style={{ width: 220, accentColor: 'var(--cyan)' }}
+              <MaritimePlayback
+                tracks={m5Tracks}
+                currentTimestamp={demoTime}
+                isPlaying={playing}
+                onTimestampChange={(ts) => setDemoTime(typeof ts === 'function' ? ts(demoTime) : ts)}
+                onPlayingChange={setPlaying}
               />
-              <span style={{ fontSize: 10, color: 'var(--text-muted)', whiteSpace: 'nowrap', fontFamily: 'JetBrains Mono' }}>
-                06:00 → 22:00 UTC
-              </span>
             </div>
           </div>
         </div>
 
-        {/* Live Event Feed */}
-        <div style={{ width: 280, minWidth: 280, flexShrink: 0, borderLeft: '1px solid var(--border)', display: 'flex', flexDirection: 'column', background: 'var(--bg-card)', backdropFilter: 'blur(16px)', overflow: 'hidden' }}>
-          <div className="panel-header" style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)' }}>
-            <div className="live-indicator" />
-            <span className="panel-title">Gateway Crossings</span>
-          </div>
-          <div className="panel-body" style={{ maxHeight: 'none', flex: 1 }}>
-            {visibleCrossings.length === 0 ? (
-              <div style={{ padding: 16, color: 'var(--text-muted)', fontSize: 12 }}>Waiting for vessels…</div>
-            ) : visibleCrossings.map(c => (
-              <div key={c.id} className="event-feed-item fade-in">
-                <div className="event-dot" style={{ background: GATEWAY_COLORS[c.gateway_id as GatewayId] || '#7ba7c0' }} />
-                <div className="event-feed-text">
-                  <div className="event-feed-mmsi">{c.mmsi}</div>
-                  <div className="event-feed-desc">
-                    {c.direction === 'entering' ? '→ Entered' : '← Exited'} {c.gateway_name?.split('—')[0]?.trim()}
-                  </div>
-                  <div className="event-feed-time">{formatTime(c.timestamp)}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Gateway Event Panel — M5 CrossingDetector output */}
+        <GatewayEventPanel
+          caseId={ACTIVE_CASE_ID}
+          currentTimestamp={demoTime}
+          selectedVesselId={selectedVesselId}
+        />
       </div>
 
       {/* Real High-Res Sentinel-1 SAR Inspector Modal */}
@@ -902,7 +685,7 @@ export default function RegionalMonitoring() {
             }}>
               <div>
                 <h3 style={{ margin: 0, fontSize: 18, color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span>🛰️ Sentinel-1A SAR Ocean Forensic Inspector</span>
+                  <span>Sentinel-1A SAR Ocean Forensic Inspector</span>
                   <span style={{ fontSize: 11, background: 'rgba(0, 255, 136, 0.2)', color: 'var(--green)', border: '1px solid var(--green)', padding: '2px 8px', borderRadius: 4 }}>
                     AUTHENTICATED SATELLITE SCENE
                   </span>

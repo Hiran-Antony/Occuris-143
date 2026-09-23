@@ -134,7 +134,7 @@ export default function MaritimeMemory() {
       {/* Header */}
       <div className="page-header">
         <div>
-          <div className="page-title">🧠 Maritime Memory</div>
+          <div className="page-title">Maritime Memory</div>
           <div className="page-subtitle">Complete vessel history — journeys, behaviour events, and explanations</div>
         </div>
         <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>

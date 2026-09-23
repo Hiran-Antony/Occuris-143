@@ -27,7 +27,7 @@ _CASES = None
 def _cases():
     global _CASES
     if _CASES is None:
-        from config import CASES
+        from src.config import CASES
         _CASES = CASES
     return _CASES
 

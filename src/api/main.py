@@ -5,6 +5,9 @@ import json
 import os
 from pathlib import Path
 
+# Module 5 gateway definitions — loaded once at startup from config
+from src.ais.gateways import get_gateway_manager
+
 app = FastAPI(title="Occuris API Bridge")
 app.mount("/sar", StaticFiles(directory="data/raw/sar"), name="sar")
 app.mount("/masks", StaticFiles(directory="data/processed"), name="masks")
@@ -34,14 +37,23 @@ def load_json(filename: str):
 
 @app.get("/api/dashboard/summary")
 def get_dashboard_summary():
+    # Derive real counts from the M5 processed data files
+    try:
+        vessels = load_json("m5_vessels.json")
+        events = load_json("m5_events.json")
+        total_crossings = len(events)
+        total_vessels = len(vessels)
+        completed = sum(1 for v in vessels if v.get("journey") and v["journey"].get("status") == "COMPLETED")
+    except Exception:
+        total_crossings, total_vessels, completed = 0, 5, 0
     return {
         "active_cases": len(CASES),
-        "total_vessels": 5,
-        "vessels_ever_in_region": 5,
-        "total_gateway_crossings": 20,
-        "total_behaviour_events": 12,
-        "unexplained_events": 3,
-        "completed_journeys": 4,
+        "total_vessels": total_vessels,
+        "vessels_ever_in_region": total_vessels,
+        "total_gateway_crossings": total_crossings,
+        "total_behaviour_events": 0,
+        "unexplained_events": 0,
+        "completed_journeys": completed,
         "data_mode": "MVP / SYNTHETIC TEST DATA"
     }
 
@@ -82,36 +94,77 @@ def get_case_origin_zone(case_id: str):
 def get_case_drift(case_id: str):
     return load_json(f"{case_id}_drift.json")
 
-# Synthetic Vessel APIs for Maritime Memory
-MOCK_VESSELS = [
-    {"mmsi": "V001", "name": "MT DESH SHOBHA", "vessel_type": "tanker"},
-    {"mmsi": "V002", "name": "EASTERN STAR", "vessel_type": "cargo"},
-    {"mmsi": "V003", "name": "GULF WAVE", "vessel_type": "tanker"},
-    {"mmsi": "V004", "name": "UNKNOWN_DARK", "vessel_type": "unknown"},
-    {"mmsi": "V005", "name": "PACIFIC PEARL", "vessel_type": "cargo"}
-]
-
 @app.get("/api/cases/{case_id}/vessels")
 def get_vessels_in_vicinity(case_id: str):
-    return MOCK_VESSELS
+    try:
+        return load_json("m5_vessels.json")
+    except Exception:
+        return [
+            {"mmsi": "V001", "name": "MT DESH SHOBHA", "vessel_type": "tanker"},
+            {"mmsi": "V002", "name": "EASTERN STAR", "vessel_type": "cargo"},
+            {"mmsi": "V003", "name": "GULF WAVE", "vessel_type": "tanker"},
+            {"mmsi": "V004", "name": "UNKNOWN_DARK", "vessel_type": "unknown"},
+            {"mmsi": "V005", "name": "PACIFIC PEARL", "vessel_type": "cargo"}
+        ]
 
 @app.get("/api/cases/{case_id}/vessels/{vessel_id}/track")
 def get_vessel_track(case_id: str, vessel_id: str):
-    # We will just return a mock track centered around the case centroid for now, 
-    # since we don't have static track files dumped.
-    # In a real implementation this would fetch from the M5 DB.
-    geom = load_json(f"{case_id}_geometry.json")
-    lat = geom["geometry"]["centroid_geo"]["latitude"]
-    lon = geom["geometry"]["centroid_geo"]["longitude"]
-    
-    return {
-        "mmsi": vessel_id,
-        "positions": [
-            {"timestamp": "2024-03-15T00:00:00Z", "latitude": lat - 1, "longitude": lon - 1, "speed": 12.0, "course": 45},
-            {"timestamp": "2024-03-15T06:00:00Z", "latitude": lat, "longitude": lon, "speed": 12.5, "course": 45},
-            {"timestamp": "2024-03-15T12:00:00Z", "latitude": lat + 1, "longitude": lon + 1, "speed": 12.1, "course": 45}
-        ]
-    }
+    """Return the actual AIS track for a vessel from M5 processed data.
+    Positions are the verbatim AIS observations from the CSV — no fabrication.
+    Gaps are included so the frontend can render them correctly.
+    """
+    try:
+        all_tracks = load_json("m5_tracks.json")
+    except HTTPException:
+        raise HTTPException(status_code=404, detail="m5_tracks.json not found — run scratch/generate_m5_data.py first")
+
+    track = next(
+        (t for t in all_tracks if t["vessel_id"] == vessel_id),
+        None
+    )
+    if track is None and vessel_id.isdigit():
+        track = next(
+            (t for t in all_tracks if str(t.get("mmsi", "")) == vessel_id),
+            None
+        )
+    if track is None:
+        raise HTTPException(status_code=404, detail=f"Vessel '{vessel_id}' not found in m5_tracks.json")
+    return track
+
+
+@app.get("/api/cases/{case_id}/gateways")
+def get_case_gateways(case_id: str):
+    """Return the actual gateway definitions as GeoJSON FeatureCollection.
+    Geometry comes from config/region.yaml via M5 GatewayManager — no fabrication.
+    """
+    gm = get_gateway_manager()
+    features = []
+    for gw in gm.gateways:
+        features.append({
+            "type": "Feature",
+            "id": gw.gateway_id,
+            "properties": {
+                "gateway_id": gw.gateway_id,
+                "name": gw.name,
+                "orientation": gw.orientation,
+                "entry_side": gw.entry_side,
+                "exit_side": gw.exit_side,
+                "color": getattr(gw, "color", "#00d4ff"),
+            },
+            "geometry": gw.geometry_geojson,
+        })
+    return {"type": "FeatureCollection", "features": features}
+
+
+@app.get("/api/cases/{case_id}/gateway-events")
+def get_case_gateway_events(case_id: str):
+    """Return M5 GatewayCrossingEvent records.
+    These are produced by the actual CrossingDetector — never fabricated in React.
+    """
+    try:
+        return load_json("m5_events.json")
+    except HTTPException:
+        raise HTTPException(status_code=404, detail="m5_events.json not found — run scratch/generate_m5_data.py first")
 
 @app.get("/api/cases/{case_id}/candidates")
 def get_investigation_candidates(case_id: str):

@@ -599,24 +599,32 @@ export const ForensicInvestigation: React.FC = () => {
                       <>
                         <div className="glass-panel" style={{ padding: '16px' }}>
                           <h3 style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                            SAR Detection Scores
+                            SAR Physics & Contrast Analysis
                           </h3>
                           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
-                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>IOU</div>
-                              <div style={{ fontSize: '16px', color: 'var(--cyan)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.8975</div>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>SPILL µ (INTENSITY)</div>
+                              <div style={{ fontSize: '16px', color: 'var(--cyan)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>
+                                {isClean || selectedIncident.look_alike?.spill_mean_intensity == null ? 'N/A' : `${(selectedIncident.look_alike.spill_mean_intensity * 100).toFixed(2)}%`}
+                              </div>
                             </div>
                             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
-                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>F1 SCORE</div>
-                              <div style={{ fontSize: '16px', color: 'var(--cyan)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.9460</div>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>BACKGROUND µ</div>
+                              <div style={{ fontSize: '16px', color: 'var(--cyan)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>
+                                {isClean || selectedIncident.look_alike?.background_mean_intensity == null ? 'N/A' : `${(selectedIncident.look_alike.background_mean_intensity * 100).toFixed(2)}%`}
+                              </div>
                             </div>
                             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
-                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>PRECISION</div>
-                              <div style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.9520</div>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>CONTRAST RATIO</div>
+                              <div style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>
+                                {isClean || selectedIncident.look_alike?.contrast_ratio == null ? 'N/A' : `${(selectedIncident.look_alike.contrast_ratio * 100).toFixed(2)}%`}
+                              </div>
                             </div>
                             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
-                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>RECALL</div>
-                              <div style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.9400</div>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>VERIFICATION STATUS</div>
+                              <div style={{ fontSize: '16px', color: isClean ? 'var(--text-primary)' : (selectedIncident.look_alike?.passed ? 'var(--cyan)' : '#ff6b6b'), fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>
+                                {isClean ? 'CLEAN OCEAN' : (selectedIncident.look_alike?.passed ? 'CONFIRMED' : 'LOOK-ALIKE')}
+                              </div>
                             </div>
                           </div>
                         </div>

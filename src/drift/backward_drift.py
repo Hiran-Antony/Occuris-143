@@ -22,19 +22,19 @@ sys.path.insert(0, str(ROOT / "src"))
 
 import numpy as np
 
-from config import (
+from src.config import (
     CASES, DATA_PROCESSED, N_PARTICLES, DRIFT_HOURS,
     FORECAST_HOURS, DRIFT_TIME_STEP_MIN, WIND_DRIFT_COEFFICIENT,
     STRATIFIED_INTERIOR_RATIO, EDDY_DIFFUSIVITY_M2S
 )
-from drift.velocity_field import VelocityField
-from drift.rk4 import RK45DriftEngine
-from drift.particle_seed import sample_stratified_seed_points
-from drift.origin_zone import (
+from src.drift.velocity_field import VelocityField
+from src.drift.rk4 import RK45DriftEngine
+from src.drift.particle_seed import sample_stratified_seed_points
+from src.drift.origin_zone import (
     fit_origin_ellipse, compute_release_window, compute_plume_stats
 )
-from drift.weathering import compute_adios_weathering, compute_oceanographic_regime
-from drift.schemas import (
+from src.drift.weathering import compute_adios_weathering, compute_oceanographic_regime
+from src.drift.schemas import (
     SimulationConfig, TimestepState, TimelineMilestone,
     TimelineRange, DriftResult
 )

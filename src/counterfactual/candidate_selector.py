@@ -62,7 +62,7 @@ def _spatial_eligible(
         return True, "DARK_PATH_INTERSECTS_ORIGIN_ZONE"
 
     # Generous fallback: include if not explicitly ruled out
-    if m6.reachability and m6.reachability.overall_verdict != ReachabilityVerdict.UNREACHABLE:
+    if m6.reachability and m6.reachability.overall_verdict != ReachabilityVerdict.IMPLAUSIBLE:
         return True, "REACHABILITY_NOT_RULED_OUT"
 
     return False, "REACHABILITY_VIOLATED"
