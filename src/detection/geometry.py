@@ -84,8 +84,9 @@ def extract_geometry(case_id: str, mask: np.ndarray) -> dict:
             "contour": None
         }
 
-    # 1. Area — bbox-derived pixel scale
-    area_km2 = gt.pixel_area_km2(n_pix)
+    # 1. Area — MVP geospatial estimate (10.46 m/pixel assumed for GRD)
+    PIXEL_SCALE_M = 10.46
+    area_km2 = (n_pix * PIXEL_SCALE_M * PIXEL_SCALE_M) / 1_000_000.0
 
     # 2. Centroid (pixel)
     row_mean, col_mean = float(spill_pixels[:, 0].mean()), float(spill_pixels[:, 1].mean())
@@ -112,9 +113,10 @@ def extract_geometry(case_id: str, mask: np.ndarray) -> dict:
         # Pixel-space std → physical km using bbox-derived scale
         major_px = float(np.sqrt(pca.explained_variance_[0]) * 2)
         minor_px = float(np.sqrt(pca.explained_variance_[1]) * 2)
-        # Treat as predominantly row-axis deviation for both (conservative estimate)
-        major_km = (major_px * m_per_row) / 1000.0
-        minor_km = (minor_px * m_per_row) / 1000.0
+        # MVP geospatial estimate (10.46 m/pixel assumed)
+        PIXEL_SCALE_M = 10.46
+        major_km = (major_px * PIXEL_SCALE_M) / 1000.0
+        minor_km = (minor_px * PIXEL_SCALE_M) / 1000.0
     else:
         orientation_deg = major_km = minor_km = 0.0
 

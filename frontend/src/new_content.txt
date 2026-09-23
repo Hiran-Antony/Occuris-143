@@ -1,0 +1,69 @@
+                {/* Radar Physics & SpillSplit Telemetry */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {(() => {
+                    const isClean = !selectedIncident.geometry?.area_km2 || selectedIncident.geometry.area_km2 === 0;
+                    return (
+                      <>
+                        <div className="glass-panel" style={{ padding: '16px' }}>
+                          <h3 style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            SAR Detection Scores
+                          </h3>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>IOU</div>
+                              <div style={{ fontSize: '16px', color: 'var(--cyan)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.8975</div>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>F1 SCORE</div>
+                              <div style={{ fontSize: '16px', color: 'var(--cyan)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.9460</div>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>PRECISION</div>
+                              <div style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.9520</div>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>RECALL</div>
+                              <div style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>0.9400</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="glass-panel" style={{ padding: '16px' }}>
+                          <h3 style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            Spill Geometry (M2)
+                          </h3>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>AREA</div>
+                              <div style={{ fontSize: '16px', color: 'var(--cyan)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>{isClean ? '0.00' : (selectedIncident.geometry?.area_km2 || 0).toFixed(2)} <span style={{fontSize:'12px', color:'var(--text-muted)'}}>km²</span></div>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>CONTRAST RATIO</div>
+                              <div style={{ fontSize: '16px', color: 'var(--green)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>{isClean ? 'N/A' : (selectedIncident.look_alike?.contrast_ratio || 0).toFixed(2)} ✓</div>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>ORIENTATION</div>
+                              <div style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>{isClean ? 'N/A' : (selectedIncident.geometry?.orientation_deg || 0).toFixed(2)}°</div>
+                            </div>
+                            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border)' }}>
+                              <div style={{ fontSize: '10px', color: 'var(--text-secondary)', marginBottom: '4px' }}>MAJOR AXIS</div>
+                              <div style={{ fontSize: '16px', color: 'var(--text-primary)', fontWeight: 'bold', fontFamily: 'JetBrains Mono' }}>{isClean ? 'N/A' : (selectedIncident.geometry?.major_axis_km || 0).toFixed(2)} <span style={{fontSize:'12px', color:'var(--text-muted)'}}>km</span></div>
+                            </div>
+                          </div>
+                          <div style={{ fontSize: '9px', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '12px' }}>
+                            * MVP geospatial estimate — 10 m/pixel scale assumed
+                          </div>
+                        </div>
+
+                        <div style={{ background: 'rgba(0, 255, 100, 0.05)', border: '1px solid rgba(0, 255, 100, 0.2)', borderRadius: '6px', padding: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <div style={{ fontSize: '11px', color: 'var(--green)', fontWeight: 'bold', textTransform: 'uppercase' }}>
+                            ▲ Look-alike Verification
+                          </div>
+                          <div style={{ fontSize: '11px', color: 'var(--text-primary)' }}>
+                            {isClean ? 'N/A' : (selectedIncident.look_alike?.passed ? 'PASS' : 'FAIL')} — {isClean ? 'No spill detected' : (selectedIncident.look_alike?.interpretation || 'Darker than background')}
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>

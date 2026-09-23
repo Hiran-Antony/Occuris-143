@@ -14,7 +14,7 @@
   "geometry": {
     "spill_pixels": 42900,
     "area_px2": 42900,
-    "area_km2": 19347.9844,
+    "area_km2": 4.6938,
     "area_status": "PROVISIONAL",
     "area_caveat": "PROVISIONAL GEOSPATIAL ESTIMATE. The 256x256 image represents a surveillance scene of ~178x166 km (spill_bbox). Pixel scale: 695.8 m/px (lat) x 648.2 m/px (lon). This maps each pixel to its geographic location within the scene, which is correct for centroid and drift seeding, but the spill patch area derived from pixel count conflates spill extent with scene coverage. Do NOT present this as a measured oil-spill area. Requires real Sentinel-1 geotransform + tight spill crop for a valid area estimate.",
     "pixel_scale": {
@@ -42,7 +42,7 @@
       "longitude": 61.61126
     },
     "orientation_deg": 54.58,
-    "major_axis_km": 110.4143,
-    "minor_axis_km": 80.8206
+    "major_axis_km": 1.66,
+    "minor_axis_km": 1.2151
   }
 }
