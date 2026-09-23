@@ -378,7 +378,7 @@ export default function RegionalMonitoring() {
                   {/* Real Sentinel-1 SAR Satellite Image Overlay on the Ocean */}
                   {sarFilename && (
                     <ImageOverlay
-                      url={`http://localhost:8000/sar/${sarFilename}`}
+                      url={`http://localhost:8080/sar/${sarFilename}`}
                       bounds={sarBounds}
                       opacity={0.92}
                     />
@@ -387,7 +387,7 @@ export default function RegionalMonitoring() {
                   {/* Real Neural Network Predicted Oil Spill Mask Overlay */}
                   {maskFilename && (
                     <ImageOverlay
-                      url={`http://localhost:8000/masks/${maskFilename}`}
+                      url={`http://localhost:8080/masks/${maskFilename}`}
                       bounds={sarBounds}
                       opacity={isClean ? 0.4 : 0.82}
                     />
@@ -440,7 +440,7 @@ export default function RegionalMonitoring() {
                             <div style={{ fontSize: 9, color: 'var(--text-muted)', marginBottom: 2 }}>RAW SENTINEL SAR</div>
                             {sarFilename && (
                               <img 
-                                src={`http://localhost:8000/sar/${sarFilename}`} 
+                                src={`http://localhost:8080/sar/${sarFilename}`} 
                                 alt="SAR" 
                                 style={{ width: '100%', height: 75, objectFit: 'cover', borderRadius: 4 }} 
                               />
@@ -450,7 +450,7 @@ export default function RegionalMonitoring() {
                             <div style={{ fontSize: 9, color: themeColor, marginBottom: 2 }}>{isClean ? 'ZERO SLICK DETECTED' : 'NEURAL SLICK MASK'}</div>
                             {maskFilename && (
                               <img 
-                                src={`http://localhost:8000/masks/${maskFilename}`} 
+                                src={`http://localhost:8080/masks/${maskFilename}`} 
                                 alt="Mask" 
                                 style={{ width: '100%', height: 75, objectFit: 'cover', borderRadius: 4, background: '#000' }} 
                               />
@@ -763,12 +763,12 @@ export default function RegionalMonitoring() {
                   {sarTab === 'overlay' && (
                     <>
                       <img
-                        src={`http://localhost:8000/sar/${inspectedIncident.sar_image_path ? inspectedIncident.sar_image_path.split(/[\\/]/).pop() : '000002.jpg'}`}
+                        src={`http://localhost:8080/sar/${inspectedIncident.sar_image_path ? inspectedIncident.sar_image_path.split(/[\\/]/).pop() : '000002.jpg'}`}
                         alt="Raw SAR"
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                       />
                       <img
-                        src={`http://localhost:8000/masks/${inspectedIncident.mask_path ? inspectedIncident.mask_path.split(/[\\/]/).pop() : '000002_mask.png'}`}
+                        src={`http://localhost:8080/masks/${inspectedIncident.mask_path ? inspectedIncident.mask_path.split(/[\\/]/).pop() : '000002_mask.png'}`}
                         alt="Mask Overlay"
                         style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'contain', opacity: 0.85 }}
                       />
@@ -776,14 +776,14 @@ export default function RegionalMonitoring() {
                   )}
                   {sarTab === 'raw' && (
                     <img
-                      src={`http://localhost:8000/sar/${inspectedIncident.sar_image_path ? inspectedIncident.sar_image_path.split(/[\\/]/).pop() : '000002.jpg'}`}
+                      src={`http://localhost:8080/sar/${inspectedIncident.sar_image_path ? inspectedIncident.sar_image_path.split(/[\\/]/).pop() : '000002.jpg'}`}
                       alt="Raw SAR"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                   )}
                   {sarTab === 'mask' && (
                     <img
-                      src={`http://localhost:8000/masks/${inspectedIncident.mask_path ? inspectedIncident.mask_path.split(/[\\/]/).pop() : '000002_mask.png'}`}
+                      src={`http://localhost:8080/masks/${inspectedIncident.mask_path ? inspectedIncident.mask_path.split(/[\\/]/).pop() : '000002_mask.png'}`}
                       alt="Mask"
                       style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />

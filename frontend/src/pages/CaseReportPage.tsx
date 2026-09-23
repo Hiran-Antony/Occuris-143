@@ -75,7 +75,7 @@ export default function CaseReportPage() {
                 Raw Sentinel-1A C-SAR Scene (15m/px)
               </div>
               <img
-                src={`http://localhost:8000/sar/${sarFilename}`}
+                src={`http://localhost:8080/sar/${sarFilename}`}
                 alt="Raw Sentinel-1 SAR"
                 style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 6 }}
               />
@@ -90,7 +90,7 @@ export default function CaseReportPage() {
                 CSIRO AI Neural Slick Segmentation Mask
               </div>
               <img
-                src={`http://localhost:8000/masks/${maskFilename}`}
+                src={`http://localhost:8080/masks/${maskFilename}`}
                 alt="Neural Slick Mask"
                 style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 6, background: '#000' }}
               />

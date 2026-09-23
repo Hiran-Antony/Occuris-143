@@ -386,8 +386,8 @@ export default function VesselReplayPage() {
 
             return (
               <div key={inc.id}>
-                <ImageOverlay url={`http://localhost:8000/sar/${sarFile}`} bounds={b} opacity={isAssociated ? 0.95 : 0.4} />
-                <ImageOverlay url={`http://localhost:8000/masks/${maskFile}`} bounds={b} opacity={isAssociated ? 0.85 : 0.3} />
+                <ImageOverlay url={`http://localhost:8080/sar/${sarFile}`} bounds={b} opacity={isAssociated ? 0.95 : 0.4} />
+                <ImageOverlay url={`http://localhost:8080/masks/${maskFile}`} bounds={b} opacity={isAssociated ? 0.85 : 0.3} />
                 <Rectangle
                   bounds={b}
                   pathOptions={{
