@@ -69,9 +69,9 @@ def fuse_evidence(
             dp_eval = 0
             
         ais = AISEvidence(
-            ais_status=m6.status.value if m6 else "UNKNOWN",
+            ais_status=m6.ais_state.value if m6 else "UNKNOWN",
             dark_path_hypotheses_evaluated=dp_eval,
-            data_quality_flags=m6.data_quality_flags if m6 else []
+            data_quality_flags=[]  # M6 doesn't have data_quality_flags field
         )
         
         # Extract Physical Evidence

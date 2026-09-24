@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+- **Kiro Onboarding Audit Report** (`docs/kiro_onboarding_audit.md`): Comprehensive repository exploration with module inventory, contract verification, test status, and discrepancy analysis
+
+### Changed
+- **README Overhaul**: Complete rewrite to match as-built code reality
+  - Added detailed module-by-module documentation (M0-M10) with file maps, algorithms, inputs/outputs, API endpoints, config keys, tests, and DoD status
+  - Added architecture mermaid diagram covering full pipeline with frozen contracts
+  - Added frozen contracts reference section (EvidenceBundleV1, Module6VerificationBundleV1, RankingBundleV1 planned)
+  - Added quickstart guide with installation, configuration, and run instructions
+  - Added data provenance & honesty badges section (SYNTHETIC_REPLAY vs LIVE_FEED)
+  - Added benchmarks section placeholder for OccurisBench (Top-1, Top-3, IVFF, ECE)
+  - Added honest limitations section with mandatory disclaimers
+  - Added complete repository tree diagram
+  - Added git workflow documentation (feature branches, PR process, release tagging)
+  - Marked incomplete modules with status warnings (M8 30%, M9 70%, M10 0%)
+  - Removed aspirational marketing language, replaced with technical documentation
+
+### Fixed
+- **Module 8 Evidence Fusion**: Fixed `AttributeError` in `evidence_fusion.py` where `m6.status` was accessed instead of `m6.ais_state` (Module6VerificationBundleV1 frozen contract field)
+
+---
+
 ## [6.0.0] - 2026-09-22
 
 ### Added
