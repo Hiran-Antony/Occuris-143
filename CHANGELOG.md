@@ -9,10 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Module 10 Descoped**: Removed Module 10 (Offline Demo & Integration) from project scope by owner decision
+  - Removed Module 10 section from README documentation
+  - Removed M10 node from architecture mermaid diagram
+  - Preserved Module 10's cross-cutting guarantees as system-wide requirements:
+    - Deterministic offline execution (same inputs + seed ⇒ identical hashes)
+    - No-egress guarantee for tests (zero network calls)
+    - Honest demo caveats (probability zone ≠ pin, priority ≠ guilt, REPLAY badge)
+  - Added new "Demo & Honesty" section to README documenting cross-cutting guarantees
+  - Updated all module references from "M0-M10" to "M0-M9"
+
 ### Added
 - **Kiro Onboarding Audit Report** (`docs/kiro_onboarding_audit.md`): Comprehensive repository exploration with module inventory, contract verification, test status, and discrepancy analysis
+- **Kiro Completion Audit Report** (`docs/kiro_completion_audit.md`): Phase 0 verification for final release preparation with critical issue identification
 
-### Changed
+### Changed (Previous)
 - **README Overhaul**: Complete rewrite to match as-built code reality
   - Added detailed module-by-module documentation (M0-M10) with file maps, algorithms, inputs/outputs, API endpoints, config keys, tests, and DoD status
   - Added architecture mermaid diagram covering full pipeline with frozen contracts

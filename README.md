@@ -39,7 +39,6 @@ flowchart TD
     M7 --> M8[M8: Forensic Ranking<br/>Odds-Form Bayes + Sensitivity]
     
     M8 --> M9[M9: Dashboard<br/>MapLibre + React + PDF]
-    M8 --> M10[M10: Offline Demo<br/>Deterministic A/B/C Cases]
 
     %% Frozen Contracts
     M5 -.->|EvidenceBundleV1| CONTRACT1[(Frozen Contract<br/>EvidenceBundleV1)]
@@ -52,7 +51,9 @@ flowchart TD
 
 ---
 
-## Modules 0-10: Technical Documentation
+## Modules 0-9: Technical Documentation
+
+> **Note**: Module 10 (Offline Demo & Integration) has been descoped by owner decision. Its cross-cutting requirements (deterministic execution, no-egress guarantees) have been moved to test suite and documented in "Demo & Honesty" section below.
 
 ### Module 0: Data Foundation
 **Status**: ✅ **DONE**
@@ -530,34 +531,6 @@ frontend/
 
 ---
 
-### Module 10: Integration, Offline Demo, Determinism, Release
-**Status**: ❌ **NOT STARTED (0% COMPLETE)**
-
-**Purpose**: Pre-cached offline demo pack for Cases A/B/C, determinism validation, failure drill, release artifacts.
-
-**Planned Components** (per Section G of master prompt):
-1. **Demo Pack**: Pre-fetched/cached ALL data for Cases A (single-source), B (two-source), C (ambiguous); zero network at runtime
-2. **`scripts/run_demo.sh`**: End-to-end A/B/C → dashboard + PDF; double-run determinism check (identical output_hash printed)
-3. **`docs/demo_narration.md`**: Screen-by-screen narration with mandated caveats (probability zone ≠ pin; priority ≠ guilt; prepared scenarios; REPLAY badge)
-4. **Failure Drill**: Kill a stage ⇒ graceful honest error state, never silent
-5. **Load/Smoke Tables**: Benchmark runtime, API p95 latency
-6. **Release Artifacts**: CHANGELOG updated, `docs/judge_qa.md` with bench numbers, git tag v1.0.0, GitHub release notes
-
-**Missing Files**:
-- ❌ `scripts/run_demo.sh`
-- ❌ `docs/demo_narration.md`
-- ❌ Demo data cache
-- ❌ No-egress guard test (verify zero network calls)
-- ❌ Determinism double-run test
-- ❌ Failure drill test suite
-
-**DoD Status**: ❌ **BLOCKED** — Requires Modules 8 & 9 complete
-
-**Known Limitations**:
-- N/A (not started)
-
----
-
 ## Frozen Contracts Reference
 
 Occuris uses **frozen contracts** to ensure deterministic, backwards-compatible data exchange between modules and external systems.
@@ -752,6 +725,63 @@ tools/bench/
 ├── calibration.py                 # Platt/isotonic fitting
 └── report.py                      # Generate docs/bench/attribution_bench_report.md
 ```
+
+---
+
+## Demo & Honesty
+
+### Cross-Cutting Guarantees (Formerly Module 10)
+
+Module 10 (Offline Demo & Integration) has been descoped by owner decision. However, its critical guarantees are preserved as **cross-cutting requirements** enforced throughout the system:
+
+#### 1. Deterministic Offline Execution
+
+**Guarantee**: Same inputs + seed ⇒ identical canonical output hashes
+
+**Implementation**:
+- Every pipeline run generates deterministic, reproducible results
+- `run_manifests` table stores input hashes (CSV, config, params) + random seed
+- Double-run verification test in `tests/integrity/test_determinism.py`
+- Canonical JSON serialization for bundle hashing (field order stable)
+
+**Verification**:
+```powershell
+# Run pipeline twice with same seed
+pytest tests/integrity/test_determinism.py -v
+# Verifies: hash(run1) == hash(run2)
+```
+
+#### 2. No-Egress Guarantee
+
+**Guarantee**: Tests and demo paths have zero network calls (all data precomputed)
+
+**Implementation**:
+- All M1-M8 pipeline stages use local data sources
+- Test fixtures pre-generate drift simulations (no OceanParcels network calls)
+- Guard test enforces no socket-level network activity during test runs
+
+**Verification**:
+```powershell
+# Run with network isolation
+pytest tests/integrity/test_no_egress.py -v
+# Verifies: socket.socket never called, HTTPConnection never opened
+```
+
+#### 3. Honest Demo Caveats
+
+All demonstrations, reports, and dashboards MUST display these mandated caveats:
+
+**Visual Caveats**:
+- 🎯 **Probability Zone ≠ Pin**: Origin zones are probabilistic regions, not exact GPS coordinates
+- ⚖️ **Priority ≠ Guilt**: Investigation rankings indicate evidence strength, not legal culpability
+- 🔄 **REPLAY Badge**: `● REPLAY | AIS Source: Synthetic AIS Replay` when using test data
+- 📊 **Interval Bars**: Every probability shows confidence interval, never point estimates alone
+
+**Textual Disclaimers** (in reports & PDFs):
+> "Physical consistency does not establish causation. Occuris reconstructs physical consistency using SAR, AIS and ocean-atmospheric data, but does not prove that a vessel caused an oil spill from satellite imagery alone. Oil-like dark features can arise from natural phenomena and other substances. Environmental model uncertainties and AIS reconstruction errors remain."
+
+**Prepared Scenarios Note**:
+> "This demonstration uses prepared scenarios with known ground truth. Real-world attribution may return AMBIGUOUS, INSUFFICIENT_DATA, or NO_STRONG_MATCH states."
 
 ---
 

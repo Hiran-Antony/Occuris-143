@@ -23,7 +23,7 @@
 | **M7: Counterfactual** | ✅ DONE | `src/counterfactual/` | `counterfactual_engine.py`, `release_sampler.py`, `transport.py`, `metrics.py`, `baseline.py`, `particle_initializer.py`, `rasterizer.py`, `sensitivity.py`, `candidate_selector.py`, `uncertainty.py`, `validation.py` | None (outputs match score + evidence) |
 | **M8: Forensic Ranking** | ⚠️ **PARTIAL** | `src/investigation/` | `candidate_evidence.py`, `spatial_analysis.py`, `temporal_analysis.py`, `evidence_fusion.py` — **NO odds-form Bayes, NO sensitivity.py, NO hypotheses.py, NO planner.py, NO RankingBundleV1** | ❌ **MISSING** |
 | **M9: Dashboard** | ✅ PARTIAL | `frontend/` | React + TypeScript + Vite + MapLibre **present and working** — tabs exist but **incomplete** (no WeasyPrint PDF, no ledger verify UI, no analyst decision buttons) | N/A |
-| **M10: Integration** | ❌ **NOT STARTED** | N/A | **No demo pack, no offline mode, no `scripts/run_demo.sh`, no `docs/demo_narration.md`** | N/A |
+| **M10: Integration** | ❌ **DESCOPED** | N/A | **Removed from scope by owner decision. Cross-cutting guarantees (determinism, no-egress) moved to test suite.** | N/A |
 
 ### 1.2 Additional Modules Found (not in spec)
 - `src/attribution/` — **EMPTY** (only `__init__.py`)
