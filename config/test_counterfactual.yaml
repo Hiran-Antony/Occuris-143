@@ -1,0 +1,42 @@
+# Test configuration for Counterfactual Engine
+# Fast execution (<5s) with representative particle dynamics
+
+release:
+  time_step_hours: 6
+  modes: [POINT]
+
+particles:
+  count: 50
+  initial_spread_m: 500.0
+
+ensemble:
+  members: 1
+  random_seed: 42
+
+transport:
+  dt_minutes: 20
+
+uncertainty:
+  windage_perturbation_fraction: 0.10
+  current_perturbation_fraction: 0.10
+  diffusion_scale: 1.0
+
+rasterization:
+  occupancy_threshold: 1
+
+physical_match:
+  weights:
+    iou: 0.35
+    centroid: 0.25
+    area: 0.15
+    shape: 0.15
+    orientation: 0.10
+  centroid_decay_km: 15.0
+  hausdorff_decay_km: 20.0
+
+baseline:
+  n_samples: 2
+  random_seed: 7
+
+time_sensitivity:
+  offsets_hours: [0]

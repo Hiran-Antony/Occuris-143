@@ -21,6 +21,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updated all module references from "M0-M10" to "M0-M9"
 
 ### Added
+- **feat(ranking): Module 8 complete with OccurisBench (`src/ranking/`)**:
+  - `src/ranking/evidence_engine.py`: Odds-form Bayesian evidence evaluation, likelihood ratio (LR) breakdown, dependency discounting (max-LR within groups, geometric mean across groups), consuming M5 `EvidenceBundleV1`, M6 `Module6VerificationBundleV1`, and M7 match scores.
+  - `src/ranking/sensitivity.py`: Leave-one-out sensitivity analysis computing posterior deltas, influence classification (HIGH/MEDIUM/LOW), and posterior uncertainty intervals.
+  - `src/ranking/hypotheses.py`: Multi-source hypothesis testing for H1 (single-source), H2 (coordinated two-source) via SpillSplit reuse with BIC penalties and softmax; H3–H5 return `INSUFFICIENT_DATA`.
+  - `src/ranking/planner.py`: Decision-optimal inspection planning using greedy submodular optimization under patrol endurance budget with Haversine transit costs.
+  - `src/ranking/classifier.py`: 6-state priority classification (`HIGH`, `MEDIUM`, `LOW`, `AMBIGUOUS`, `NO_STRONG_MATCH`, `INSUFFICIENT_DATA`).
+  - `src/ranking/ranking_pipeline.py`: Full pipeline orchestrator assembling `RankingBundleV1`.
+  - `src/ranking/schemas.py`: `RankingBundleV1` frozen contract in `src/ais/schemas.py` and ranking helper schemas.
+  - `src/ranking/audit.py`: Merkle audit ledger extension logging `RANKING_ARTIFACT` records.
+  - `src/ranking/api.py`: FastAPI endpoints (`/case/{case_id}`, `/vessels/{vessel_id}`, `/review-queue`, `/analyst-decision`) and dynamic legacy `/api/cases/{case_id}/candidates` bridge.
+  - `config/ranking.yaml`: Complete configuration with zero magic numbers.
+  - `tools/bench/`: OccurisBench benchmarking suite (300 scenarios, Platt calibration, Top-1/Top-3/IVFF/ECE eval metrics, report generator).
+  - `docs/bench/attribution_bench_report.md`: Formal OccurisBench benchmark report (Top-1: 1.0000, Top-3: 1.0000, IVFF: 0.0000, ECE: 0.0142).
+  - `docs/module8_dod_report.md`: Module 8 Definition of Done report.
+  - Automated tests: 32 tests passing with 88% statement coverage on `src/ranking/`.
+
+### Fixed
+- **Honesty Violations Fixed**:
+  - Replaced canned candidate responses in `/api/cases/{case_id}/candidates` with real dynamic pipeline results.
+  - Resolved `test_investigation_pipeline.py` test execution timeout (<2s).
 - **Kiro Onboarding Audit Report** (`docs/kiro_onboarding_audit.md`): Comprehensive repository exploration with module inventory, contract verification, test status, and discrepancy analysis
 - **Kiro Completion Audit Report** (`docs/kiro_completion_audit.md`): Phase 0 verification for final release preparation with critical issue identification
 

@@ -1,0 +1,457 @@
+# Occuris Module 8 — Forensic Ranking Configuration
+# All priors, likelihood ratios, and decision thresholds with rationale comments
+# Zero magic numbers policy — every parameter documented
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 1: BAYESIAN PRIORS
+# ═══════════════════════════════════════════════════════════════════════════
+
+priors:
+  # Default prior probability that an arbitrary vessel in the vicinity
+  # is plausible source given NO evidence
+  # Rationale: Conservative neutral prior; uniform over ~5 vessels ≈ 0.20
+  # Adjusted downward to account for innocent transit probability
+  default: 0.10
+  
+  # Vessel-type-specific priors (override default when vessel type known)
+  vessel_type:
+    tanker: 0.15        # Tankers carry oil; slightly elevated base prior
+    cargo: 0.08         # General cargo less likely to discharge oil
+    fishing: 0.05       # Fishing vessels rarely discharge large volumes
+    unknown: 0.10       # Unknown vessels default to base prior
+    
+  # Dark vessel (AIS off during release window) prior adjustment
+  # Rationale: Deliberate concealment increases suspicion but is not proof
+  # Many innocent reasons (equipment failure, coverage gaps)
+  dark_vessel_multiplier: 1.5  # 50% increase over base prior
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 2: LIKELIHOOD RATIOS (LR) WITH RATIONALE
+# ═══════════════════════════════════════════════════════════════════════════
+
+likelihood_ratios:
+  
+  # ─────────────────────────────────────────────────────────────────────────
+  # MODULE 7: Counterfactual Forward-Match Evidence
+  # ─────────────────────────────────────────────────────────────────────────
+  
+  counterfactual_match:
+    # High IoU (>0.6) + low centroid distance (<5km) + area similarity
+    # Rationale: Forward simulation closely reproduces observed slick geometry
+    excellent_match:      # IoU ≥ 0.60, centroid ≤ 5km
+      lr: 15.0
+      rationale: "Strong physical consistency: simulated trajectory matches observed slick shape and location"
+      
+    good_match:           # IoU ≥ 0.40, centroid ≤ 10km
+      lr: 8.0
+      rationale: "Moderate physical consistency: simulated trajectory overlaps observed slick"
+      
+    weak_match:           # IoU ≥ 0.20, centroid ≤ 20km
+      lr: 3.0
+      rationale: "Weak physical consistency: some overlap but significant deviation"
+      
+    poor_match:           # IoU < 0.20 or centroid > 20km
+      lr: 0.5
+      rationale: "Forward simulation does NOT reproduce observed slick (evidence AGAINST)"
+      
+    no_simulation:        # M7 could not run (insufficient track data)
+      lr: 1.0
+      rationale: "No forward simulation available; neutral evidence"
+  
+  # ─────────────────────────────────────────────────────────────────────────
+  # TEMPORAL & SPATIAL EVIDENCE
+  # ─────────────────────────────────────────────────────────────────────────
+  
+  temporal_overlap:
+    full_overlap:         # Vessel present entire release window
+      lr: 5.0
+      rationale: "Vessel confirmed in region during full release window"
+      
+    partial_overlap:      # Vessel present part of release window
+      lr: 2.5
+      rationale: "Vessel present during part of release window"
+      
+    no_overlap:           # Vessel absent during release window
+      lr: 0.1
+      rationale: "Vessel absent during release window (strong evidence AGAINST)"
+      
+  spatial_proximity:
+    intersects_origin:    # Vessel track intersects probabilistic origin zone
+      lr: 8.0
+      rationale: "Vessel physically present in estimated origin zone"
+      
+    within_10km:          # Minimum distance ≤ 10km from origin zone edge
+      lr: 4.0
+      rationale: "Vessel within 10km of origin zone (feasible with drift uncertainty)"
+      
+    within_30km:          # Minimum distance ≤ 30km
+      lr: 2.0
+      rationale: "Vessel within 30km (possible with extended drift model)"
+      
+    beyond_30km:          # Minimum distance > 30km
+      lr: 0.5
+      rationale: "Vessel too far from origin zone given drift model uncertainty"
+  
+  # ─────────────────────────────────────────────────────────────────────────
+  # MODULE 6: AIS VERIFICATION EVIDENCE
+  # ─────────────────────────────────────────────────────────────────────────
+  
+  ais_state:
+    NORMAL:
+      lr: 1.0
+      rationale: "AIS record reliable and continuous; neutral baseline"
+      
+    AIS_GAP_DARK:
+      lr: 3.0
+      rationale: "AIS gap during release window; vessel movements unobserved; increases suspicion"
+      
+    REPORTING_ANOMALY:
+      lr: 5.0
+      rationale: "AIS record shows spoofing indicators (teleport, speed impossible); suggests deliberate concealment"
+      
+    AMBIGUOUS:
+      lr: 1.5
+      rationale: "AIS reliability uncertain; slight increase in suspicion"
+  
+  # Module 6 Integrity Score (Bayesian posterior from M6 Stage 6)
+  # Lower integrity = less reliable AIS = higher suspicion
+  # Rationale: Unreliable AIS suggests concealment or evasion
+  ais_integrity_score:
+    # We map integrity score [0,1] to LR using inverse relationship
+    # High integrity (>0.9) → LR slightly below 1.0 (reliable is baseline)
+    # Low integrity (<0.3) → LR well above 1.0 (unreliable increases suspicion)
+    high_integrity:       # Integrity ≥ 0.90
+      lr: 0.8
+      rationale: "High AIS integrity slightly reduces suspicion (reliable vessels less likely to offend)"
+      
+    medium_integrity:     # Integrity 0.50-0.89
+      lr: 1.0
+      rationale: "Moderate AIS integrity; neutral"
+      
+    low_integrity:        # Integrity < 0.50
+      lr: 2.5
+      rationale: "Low AIS integrity increases suspicion of concealment"
+  
+  # ─────────────────────────────────────────────────────────────────────────
+  # MODULE 5: BEHAVIORAL & COLLECTIVE ANOMALIES
+  # ─────────────────────────────────────────────────────────────────────────
+  
+  collective_anomaly:
+    coordinated_dark:     # R1: coordinated AIS blackout with other vessels
+      lr: 4.0
+      rationale: "Coordinated AIS blackout suggests deliberate concealment"
+      
+    rendezvous:           # R2: rendezvous at sea (low speed, close proximity)
+      lr: 3.0
+      rationale: "Rendezvous at sea increases likelihood of ship-to-ship transfer"
+      
+    convergence:          # R3: multiple vessels converge then diverge
+      lr: 2.5
+      rationale: "Convergence pattern may indicate coordinated activity"
+      
+    none:
+      lr: 1.0
+      rationale: "No collective anomalies detected; neutral"
+  
+  dark_path_origin_intersection:
+    # Module 5 physics-informed dark-path reconstruction intersects origin zone
+    # Rationale: Reconstructed trajectory (labeled HYPOTHESIS) places vessel in origin
+    intersects:
+      lr: 3.5
+      rationale: "Dark-path hypothesis intersects origin zone (HYPOTHESIS - reconstructed, not observed)"
+      
+    does_not_intersect:
+      lr: 1.0
+      rationale: "Dark-path hypothesis does not intersect origin; neutral"
+  
+  # ─────────────────────────────────────────────────────────────────────────
+  # MODULE 4: SPILLSPLIT SOURCE-ZONE ASSIGNMENT
+  # ─────────────────────────────────────────────────────────────────────────
+  
+  spillsplit_assignment:
+    # If SpillSplit identifies two sources, which zone is vessel assigned to?
+    assigned_to_zone_1:
+      lr: 6.0
+      rationale: "Vessel spatially assigned to primary source zone by SpillSplit clustering"
+      
+    assigned_to_zone_2:
+      lr: 6.0
+      rationale: "Vessel spatially assigned to secondary source zone by SpillSplit clustering"
+      
+    not_assigned:         # SpillSplit = single source OR vessel far from both zones
+      lr: 1.0
+      rationale: "Vessel not assigned to any source zone; neutral"
+  
+  # ─────────────────────────────────────────────────────────────────────────
+  # REACHABILITY (Module 6 Stage 4)
+  # ─────────────────────────────────────────────────────────────────────────
+  
+  reachability:
+    REACHABLE:
+      lr: 1.0
+      rationale: "Vessel physically able to reach reported positions; neutral baseline"
+      
+    POSSIBLY_REACHABLE:
+      lr: 1.2
+      rationale: "Marginal reachability with current assist; slight increase"
+      
+    IMPLAUSIBLE:
+      lr: 0.3
+      rationale: "Physically implausible track (evidence AGAINST)"
+  
+  # ─────────────────────────────────────────────────────────────────────────
+  # EXPLANATION COMPETITION (Module 6 Stage 6)
+  # ─────────────────────────────────────────────────────────────────────────
+  
+  explanation:
+    # Softmax-winning explanation for AIS gaps/anomalies
+    CONCEALMENT_PATTERN:
+      lr: 4.0
+      rationale: "Gap/anomaly best explained by deliberate concealment"
+      
+    OPERATIONAL:
+      lr: 0.8
+      rationale: "Gap/anomaly explained by operational stop (anchoring, fishing); reduces suspicion"
+      
+    COVERAGE:
+      lr: 0.6
+      rationale: "Gap explained by infrastructure coverage failure; innocent"
+      
+    WEATHER:
+      lr: 0.7
+      rationale: "Gap explained by adverse weather affecting equipment; innocent"
+      
+    TRAFFIC:
+      lr: 1.0
+      rationale: "Gap explained by high traffic congestion; neutral"
+      
+    INSUFFICIENT_DATA:
+      lr: 1.0
+      rationale: "Cannot determine explanation; neutral"
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 3: DEPENDENCY DISCOUNTING
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Naive multiplication of correlated factors inflates posteriors
+# Group correlated evidence and apply discount exponent or max-LR rule
+
+dependency_groups:
+  
+  ais_family:
+    # Correlated: ais_state, ais_integrity_score, explanation, dark_path_origin
+    # Rationale: All derived from Module 6 AIS verification
+    # Method: Use MAX-LR (most informative factor dominates)
+    factors:
+      - ais_state
+      - ais_integrity_score
+      - explanation
+      - dark_path_origin_intersection
+    combination_method: "max"    # Take maximum LR, ignore others
+    rationale: "AIS factors are highly correlated; use most informative signal only"
+    
+  drift_family:
+    # Correlated: counterfactual_match, spillsplit_assignment, spatial_proximity
+    # Rationale: All relate to spatial consistency with drift model
+    # Method: Geometric mean (discount exponent = 1/N)
+    factors:
+      - counterfactual_match
+      - spillsplit_assignment
+      - spatial_proximity
+    combination_method: "geometric_mean"  # Π LRᵢ^(1/N)
+    rationale: "Drift-related factors share underlying spatial model; discount correlation"
+    
+  # Independent factors (multiply directly, no discount):
+  # - temporal_overlap (orthogonal to spatial)
+  # - collective_anomaly (behavioral, not spatial/AIS)
+  # - reachability (physical constraint, not drift model)
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 4: STATE CLASSIFICATION THRESHOLDS
+# ═══════════════════════════════════════════════════════════════════════════
+
+thresholds:
+  
+  # Posterior probability thresholds for priority states
+  # Rationale: Conservative thresholds to avoid false accusations
+  
+  high_priority:
+    lower_bound: 0.70   # P(plausible source | evidence) ≥ 0.70
+    rationale: "Strong evidence convergence; prioritize for investigation"
+    
+  medium_priority:
+    lower_bound: 0.40   # 0.40 ≤ P ≤ 0.70
+    rationale: "Moderate evidence; investigate after high-priority candidates"
+    
+  low_priority:
+    lower_bound: 0.15   # 0.15 ≤ P < 0.40
+    rationale: "Weak evidence; low investigation priority"
+    
+  no_strong_match:
+    upper_bound: 0.15   # P < 0.15 for ALL candidates
+    rationale: "No vessel shows strong evidence; return NO_STRONG_MATCH state"
+    
+  ambiguous:
+    interval_overlap_tolerance: 0.05
+    rationale: "Top candidates' posterior intervals overlap within tolerance; return AMBIGUOUS"
+    # Example: Vessel A [0.55, 0.75], Vessel B [0.50, 0.70] → overlap [0.55,0.70] > tolerance
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 5: SENSITIVITY ANALYSIS
+# ═══════════════════════════════════════════════════════════════════════════
+
+sensitivity:
+  # Leave-one-evidence-out (LOO) analysis parameters
+  
+  # Minimum posterior change to flag factor as "influential"
+  influential_threshold: 0.10
+  rationale: "Factor removal changes posterior by ≥10 percentage points"
+  
+  # Store top-N most influential factors per vessel
+  top_n_factors: 5
+  rationale: "Display 5 most influential evidence factors in dossier"
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 6: HYPOTHESIS TESTING (H1-H5)
+# ═══════════════════════════════════════════════════════════════════════════
+
+hypotheses:
+  
+  H1_single_source:
+    # SpillSplit identifies 1 component
+    description: "Single vessel responsible for observed slick"
+    required_data:
+      - spillsplit_one_component
+    bic_penalty_weight: 1.0
+    
+  H2_coordinated_two_source:
+    # SpillSplit identifies 2 components + collective anomaly (coordinated dark or rendezvous)
+    description: "Two vessels coordinated discharge (ship-to-ship transfer or synchronized release)"
+    required_data:
+      - spillsplit_two_components
+      - collective_anomaly_coordinated_dark_or_rendezvous
+    bic_penalty_weight: 2.0  # Penalize complexity
+    
+  H3_two_independent:
+    # SpillSplit identifies 2 components + no collective anomaly
+    description: "Two independent vessels discharged separately"
+    required_data:
+      - spillsplit_two_components
+    exclude_data:
+      - collective_anomaly_coordinated
+    bic_penalty_weight: 2.0
+    
+  H4_spill_plus_lookalike:
+    # SpillSplit identifies 2 components + one has high look-alike risk (Module 2)
+    description: "One vessel discharge + one natural/biogenic slick"
+    required_data:
+      - spillsplit_two_components
+      - one_component_high_lookalike_risk
+    bic_penalty_weight: 1.5
+    
+  H5_seep_plus_spill:
+    # SpillSplit identifies 2 components + one near known natural seep location
+    description: "Natural seep + vessel discharge"
+    required_data:
+      - spillsplit_two_components
+      - one_component_near_seep_database
+    bic_penalty_weight: 1.5
+    
+  # Return INSUFFICIENT_DATA when:
+  insufficient_data_triggers:
+    - no_spillsplit_output
+    - no_m6_bundles
+    - no_m7_bundles
+    - temporal_no_overlap_all_vessels
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 7: INSPECTION PLANNING (GREEDY SUBMODULAR)
+# ═══════════════════════════════════════════════════════════════════════════
+
+inspection_planning:
+  
+  # Patrol resource budget
+  patrol_budget:
+    available_assets: 2      # Number of patrol vessels/aircraft
+    max_hours_per_asset: 8   # Hours available per asset
+    average_speed_kn: 25     # Average patrol speed (knots)
+    base_port_lat: 16.0      # Forward operating base latitude (Arabian Sea sector)
+    base_port_lon: 64.0      # Forward operating base longitude
+    
+  # Value function weights
+  value_weights:
+    posterior_weight: 1.0
+    rationale: "Posterior probability of being plausible source"
+    
+    slick_volume_weight: 0.5
+    rationale: "Larger slicks (area proxy) prioritized for environmental impact"
+    
+    deterrence_weight: 0.3
+    rationale: "Visible enforcement deters future violations"
+    
+  # Cost function
+  cost_calculation:
+    method: "geodesic_distance"
+    rationale: "Transit cost = distance from current patrol position to vessel position"
+    
+  # Greedy submodular algorithm
+  # Iteratively select vessel with max marginal value / marginal cost
+  # Until budget exhausted
+  
+  # Output format:
+  # inspection_plan: [ {vessel_id, value, cost, marginal_value, order} ]
+  # ranked by selection order
+
+---
+
+# ═══════════════════════════════════════════════════════════════════════════
+# SECTION 8: FORENSIC INTEGRITY
+# ═══════════════════════════════════════════════════════════════════════════
+
+forensic:
+  
+  # Investigation priority ≠ guilt (enforced everywhere)
+  label_disclaimer: "Investigation Priority — Not Guilt"
+  
+  # Prior sensitivity intervals
+  # Re-run posterior with prior×0.5 and prior×2.0 to show robustness
+  prior_sensitivity:
+    multipliers: [0.5, 2.0]
+    rationale: "Show how posterior changes if prior assumptions vary"
+    
+  # Mandatory output fields
+  mandatory_fields:
+    - posterior_interval       # [lower, upper] from sensitivity
+    - lr_breakdown             # Per-factor LR contributions
+    - source_mode              # SYNTHETIC_REPLAY vs LIVE_FEED
+    - generated_at             # ISO-8601 UTC timestamp
+    - module8_version          # Software version
+    - ledger_hash              # Merkle audit chain hash
+    - provenance_ref           # Link to data provenance record
+    
+  # Honest limitations (embedded in every report)
+  limitations:
+    - "Physical consistency does not establish causation"
+    - "Posterior probabilities depend on prior assumptions and model accuracy"
+    - "AIS spoofing detection is probabilistic, not definitive"
+    - "Drift models assume uniform oil properties and constant environmental conditions"
+    - "This is an evidence ranking tool, not a legal verdict"
+
+---
+
+# END OF CONFIG
+# All parameters externalized; zero magic numbers in src/ranking/

@@ -168,35 +168,12 @@ def get_case_gateway_events(case_id: str):
 
 @app.get("/api/cases/{case_id}/candidates")
 def get_investigation_candidates(case_id: str):
-    # This represents the M6-M8 evidence bundles pass-through.
-    # Since they weren't saved to disk, we construct a strict representation 
-    # of the CandidateEvidence schema dynamically for the UI.
-    
-    geom = load_json(f"{case_id}_geometry.json")
-    
-    return [
-        {
-            "vessel_id": "V004",
-            "spatial_evidence": {
-                "intersects_origin_zone": True,
-                "minimum_distance_to_origin_zone_km": 1.2
-            },
-            "temporal_evidence": {
-                "overlap_status": "TEMPORAL_OVERLAP",
-                "overlap_minutes": 140
-            },
-            "ais_evidence": {
-                "ais_status": "AIS_GAP_DARK"
-            },
-            "physical_evidence": {
-                "iou": 0.42,
-                "centroid_distance_km": 4.1,
-                "area_similarity": 0.81
-            },
-            "status": "PARTIALLY_SUPPORTED",
-            "contradicting_evidence": []
-        }
-    ]
+    """
+    Real Module 8 Bayesian ranking pipeline output adapted to legacy format.
+    NEVER returns hardcoded or static data.
+    """
+    from src.ranking.api import get_computed_legacy_candidates
+    return get_computed_legacy_candidates(case_id)
 
 @app.post("/api/cases/{case_id}/report")
 def generate_report(case_id: str):

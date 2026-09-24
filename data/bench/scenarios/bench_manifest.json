@@ -1,0 +1,4216 @@
+{
+  "benchmark": "OccurisBench",
+  "version": "1.0.0",
+  "total_scenarios": 300,
+  "seed": 42,
+  "generated_at": "2026-09-24T07:42:19.582481+00:00",
+  "classes_distribution": {
+    "single_source": 60,
+    "two_source_coordinated": 60,
+    "spoofed_vessel": 60,
+    "dark_vessel": 60,
+    "ambiguous": 60
+  },
+  "scenarios": [
+    {
+      "scenario_id": "scenario_001",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_001"
+    },
+    {
+      "scenario_id": "scenario_002",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_002"
+    },
+    {
+      "scenario_id": "scenario_003",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_003"
+    },
+    {
+      "scenario_id": "scenario_004",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_004"
+    },
+    {
+      "scenario_id": "scenario_005",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_005"
+    },
+    {
+      "scenario_id": "scenario_006",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_006"
+    },
+    {
+      "scenario_id": "scenario_007",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_007"
+    },
+    {
+      "scenario_id": "scenario_008",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_008"
+    },
+    {
+      "scenario_id": "scenario_009",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_009"
+    },
+    {
+      "scenario_id": "scenario_010",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_010"
+    },
+    {
+      "scenario_id": "scenario_011",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_011"
+    },
+    {
+      "scenario_id": "scenario_012",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_012"
+    },
+    {
+      "scenario_id": "scenario_013",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_013"
+    },
+    {
+      "scenario_id": "scenario_014",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_014"
+    },
+    {
+      "scenario_id": "scenario_015",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_015"
+    },
+    {
+      "scenario_id": "scenario_016",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_016"
+    },
+    {
+      "scenario_id": "scenario_017",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_017"
+    },
+    {
+      "scenario_id": "scenario_018",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_018"
+    },
+    {
+      "scenario_id": "scenario_019",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_019"
+    },
+    {
+      "scenario_id": "scenario_020",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_020"
+    },
+    {
+      "scenario_id": "scenario_021",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_021"
+    },
+    {
+      "scenario_id": "scenario_022",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_022"
+    },
+    {
+      "scenario_id": "scenario_023",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_023"
+    },
+    {
+      "scenario_id": "scenario_024",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_024"
+    },
+    {
+      "scenario_id": "scenario_025",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_025"
+    },
+    {
+      "scenario_id": "scenario_026",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_026"
+    },
+    {
+      "scenario_id": "scenario_027",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_027"
+    },
+    {
+      "scenario_id": "scenario_028",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_028"
+    },
+    {
+      "scenario_id": "scenario_029",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_029"
+    },
+    {
+      "scenario_id": "scenario_030",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_030"
+    },
+    {
+      "scenario_id": "scenario_031",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_031"
+    },
+    {
+      "scenario_id": "scenario_032",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_032"
+    },
+    {
+      "scenario_id": "scenario_033",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_033"
+    },
+    {
+      "scenario_id": "scenario_034",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_034"
+    },
+    {
+      "scenario_id": "scenario_035",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_035"
+    },
+    {
+      "scenario_id": "scenario_036",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_036"
+    },
+    {
+      "scenario_id": "scenario_037",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_037"
+    },
+    {
+      "scenario_id": "scenario_038",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_038"
+    },
+    {
+      "scenario_id": "scenario_039",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_039"
+    },
+    {
+      "scenario_id": "scenario_040",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_040"
+    },
+    {
+      "scenario_id": "scenario_041",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_041"
+    },
+    {
+      "scenario_id": "scenario_042",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_042"
+    },
+    {
+      "scenario_id": "scenario_043",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_043"
+    },
+    {
+      "scenario_id": "scenario_044",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_044"
+    },
+    {
+      "scenario_id": "scenario_045",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_045"
+    },
+    {
+      "scenario_id": "scenario_046",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_046"
+    },
+    {
+      "scenario_id": "scenario_047",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_047"
+    },
+    {
+      "scenario_id": "scenario_048",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_048"
+    },
+    {
+      "scenario_id": "scenario_049",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_049"
+    },
+    {
+      "scenario_id": "scenario_050",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_050"
+    },
+    {
+      "scenario_id": "scenario_051",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_051"
+    },
+    {
+      "scenario_id": "scenario_052",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_052"
+    },
+    {
+      "scenario_id": "scenario_053",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_053"
+    },
+    {
+      "scenario_id": "scenario_054",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_054"
+    },
+    {
+      "scenario_id": "scenario_055",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_055"
+    },
+    {
+      "scenario_id": "scenario_056",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_056"
+    },
+    {
+      "scenario_id": "scenario_057",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_057"
+    },
+    {
+      "scenario_id": "scenario_058",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_058"
+    },
+    {
+      "scenario_id": "scenario_059",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_059"
+    },
+    {
+      "scenario_id": "scenario_060",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_060"
+    },
+    {
+      "scenario_id": "scenario_061",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_061"
+    },
+    {
+      "scenario_id": "scenario_062",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_062"
+    },
+    {
+      "scenario_id": "scenario_063",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_063"
+    },
+    {
+      "scenario_id": "scenario_064",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_064"
+    },
+    {
+      "scenario_id": "scenario_065",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_065"
+    },
+    {
+      "scenario_id": "scenario_066",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_066"
+    },
+    {
+      "scenario_id": "scenario_067",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_067"
+    },
+    {
+      "scenario_id": "scenario_068",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_068"
+    },
+    {
+      "scenario_id": "scenario_069",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_069"
+    },
+    {
+      "scenario_id": "scenario_070",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_070"
+    },
+    {
+      "scenario_id": "scenario_071",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_071"
+    },
+    {
+      "scenario_id": "scenario_072",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_072"
+    },
+    {
+      "scenario_id": "scenario_073",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_073"
+    },
+    {
+      "scenario_id": "scenario_074",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_074"
+    },
+    {
+      "scenario_id": "scenario_075",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_075"
+    },
+    {
+      "scenario_id": "scenario_076",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_076"
+    },
+    {
+      "scenario_id": "scenario_077",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_077"
+    },
+    {
+      "scenario_id": "scenario_078",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_078"
+    },
+    {
+      "scenario_id": "scenario_079",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_079"
+    },
+    {
+      "scenario_id": "scenario_080",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_080"
+    },
+    {
+      "scenario_id": "scenario_081",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_081"
+    },
+    {
+      "scenario_id": "scenario_082",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_082"
+    },
+    {
+      "scenario_id": "scenario_083",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_083"
+    },
+    {
+      "scenario_id": "scenario_084",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_084"
+    },
+    {
+      "scenario_id": "scenario_085",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_085"
+    },
+    {
+      "scenario_id": "scenario_086",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_086"
+    },
+    {
+      "scenario_id": "scenario_087",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_087"
+    },
+    {
+      "scenario_id": "scenario_088",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_088"
+    },
+    {
+      "scenario_id": "scenario_089",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_089"
+    },
+    {
+      "scenario_id": "scenario_090",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_090"
+    },
+    {
+      "scenario_id": "scenario_091",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_091"
+    },
+    {
+      "scenario_id": "scenario_092",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_092"
+    },
+    {
+      "scenario_id": "scenario_093",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_093"
+    },
+    {
+      "scenario_id": "scenario_094",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_094"
+    },
+    {
+      "scenario_id": "scenario_095",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_095"
+    },
+    {
+      "scenario_id": "scenario_096",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_096"
+    },
+    {
+      "scenario_id": "scenario_097",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_097"
+    },
+    {
+      "scenario_id": "scenario_098",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_098"
+    },
+    {
+      "scenario_id": "scenario_099",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_099"
+    },
+    {
+      "scenario_id": "scenario_100",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_100"
+    },
+    {
+      "scenario_id": "scenario_101",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_101"
+    },
+    {
+      "scenario_id": "scenario_102",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_102"
+    },
+    {
+      "scenario_id": "scenario_103",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_103"
+    },
+    {
+      "scenario_id": "scenario_104",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_104"
+    },
+    {
+      "scenario_id": "scenario_105",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_105"
+    },
+    {
+      "scenario_id": "scenario_106",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_106"
+    },
+    {
+      "scenario_id": "scenario_107",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_107"
+    },
+    {
+      "scenario_id": "scenario_108",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_108"
+    },
+    {
+      "scenario_id": "scenario_109",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_109"
+    },
+    {
+      "scenario_id": "scenario_110",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_110"
+    },
+    {
+      "scenario_id": "scenario_111",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_111"
+    },
+    {
+      "scenario_id": "scenario_112",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_112"
+    },
+    {
+      "scenario_id": "scenario_113",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_113"
+    },
+    {
+      "scenario_id": "scenario_114",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_114"
+    },
+    {
+      "scenario_id": "scenario_115",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_115"
+    },
+    {
+      "scenario_id": "scenario_116",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_116"
+    },
+    {
+      "scenario_id": "scenario_117",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_117"
+    },
+    {
+      "scenario_id": "scenario_118",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_118"
+    },
+    {
+      "scenario_id": "scenario_119",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_119"
+    },
+    {
+      "scenario_id": "scenario_120",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_120"
+    },
+    {
+      "scenario_id": "scenario_121",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_121"
+    },
+    {
+      "scenario_id": "scenario_122",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_122"
+    },
+    {
+      "scenario_id": "scenario_123",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_123"
+    },
+    {
+      "scenario_id": "scenario_124",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_124"
+    },
+    {
+      "scenario_id": "scenario_125",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_125"
+    },
+    {
+      "scenario_id": "scenario_126",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_126"
+    },
+    {
+      "scenario_id": "scenario_127",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_127"
+    },
+    {
+      "scenario_id": "scenario_128",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_128"
+    },
+    {
+      "scenario_id": "scenario_129",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_129"
+    },
+    {
+      "scenario_id": "scenario_130",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_130"
+    },
+    {
+      "scenario_id": "scenario_131",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_131"
+    },
+    {
+      "scenario_id": "scenario_132",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_132"
+    },
+    {
+      "scenario_id": "scenario_133",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_133"
+    },
+    {
+      "scenario_id": "scenario_134",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_134"
+    },
+    {
+      "scenario_id": "scenario_135",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_135"
+    },
+    {
+      "scenario_id": "scenario_136",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_136"
+    },
+    {
+      "scenario_id": "scenario_137",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_137"
+    },
+    {
+      "scenario_id": "scenario_138",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_138"
+    },
+    {
+      "scenario_id": "scenario_139",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_139"
+    },
+    {
+      "scenario_id": "scenario_140",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_140"
+    },
+    {
+      "scenario_id": "scenario_141",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_141"
+    },
+    {
+      "scenario_id": "scenario_142",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_142"
+    },
+    {
+      "scenario_id": "scenario_143",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_143"
+    },
+    {
+      "scenario_id": "scenario_144",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_144"
+    },
+    {
+      "scenario_id": "scenario_145",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_145"
+    },
+    {
+      "scenario_id": "scenario_146",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_146"
+    },
+    {
+      "scenario_id": "scenario_147",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_147"
+    },
+    {
+      "scenario_id": "scenario_148",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_148"
+    },
+    {
+      "scenario_id": "scenario_149",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_149"
+    },
+    {
+      "scenario_id": "scenario_150",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_150"
+    },
+    {
+      "scenario_id": "scenario_151",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_151"
+    },
+    {
+      "scenario_id": "scenario_152",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_152"
+    },
+    {
+      "scenario_id": "scenario_153",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_153"
+    },
+    {
+      "scenario_id": "scenario_154",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_154"
+    },
+    {
+      "scenario_id": "scenario_155",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_155"
+    },
+    {
+      "scenario_id": "scenario_156",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_156"
+    },
+    {
+      "scenario_id": "scenario_157",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_157"
+    },
+    {
+      "scenario_id": "scenario_158",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_158"
+    },
+    {
+      "scenario_id": "scenario_159",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_159"
+    },
+    {
+      "scenario_id": "scenario_160",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_160"
+    },
+    {
+      "scenario_id": "scenario_161",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_161"
+    },
+    {
+      "scenario_id": "scenario_162",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_162"
+    },
+    {
+      "scenario_id": "scenario_163",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_163"
+    },
+    {
+      "scenario_id": "scenario_164",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_164"
+    },
+    {
+      "scenario_id": "scenario_165",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_165"
+    },
+    {
+      "scenario_id": "scenario_166",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_166"
+    },
+    {
+      "scenario_id": "scenario_167",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_167"
+    },
+    {
+      "scenario_id": "scenario_168",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_168"
+    },
+    {
+      "scenario_id": "scenario_169",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_169"
+    },
+    {
+      "scenario_id": "scenario_170",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_170"
+    },
+    {
+      "scenario_id": "scenario_171",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_171"
+    },
+    {
+      "scenario_id": "scenario_172",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_172"
+    },
+    {
+      "scenario_id": "scenario_173",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_173"
+    },
+    {
+      "scenario_id": "scenario_174",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_174"
+    },
+    {
+      "scenario_id": "scenario_175",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_175"
+    },
+    {
+      "scenario_id": "scenario_176",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_176"
+    },
+    {
+      "scenario_id": "scenario_177",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_177"
+    },
+    {
+      "scenario_id": "scenario_178",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_178"
+    },
+    {
+      "scenario_id": "scenario_179",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_179"
+    },
+    {
+      "scenario_id": "scenario_180",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_180"
+    },
+    {
+      "scenario_id": "scenario_181",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_181"
+    },
+    {
+      "scenario_id": "scenario_182",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_182"
+    },
+    {
+      "scenario_id": "scenario_183",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_183"
+    },
+    {
+      "scenario_id": "scenario_184",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_184"
+    },
+    {
+      "scenario_id": "scenario_185",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_185"
+    },
+    {
+      "scenario_id": "scenario_186",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_186"
+    },
+    {
+      "scenario_id": "scenario_187",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_187"
+    },
+    {
+      "scenario_id": "scenario_188",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_188"
+    },
+    {
+      "scenario_id": "scenario_189",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_189"
+    },
+    {
+      "scenario_id": "scenario_190",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_190"
+    },
+    {
+      "scenario_id": "scenario_191",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_191"
+    },
+    {
+      "scenario_id": "scenario_192",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_192"
+    },
+    {
+      "scenario_id": "scenario_193",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_193"
+    },
+    {
+      "scenario_id": "scenario_194",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_194"
+    },
+    {
+      "scenario_id": "scenario_195",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_195"
+    },
+    {
+      "scenario_id": "scenario_196",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_196"
+    },
+    {
+      "scenario_id": "scenario_197",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_197"
+    },
+    {
+      "scenario_id": "scenario_198",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_198"
+    },
+    {
+      "scenario_id": "scenario_199",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_199"
+    },
+    {
+      "scenario_id": "scenario_200",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_200"
+    },
+    {
+      "scenario_id": "scenario_201",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_201"
+    },
+    {
+      "scenario_id": "scenario_202",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_202"
+    },
+    {
+      "scenario_id": "scenario_203",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_203"
+    },
+    {
+      "scenario_id": "scenario_204",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_204"
+    },
+    {
+      "scenario_id": "scenario_205",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_205"
+    },
+    {
+      "scenario_id": "scenario_206",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_206"
+    },
+    {
+      "scenario_id": "scenario_207",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_207"
+    },
+    {
+      "scenario_id": "scenario_208",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_208"
+    },
+    {
+      "scenario_id": "scenario_209",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_209"
+    },
+    {
+      "scenario_id": "scenario_210",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_210"
+    },
+    {
+      "scenario_id": "scenario_211",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_211"
+    },
+    {
+      "scenario_id": "scenario_212",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_212"
+    },
+    {
+      "scenario_id": "scenario_213",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_213"
+    },
+    {
+      "scenario_id": "scenario_214",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_214"
+    },
+    {
+      "scenario_id": "scenario_215",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_215"
+    },
+    {
+      "scenario_id": "scenario_216",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_216"
+    },
+    {
+      "scenario_id": "scenario_217",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_217"
+    },
+    {
+      "scenario_id": "scenario_218",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_218"
+    },
+    {
+      "scenario_id": "scenario_219",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_219"
+    },
+    {
+      "scenario_id": "scenario_220",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_220"
+    },
+    {
+      "scenario_id": "scenario_221",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_221"
+    },
+    {
+      "scenario_id": "scenario_222",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_222"
+    },
+    {
+      "scenario_id": "scenario_223",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_223"
+    },
+    {
+      "scenario_id": "scenario_224",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_224"
+    },
+    {
+      "scenario_id": "scenario_225",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_225"
+    },
+    {
+      "scenario_id": "scenario_226",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_226"
+    },
+    {
+      "scenario_id": "scenario_227",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_227"
+    },
+    {
+      "scenario_id": "scenario_228",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_228"
+    },
+    {
+      "scenario_id": "scenario_229",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_229"
+    },
+    {
+      "scenario_id": "scenario_230",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_230"
+    },
+    {
+      "scenario_id": "scenario_231",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_231"
+    },
+    {
+      "scenario_id": "scenario_232",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_232"
+    },
+    {
+      "scenario_id": "scenario_233",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_233"
+    },
+    {
+      "scenario_id": "scenario_234",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_234"
+    },
+    {
+      "scenario_id": "scenario_235",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_235"
+    },
+    {
+      "scenario_id": "scenario_236",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_236"
+    },
+    {
+      "scenario_id": "scenario_237",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_237"
+    },
+    {
+      "scenario_id": "scenario_238",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_238"
+    },
+    {
+      "scenario_id": "scenario_239",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_239"
+    },
+    {
+      "scenario_id": "scenario_240",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_240"
+    },
+    {
+      "scenario_id": "scenario_241",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_241"
+    },
+    {
+      "scenario_id": "scenario_242",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_242"
+    },
+    {
+      "scenario_id": "scenario_243",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_243"
+    },
+    {
+      "scenario_id": "scenario_244",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_244"
+    },
+    {
+      "scenario_id": "scenario_245",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_245"
+    },
+    {
+      "scenario_id": "scenario_246",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_246"
+    },
+    {
+      "scenario_id": "scenario_247",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_247"
+    },
+    {
+      "scenario_id": "scenario_248",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_248"
+    },
+    {
+      "scenario_id": "scenario_249",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_249"
+    },
+    {
+      "scenario_id": "scenario_250",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_250"
+    },
+    {
+      "scenario_id": "scenario_251",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_251"
+    },
+    {
+      "scenario_id": "scenario_252",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_252"
+    },
+    {
+      "scenario_id": "scenario_253",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_253"
+    },
+    {
+      "scenario_id": "scenario_254",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_254"
+    },
+    {
+      "scenario_id": "scenario_255",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_255"
+    },
+    {
+      "scenario_id": "scenario_256",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_256"
+    },
+    {
+      "scenario_id": "scenario_257",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_257"
+    },
+    {
+      "scenario_id": "scenario_258",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_258"
+    },
+    {
+      "scenario_id": "scenario_259",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_259"
+    },
+    {
+      "scenario_id": "scenario_260",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_260"
+    },
+    {
+      "scenario_id": "scenario_261",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_261"
+    },
+    {
+      "scenario_id": "scenario_262",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_262"
+    },
+    {
+      "scenario_id": "scenario_263",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_263"
+    },
+    {
+      "scenario_id": "scenario_264",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_264"
+    },
+    {
+      "scenario_id": "scenario_265",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_265"
+    },
+    {
+      "scenario_id": "scenario_266",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_266"
+    },
+    {
+      "scenario_id": "scenario_267",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_267"
+    },
+    {
+      "scenario_id": "scenario_268",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_268"
+    },
+    {
+      "scenario_id": "scenario_269",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_269"
+    },
+    {
+      "scenario_id": "scenario_270",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_270"
+    },
+    {
+      "scenario_id": "scenario_271",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_271"
+    },
+    {
+      "scenario_id": "scenario_272",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_272"
+    },
+    {
+      "scenario_id": "scenario_273",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_273"
+    },
+    {
+      "scenario_id": "scenario_274",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_274"
+    },
+    {
+      "scenario_id": "scenario_275",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_275"
+    },
+    {
+      "scenario_id": "scenario_276",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_276"
+    },
+    {
+      "scenario_id": "scenario_277",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_277"
+    },
+    {
+      "scenario_id": "scenario_278",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_278"
+    },
+    {
+      "scenario_id": "scenario_279",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_279"
+    },
+    {
+      "scenario_id": "scenario_280",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_280"
+    },
+    {
+      "scenario_id": "scenario_281",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_281"
+    },
+    {
+      "scenario_id": "scenario_282",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_282"
+    },
+    {
+      "scenario_id": "scenario_283",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_283"
+    },
+    {
+      "scenario_id": "scenario_284",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_284"
+    },
+    {
+      "scenario_id": "scenario_285",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_285"
+    },
+    {
+      "scenario_id": "scenario_286",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_286"
+    },
+    {
+      "scenario_id": "scenario_287",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_287"
+    },
+    {
+      "scenario_id": "scenario_288",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_288"
+    },
+    {
+      "scenario_id": "scenario_289",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_289"
+    },
+    {
+      "scenario_id": "scenario_290",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_290"
+    },
+    {
+      "scenario_id": "scenario_291",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_291"
+    },
+    {
+      "scenario_id": "scenario_292",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_292"
+    },
+    {
+      "scenario_id": "scenario_293",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_293"
+    },
+    {
+      "scenario_id": "scenario_294",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_294"
+    },
+    {
+      "scenario_id": "scenario_295",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_295"
+    },
+    {
+      "scenario_id": "scenario_296",
+      "scenario_class": "single_source",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_296"
+    },
+    {
+      "scenario_id": "scenario_297",
+      "scenario_class": "two_source_coordinated",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_297"
+    },
+    {
+      "scenario_id": "scenario_298",
+      "scenario_class": "spoofed_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_298"
+    },
+    {
+      "scenario_id": "scenario_299",
+      "scenario_class": "dark_vessel",
+      "culprits": [
+        "V001"
+      ],
+      "bystanders": [
+        "V002",
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_299"
+    },
+    {
+      "scenario_id": "scenario_300",
+      "scenario_class": "ambiguous",
+      "culprits": [
+        "V001",
+        "V002"
+      ],
+      "bystanders": [
+        "V003",
+        "V004",
+        "V005"
+      ],
+      "dir": "data\\bench\\scenarios\\scenario_300"
+    }
+  ]
+}

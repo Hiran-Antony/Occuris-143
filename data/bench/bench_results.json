@@ -1,0 +1,175 @@
+{
+  "benchmark": "OccurisBench",
+  "version": "1.0.0",
+  "timestamp": "2026-09-24T07:42:55.983264+00:00",
+  "code_revision": "9fbf431",
+  "config_hash": "f4d8f9715970f38f",
+  "seed": 42,
+  "total_scenarios": 300,
+  "calib_count": 90,
+  "eval_count": 210,
+  "platt_params": {
+    "A": 12.562432,
+    "B": -6.72054
+  },
+  "metrics": {
+    "top1_accuracy": 1.0,
+    "top3_coverage": 1.0,
+    "ivff": 0.0,
+    "ece": 0.0142
+  },
+  "targets": {
+    "top1_accuracy": 0.8,
+    "top3_coverage": 0.9,
+    "ivff": 0.1,
+    "ece": 0.1
+  },
+  "pass_fail": {
+    "top1_accuracy": "PASS",
+    "top3_coverage": "PASS",
+    "ivff": "PASS",
+    "ece": "PASS"
+  },
+  "class_breakdown": {
+    "single_source": {
+      "total": 43,
+      "top1_accuracy": 1.0,
+      "top3_coverage": 1.0
+    },
+    "two_source_coordinated": {
+      "total": 43,
+      "top1_accuracy": 1.0,
+      "top3_coverage": 1.0
+    },
+    "spoofed_vessel": {
+      "total": 42,
+      "top1_accuracy": 1.0,
+      "top3_coverage": 1.0
+    },
+    "dark_vessel": {
+      "total": 42,
+      "top1_accuracy": 1.0,
+      "top3_coverage": 1.0
+    },
+    "ambiguous": {
+      "total": 40,
+      "top1_accuracy": 1.0,
+      "top3_coverage": 1.0
+    }
+  },
+  "ece_reliability_bins": [
+    {
+      "bin_index": 0,
+      "range": [
+        0.0,
+        0.1
+      ],
+      "count": 757,
+      "accuracy": 0.0,
+      "confidence": 0.0111,
+      "abs_error": 0.0111
+    },
+    {
+      "bin_index": 1,
+      "range": [
+        0.1,
+        0.2
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.15,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 2,
+      "range": [
+        0.2,
+        0.3
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.25,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 3,
+      "range": [
+        0.3,
+        0.4
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.35,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 4,
+      "range": [
+        0.4,
+        0.5
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.45,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 5,
+      "range": [
+        0.5,
+        0.6
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.55,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 6,
+      "range": [
+        0.6,
+        0.7
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.65,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 7,
+      "range": [
+        0.7,
+        0.8
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.75,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 8,
+      "range": [
+        0.8,
+        0.9
+      ],
+      "count": 0,
+      "accuracy": 0.0,
+      "confidence": 0.85,
+      "abs_error": 0.0
+    },
+    {
+      "bin_index": 9,
+      "range": [
+        0.9,
+        1.0
+      ],
+      "count": 293,
+      "accuracy": 1.0,
+      "confidence": 0.9779,
+      "abs_error": 0.0221
+    }
+  ],
+  "runtime_seconds": 24.96,
+  "ground_truth_isolation_passed": true,
+  "disclaimer": "Investigation Priority \u2260 Guilt. Physical consistency does not establish causation."
+}

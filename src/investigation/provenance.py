@@ -40,7 +40,7 @@ def build_provenance_record(
     }
     
     disclaimer = (
-        "WARNING: This investigation relies on synthetic or test datasets. "
+        "WARNING: This investigation relies on synthetic or test datasets (MVP / SYNTHETIC TEST DATA). "
         "It must not be used as actual forensic evidence."
     ) if is_synthetic else None
     

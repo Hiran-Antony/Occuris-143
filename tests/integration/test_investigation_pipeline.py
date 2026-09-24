@@ -37,7 +37,11 @@ def verification_pipeline():
 
 @pytest.fixture(scope="module")
 def counterfactual_engine():
-    return CounterfactualEngine()
+    from src.counterfactual.counterfactual_engine import load_counterfactual_config
+    test_cfg_path = ROOT / "config" / "test_counterfactual.yaml"
+    cfg = load_counterfactual_config(test_cfg_path)
+    return CounterfactualEngine(config=cfg)
+
 
 
 def _load_json(case_id: str, suffix: str):
@@ -151,7 +155,9 @@ def test_investigation_pipeline(m5_engine, verification_pipeline, counterfactual
             continue
         
         # Make sure no "guilt" related language in the serialized output
-        report_json = json.dumps(report.model_dump())
+        import dataclasses
+        report_dict = dataclasses.asdict(report) if dataclasses.is_dataclass(report) else (report.model_dump() if hasattr(report, "model_dump") else report.dict())
+        report_json = json.dumps(report_dict, default=str)
         assert "culprit" not in report_json.lower()
         assert "guilty" not in report_json.lower()
         

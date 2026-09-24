@@ -1,0 +1,32 @@
+{
+  "_isolation_guard": "GROUND_TRUTH_FOR_TESTS_ONLY",
+  "scenario_id": "scenario_016",
+  "scenario_class": "single_source",
+  "culprits": [
+    "V001"
+  ],
+  "bystanders": [
+    "V002",
+    "V003",
+    "V004",
+    "V005"
+  ],
+  "case_context": {
+    "case_id": "scenario_016",
+    "origin_zones": [
+      {
+        "lat": 16.6536,
+        "lon": 64.6149,
+        "radius_km": 5.0
+      }
+    ],
+    "spill_center": {
+      "lat": 16.6536,
+      "lon": 64.6149
+    },
+    "release_window_start": "2024-03-15T00:00:00+00:00",
+    "release_window_end": "2024-03-15T12:00:00+00:00",
+    "sar_acquisition_time": "2024-03-15T12:00:00+00:00",
+    "release_window_hours": 24
+  }
+}

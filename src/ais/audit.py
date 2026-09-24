@@ -138,14 +138,20 @@ class MerkleAuditEngine:
         leaf_hashes = [e["row_hash"] for e in self.chained_events]
         m_root = build_merkle_root(leaf_hashes)
 
-        ts_list = [e.get("timestamp") for e in self.chained_events if "timestamp" in e]
-        w_start = min(ts_list) if ts_list else datetime.now(timezone.utc)
-        w_end = max(ts_list) if ts_list else datetime.now(timezone.utc)
+        parsed_ts = []
+        for e in self.chained_events:
+            ts = e.get("timestamp")
+            if ts is not None:
+                if isinstance(ts, str):
+                    try:
+                        parsed_ts.append(datetime.fromisoformat(ts.replace("Z", "+00:00")))
+                    except Exception:
+                        pass
+                elif isinstance(ts, datetime):
+                    parsed_ts.append(ts)
 
-        if isinstance(w_start, str):
-            w_start = datetime.fromisoformat(w_start)
-        if isinstance(w_end, str):
-            w_end = datetime.fromisoformat(w_end)
+        w_start = min(parsed_ts) if parsed_ts else datetime.now(timezone.utc)
+        w_end = max(parsed_ts) if parsed_ts else datetime.now(timezone.utc)
 
         anchor = AuditAnchor(
             anchor_id=f"ANCHOR_{len(self.anchors) + 1:04d}_{m_root[:8].upper()}",

@@ -719,3 +719,128 @@ class AnalystLabel(BaseModel):
     note: str = ""
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MODULE 8: FORENSIC RANKING — FROZEN CONTRACT V1
+# ══════════════════════════════════════════════════════════════════════════════
+
+class InvestigationPriority(str, Enum):
+    """Vessel investigation priority states (NOT guilt verdicts)."""
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
+    AMBIGUOUS = "AMBIGUOUS"                  # Top candidates' intervals overlap
+    NO_STRONG_MATCH = "NO_STRONG_MATCH"      # All posteriors below threshold
+    INSUFFICIENT_DATA = "INSUFFICIENT_DATA"   # Cannot evaluate evidence
+
+
+class LikelihoodRatioBreakdown(BaseModel):
+    """Individual evidence factor contribution to posterior."""
+    factor_name: str                         # e.g., "counterfactual_match", "ais_state"
+    factor_value: str                        # e.g., "excellent_match", "AIS_GAP_DARK"
+    likelihood_ratio: float                  # LR value from config
+    rationale: str                           # Human-readable explanation
+    source_module: str                       # M5, M6, M7, or M8
+
+
+class SensitivityContribution(BaseModel):
+    """Leave-one-evidence-out sensitivity analysis result."""
+    factor_name: str
+    posterior_with_factor: float             # Original posterior
+    posterior_without_factor: float          # Posterior if factor removed
+    delta: float                             # abs(with - without)
+    influence: str                           # HIGH | MEDIUM | LOW based on threshold
+
+
+class HypothesisPosterior(BaseModel):
+    """Posterior probability for each hypothesis (H1-H5)."""
+    hypothesis_id: str                       # H1_single_source, H2_coordinated_two_source, etc.
+    description: str                         # Human-readable hypothesis
+    posterior: float                         # P(H_i | evidence)
+    bic_penalty: float                       # Bayesian Information Criterion penalty
+    status: str                              # TESTABLE | INSUFFICIENT_DATA
+
+
+class VesselRankingEvidence(BaseModel):
+    """Complete evidence package for a single vessel."""
+    vessel_id: str
+    vessel_name: Optional[str] = None
+    vessel_type: Optional[str] = None
+    
+    # Bayesian posterior
+    prior: float                             # Prior P(source)
+    posterior: float                         # Posterior P(source | evidence)
+    posterior_interval: List[float]          # [lower, upper] from sensitivity
+    
+    # Priority classification
+    priority: InvestigationPriority
+    
+    # Evidence breakdown
+    lr_breakdown: List[LikelihoodRatioBreakdown]
+    sensitivity: List[SensitivityContribution]
+    
+    # Module outputs (for traceability)
+    ais_state: AisState                      # From Module 6
+    source_zone_assignment: Optional[str] = None  # From Module 4 SpillSplit
+    temporal_overlap: str                    # FULL | PARTIAL | NONE
+    spatial_distance_km: float               # Min distance to origin zone
+    
+    # Provenance
+    provenance_ref: str                      # Audit reference to data sources
+
+
+class InspectionAction(BaseModel):
+    """Single action in inspection plan."""
+    vessel_id: str
+    order: int                               # Selection order (1=first, 2=second, ...)
+    value: float                             # Submodular value score
+    cost: float                              # Transit cost (km or hours)
+    marginal_value: float                    # Value gained by selecting this vessel
+    action_type: str                         # BOARD_INSPECT | AERIAL_SURVEY | TRACK_MONITOR
+
+
+class RankingBundleV1(BaseModel):
+    """
+    Frozen Module 8 output contract.
+    
+    This bundle NEVER contains guilt verdicts or legal determinations.
+    All posteriors are investigation priorities based on evidence strength.
+    
+    FORENSIC BOUNDARY: Every output labeled "Investigation Priority — Not Guilt".
+    
+    schema_version must be bumped on any breaking change.
+    """
+    schema_version: str = "1.0.0"
+    case_id: str
+    module8_version: str = "8.0.0"
+    
+    # Hypothesis testing results
+    hypothesis_posteriors: List[HypothesisPosterior]
+    
+    # Per-vessel ranking
+    vessels: List[VesselRankingEvidence]
+    
+    # Inspection planning
+    inspection_plan: List[InspectionAction]
+    budget_utilization: float                # Fraction of patrol budget used [0,1]
+    
+    # Review queue (sorted by posterior interval width, descending)
+    # Most ambiguous vessels appear first
+    review_queue: List[str]                  # vessel_id list, ordered by ambiguity
+    
+    # Audit trail
+    ledger_hash: Optional[str] = None        # Merkle chain hash at ranking time
+    provenance_summary: str                  # "3 M5 bundles, 3 M6 bundles, 2 M7 bundles processed"
+    
+    # Metadata
+    source_mode: AisSourceMode = AisSourceMode.SYNTHETIC_REPLAY
+    generated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    
+    # Mandatory disclaimer (rendered in UI and PDF)
+    disclaimer: str = "Investigation Priority — Not Guilt. Physical consistency does not establish causation."
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# END MODULE 8 SCHEMAS
+# ══════════════════════════════════════════════════════════════════════════════

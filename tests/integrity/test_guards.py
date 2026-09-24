@@ -49,3 +49,37 @@ def test_guard_no_drift_or_scoring_imports():
                     assert prohibited not in line_clean, (
                         f"Prohibited import '{prohibited}' in {py_file.name}: {line_clean}"
                     )
+
+
+RANKING_DIR = ROOT / "src" / "ranking"
+
+
+def test_guard_ground_truth_isolation():
+    """src/ranking/ must NEVER reference ground_truth.json or tools/bench/."""
+    forbidden = ["ground_truth.json", "ground_truth", "tools/bench"]
+    for py_file in RANKING_DIR.glob("*.py"):
+        content = py_file.read_text(encoding="utf-8")
+        for fb in forbidden:
+            assert fb not in content, (
+                f"GUARD FAILED: {py_file.name} references '{fb}' — "
+                f"production code must never access benchmark ground truth"
+            )
+
+
+def test_guard_ranking_no_guilt_language():
+    """src/ranking/ must never use guilt-implying language."""
+    guilt_patterns = [
+        re.compile(r"\bguilty\b", re.IGNORECASE),
+        re.compile(r"\bculprit\b", re.IGNORECASE),
+        re.compile(r"\bperpetrator\b", re.IGNORECASE),
+    ]
+    for py_file in RANKING_DIR.glob("*.py"):
+        content = py_file.read_text(encoding="utf-8")
+        cleaned = re.sub(
+            r'["\'].*?(?:zero guilt|never output guilt|Investigation Priority|Not Guilt|guilt|no).*?["\']',
+            '', content, flags=re.IGNORECASE
+        )
+        for pat in guilt_patterns:
+            assert not pat.search(cleaned), (
+                f"Guilt word '{pat.pattern}' found in {py_file.name}"
+            )
