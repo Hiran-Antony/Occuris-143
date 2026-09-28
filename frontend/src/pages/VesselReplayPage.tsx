@@ -25,78 +25,78 @@ interface SuspectConfig {
 
 const SUSPECT_VESSELS: SuspectConfig[] = [
   {
-    mmsi: '419000042',
-    name: 'MT DESH SHOBHA',
+    mmsi: 'V004',
+    name: 'TRUE SOURCE',
     type: 'Crude Oil Tanker',
     flag: '🇮🇳 India',
     status: 'Selected Candidate (94%)',
     statusColor: '#ff3366',
-    corridor: 'Al-Mahra Gateway Transit (Gate A 84.0°E → Gate D 93.5°E)',
-    desc: 'Deliberate 2h 15m transponder blackout directly over 1.76 km² crude discharge zone at 13.16°N, 86.19°E.',
-    mapCenter: [12.4, 88.5],
+    corridor: 'Arabian Sea Transit (Gate A 59.0°E → Gate D 70.0°E)',
+    desc: 'Matches SAR oil slick signature. Transponder remains online, but physical footprint correlates heavily with slick inception zone.',
+    mapCenter: [18.5, 64.5],
     mapZoom: 6.5,
-    anomalyStart: '2024-01-15T12:30:00Z',
-    anomalyEnd: '2024-01-15T14:45:00Z',
-    anomalyLabel: '🚨 AIS TRANSPONDER SILENCED OVER CRUDE SPILL INCEPTION ZONE',
+    anomalyStart: '2024-03-15T06:00:00Z',
+    anomalyEnd: '2024-03-15T09:00:00Z',
+    anomalyLabel: '🚨 CRUDE SPILL INCEPTION ZONE INTERSECTION',
     normalLabel: 'TRANSPONDER ONLINE · REGULAR PASSAGE',
-    anomalyBadge: '🚨 AIS BLACKOUT ACTIVE',
-    associatedSar: 'S1A_IW_GRDH_20240115_SLICK_BAYOFBENGAL.jpg',
+    anomalyBadge: '🚨 SAR SLICK MATCH',
+    associatedSar: 'sar_03.png',
     milestones: [
-      { time: '06:30 UTC', label: 'Gate A Entry (84.0°E)' },
-      { time: '12:30 UTC', label: 'AIS Gap Begins', highlight: true },
-      { time: '14:45 UTC', label: 'AIS Resumes', highlight: true },
-      { time: '18:40 UTC', label: 'S1 SAR Slick Detected' },
-      { time: '21:30 UTC', label: 'Gate D Exit (93.5°E)' }
+      { time: '00:00 UTC', label: 'Tracking Begins' },
+      { time: '04:00 UTC', label: 'Entering Risk Zone' },
+      { time: '07:30 UTC', label: 'Slick Intersection', highlight: true },
+      { time: '08:40 UTC', label: 'S1 SAR Slick Detected' },
+      { time: '11:59 UTC', label: 'Tracking Ends' }
     ]
   },
   {
-    mmsi: '419000040',
-    name: 'EASTERN STAR',
+    mmsi: 'V003',
+    name: 'ARABIAN PHANTOM',
     type: 'Container Cargo',
     flag: '🇸🇬 Singapore',
-    status: 'SECONDARY CANDIDATE (48%)',
+    status: 'SECONDARY CANDIDATE (78%)',
     statusColor: '#ffb800',
-    corridor: 'Lakshadweep Channel Fairway (89.2°E → Gate D 94.0°E)',
-    desc: 'Underway bilge wake discharge along open deep-sea fairway. Passes 10.13°N, 92.64°E at 18:40 UTC S1 detection.',
-    mapCenter: [10.15, 91.6],
-    mapZoom: 7.5,
-    anomalyStart: '2024-01-15T17:15:00Z',
-    anomalyEnd: '2024-01-15T19:30:00Z',
-    anomalyLabel: 'UNDERWAY BILGE DISCHARGE & SPEED REDUCTION (8.5 KTS) AT CHOKEPOINT',
+    corridor: 'Arabian Sea Transit (Gate B 22.0°N → Gate C 14.5°N)',
+    desc: 'Deliberate 35-minute transponder blackout recorded at 03:00 UTC.',
+    mapCenter: [18.5, 64.5],
+    mapZoom: 6.5,
+    anomalyStart: '2024-03-15T03:00:00Z',
+    anomalyEnd: '2024-03-15T03:40:00Z',
+    anomalyLabel: 'AIS TRANSPONDER SILENCED (DARK VESSEL)',
     normalLabel: 'TRANSPONDER ONLINE · FAIRWAY TRANSIT 11.5 KTS',
-    anomalyBadge: 'BILGE DISCHARGE EVENT',
-    associatedSar: 'S1A_IW_GRDH_20240115_SLICK_FILAMENT.jpg',
+    anomalyBadge: 'AIS BLACKOUT ACTIVE',
+    associatedSar: 'sar_01.png',
     milestones: [
-      { time: '00:30 UTC', label: 'Corridor Ingress (89.2°E)' },
-      { time: '10:15 UTC', label: 'Fairway Transit (91.8°E)' },
-      { time: '16:30 UTC', label: 'Chokepoint Ingress' },
-      { time: '18:40 UTC', label: 'S1 SAR Bilge Detection', highlight: true },
-      { time: '23:45 UTC', label: 'Gate D Exit (94.0°E)' }
+      { time: '00:00 UTC', label: 'Tracking Begins' },
+      { time: '03:00 UTC', label: 'AIS Gap Begins', highlight: true },
+      { time: '03:35 UTC', label: 'AIS Resumes', highlight: true },
+      { time: '08:40 UTC', label: 'S1 SAR Detection' },
+      { time: '11:59 UTC', label: 'Tracking Ends' }
     ]
   },
   {
-    mmsi: '419000041',
-    name: 'GULF WAVE',
+    mmsi: 'V002',
+    name: 'GULF CARRIER',
     type: 'Product Tanker',
     flag: '🇲🇾 Malaysia',
-    status: 'OFFSHORE SUSPECT (38%)',
+    status: 'OFFSHORE SUSPECT (55%)',
     statusColor: '#ff8800',
-    corridor: 'Oman Basin Offshore Energy Shelf (Gate B 17.8°N → Gate A 15.2°N)',
-    desc: 'Southbound transit along Andhra shelf. Severe deceleration to 6.0 kts at 16.45°N, 84.46°E during 18:40 UTC S1 detection.',
-    mapCenter: [16.5, 84.8],
-    mapZoom: 7.5,
-    anomalyStart: '2024-01-15T16:15:00Z',
-    anomalyEnd: '2024-01-15T19:15:00Z',
-    anomalyLabel: 'SEVERE SLOWDOWN (6.0 KTS) OVER Oman Basin WEATHERED EMULSION',
+    corridor: 'Arabian Sea Transit (Gate A 59.0°E → Gate D 70.0°E)',
+    desc: 'Implausible 150+ nautical mile position jump recorded at 02:00 UTC indicating AIS spoofing.',
+    mapCenter: [18.5, 64.5],
+    mapZoom: 6.5,
+    anomalyStart: '2024-03-15T01:50:00Z',
+    anomalyEnd: '2024-03-15T02:20:00Z',
+    anomalyLabel: 'SEVERE POSITION JUMP (>150 NM) - SPOOFING DETECTED',
     normalLabel: 'TRANSPONDER ONLINE · SHELF CRUISE 10.0 KTS',
-    anomalyBadge: 'RIG WASHING / SLOWDOWN',
-    associatedSar: 'S1B_IW_GRDH_20240115_SLICK_EMULSION.jpg',
+    anomalyBadge: 'SPOOFED LOCATION',
+    associatedSar: 'sar_02.png',
     milestones: [
-      { time: '08:45 UTC', label: 'Basin Entry (17.8°N)' },
-      { time: '14:20 UTC', label: 'Shelf Ingress (84.65°E)' },
-      { time: '16:30 UTC', label: 'Speed Drops to 6.0 kts', highlight: true },
-      { time: '18:40 UTC', label: 'S1 SAR Emulsion Detection', highlight: true },
-      { time: '22:15 UTC', label: 'Corridor Exit (15.2°N)' }
+      { time: '00:00 UTC', label: 'Tracking Begins' },
+      { time: '01:50 UTC', label: 'Last Valid Ping' },
+      { time: '02:00 UTC', label: 'Position Jump (Spoofing)', highlight: true },
+      { time: '08:40 UTC', label: 'S1 SAR Detection' },
+      { time: '11:59 UTC', label: 'Tracking Ends' }
     ]
   }
 ];
@@ -111,7 +111,7 @@ function MapController({ center, zoom }: { center: [number, number]; zoom: numbe
 
 export default function VesselReplayPage() {
   const [mapLayer, setMapLayer] = useState<'sentinel' | 'dark' | 'osm'>('sentinel');
-  const [selectedMmsi, setSelectedMmsi] = useState<string>('419000042');
+  const [selectedMmsi, setSelectedMmsi] = useState<string>('V004');
   const [positions, setPositions] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -174,8 +174,8 @@ export default function VesselReplayPage() {
   const isInsideAnomaly = currentTime >= anomStart && currentTime <= anomEnd;
 
   // Render past trail up to current index and remaining planned track
-  const pastCoords: [number, number][] = positions.slice(0, currentIndex + 1).map(p => [p.latitude, p.longitude]);
-  const fullCoords: [number, number][] = positions.map(p => [p.latitude, p.longitude]);
+  const pastCoords: [number, number][] = positions.slice(0, currentIndex + 1).map(p => [p.lat || p.latitude, p.lon || p.longitude]);
+  const fullCoords: [number, number][] = positions.map(p => [p.lat || p.latitude, p.lon || p.longitude]);
 
   // Jump to anomaly event helper
   const handleJumpToAnomaly = () => {
@@ -365,14 +365,14 @@ export default function VesselReplayPage() {
             />
           )}
 
-          {/* Oceanic Corridor Gateways */}
-          <Polyline positions={[[6.0, 84.0], [19.5, 84.0]]} pathOptions={{ color: '#00ff88', weight: 2.5, dashArray: '6 4' }} />
-          <Polyline positions={[[6.0, 93.5], [19.5, 93.5]]} pathOptions={{ color: '#ff6b35', weight: 2.5, dashArray: '6 4' }} />
+          {/* Oceanic Corridor Gateways (Arabian Sea) */}
+          <Polyline positions={[[14.5, 59.0], [22.0, 59.0]]} pathOptions={{ color: '#00ff88', weight: 2.5, dashArray: '6 4' }} />
+          <Polyline positions={[[14.5, 70.0], [22.0, 70.0]]} pathOptions={{ color: '#ff6b35', weight: 2.5, dashArray: '6 4' }} />
 
           {/* Real Sentinel SAR Oil Spill Overlays */}
           {incidents.map((inc: any) => {
-            const lat = inc.geometry?.centroid_lat || 13.16;
-            const lon = inc.geometry?.centroid_lon || 86.19;
+            const lat = inc.geometry?.centroid_lat || 18.5;
+            const lon = inc.geometry?.centroid_lon || 64.5;
             const sarFile = inc.sar_image_path ? inc.sar_image_path.split(/[\\/]/).pop() : '000002.jpg';
             const maskFile = inc.mask_path ? inc.mask_path.split(/[\\/]/).pop() : '000002_mask.png';
             const isAssociated = sarFile === activeVessel.associatedSar;
@@ -439,7 +439,7 @@ export default function VesselReplayPage() {
           {/* Current Animated Vessel Marker */}
           {currentPos && (
             <CircleMarker
-              center={[currentPos.latitude, currentPos.longitude]}
+              center={[currentPos.lat || currentPos.latitude, currentPos.lon || currentPos.longitude]}
               radius={isInsideAnomaly ? 11 : 8}
               pathOptions={{
                 color: isInsideAnomaly ? '#ff3366' : '#00ffff',
@@ -545,13 +545,13 @@ export default function VesselReplayPage() {
               <div>
                 <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>SPEED</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--cyan)', fontFamily: 'JetBrains Mono, monospace' }}>
-                  {currentPos?.speed?.toFixed(1) || '10.0'} kts
+                  {currentPos?.sog?.toFixed(1) || '10.0'} kts
                 </div>
               </div>
               <div>
                 <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>HEADING</div>
                 <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--cyan)', fontFamily: 'JetBrains Mono, monospace' }}>
-                  {currentPos?.course ? `${Math.round(currentPos.course)}°` : '092°'}
+                  {currentPos?.cog ? `${Math.round(currentPos.cog)}°` : '092°'}
                 </div>
               </div>
               <div>

@@ -120,15 +120,21 @@ def generate_ais():
         "V005": {"name": "INNOCENT TRANSIT", "mmsi": 477001005, "behaviour": "normal"},   # nearby but innocent
     }
 
+    for i in range(6, 26):
+        vessels[f"V{i:03d}"] = {"name": f"BACKGROUND VESSEL {i}", "mmsi": 477001000 + i, "behaviour": "normal"}
+
     records = []
     base_dt = datetime.datetime(2024, 3, 15, 0, 0, 0)
 
     rng = np.random.default_rng(99)
 
-    for vid, vinfo in vessels.items():
-        # start positions roughly in Arabian Sea
-        lat = rng.uniform(15, 23)
-        lon = rng.uniform(58, 72)
+    vessel_list = list(vessels.items())
+    for vi, (vid, vinfo) in enumerate(vessel_list):
+        # Start positions roughly uniformly distributed within the deep ocean monitoring area
+        lat = rng.uniform(15.0, 21.5)
+        lon = rng.uniform(59.5, 69.5)
+        
+        # Natural transit headings (mostly avoiding heading straight into the eastern coast)
         cog = rng.uniform(60, 300)   # degrees
         sog = rng.uniform(8, 14)     # knots
 
@@ -146,9 +152,9 @@ def generate_ais():
                 gap_injected = True
                 continue
 
-            # Spoofed: inject an implausible 150-nm jump at hour 2
+            # Spoofed: inject an implausible ~150-nm jump at hour 2
             if vinfo["behaviour"] == "spoofed" and not jump_injected and (t - base_dt).total_seconds() > 2 * 3600:
-                lat += rng.uniform(1.8, 2.5)   # ~150–200 nm jump
+                lat += rng.uniform(1.8, 2.5)
                 lon += rng.uniform(1.8, 2.5)
                 jump_injected = True
 
@@ -160,8 +166,8 @@ def generate_ais():
                 "lat":           round(float(lat), 5),
                 "lon":           round(float(lon), 5),
                 "sog":           round(float(sog), 1),
-                "cog":           round(float(cog), 1),
-                "nav_status":    0,   # under way using engine
+                "cog":           round(float(cog % 360), 1),
+                "nav_status":    0,
                 "source":        "AIS_CLASS_A",
             })
 
@@ -171,8 +177,8 @@ def generate_ais():
             dlon  = sog * math.sin(math.radians(cog)) * dt_hr / 60.0 / math.cos(math.radians(lat))
             lat  += dlat + rng.normal(0, 0.001)
             lon  += dlon + rng.normal(0, 0.001)
-            cog  += rng.normal(0, 2)
-            sog  += rng.normal(0, 0.3)
+            cog  += rng.normal(0, 1.5)   # slight course variation
+            sog  += rng.normal(0, 0.2)
             sog   = float(np.clip(sog, 2, 18))
 
             t += datetime.timedelta(minutes=int(interval_min))

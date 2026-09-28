@@ -1,5 +1,5 @@
 import { Map, Globe, AlertTriangle, Ship, Zap, Waves } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Polygon, CircleMarker, Popup, useMap, ImageOverlay, Rectangle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -66,15 +66,22 @@ export default function RegionalMonitoring() {
     regionApi.getRegion().then(d => setRegion(d)).catch(() => {});
     forensicsApi.getIncidents().then(setIncidents).catch(() => {});
 
-    // Fetch M5 real tracks for all 5 vessels (V001–V005)
-    const vesselIds = ['V001', 'V002', 'V003', 'V004', 'V005'];
-    Promise.all(
-      vesselIds.map(vid =>
-        caseApi.getVesselTrack(ACTIVE_CASE_ID, vid).catch(() => null)
-      )
-    ).then(results => {
-      const valid = results.filter(Boolean) as M5VesselTrack[];
-      setM5Tracks(valid);
+    // Dynamically load all vessels from the API
+    caseApi.getVessels(ACTIVE_CASE_ID).then((vessels: any[]) => {
+      const vesselIds = vessels.map((v: any) => v.vessel_id || v.mmsi);
+      Promise.all(
+        vesselIds.map((vid: string) =>
+          caseApi.getVesselTrack(ACTIVE_CASE_ID, vid).catch(() => null)
+        )
+      ).then(results => {
+        const valid = results.filter(Boolean) as M5VesselTrack[];
+        setM5Tracks(valid);
+      });
+    }).catch(() => {
+      // Fallback to the original 5 if vessel list fails
+      const vesselIds = ['V001', 'V002', 'V003', 'V004', 'V005'];
+      Promise.all(vesselIds.map(vid => caseApi.getVesselTrack(ACTIVE_CASE_ID, vid).catch(() => null)))
+        .then(results => setM5Tracks(results.filter(Boolean) as M5VesselTrack[]));
     });
   }, []);
 
@@ -85,6 +92,35 @@ export default function RegionalMonitoring() {
 
   // ── Past incident indicator ──────────────────────────────────────────────
   const incidentPassed = demoTime >= INCIDENT;
+
+  // ── Live "In Region" count — vessels whose interpolated position is inside the monitoring box RIGHT NOW ──
+  const BOX = { minLat: 14.5, maxLat: 22.0, minLon: 59.0, maxLon: 70.0 };
+  const currentMs = demoTime.getTime();
+
+  const vesselsInRegionNow = useMemo(() => {
+    return m5Tracks.filter(track => {
+      const positions = track.positions;
+      if (!positions || positions.length === 0) return false;
+      const firstMs = new Date(positions[0].timestamp).getTime();
+      const lastMs  = new Date(positions[positions.length - 1].timestamp).getTime();
+      // Outside time window
+      if (currentMs < firstMs || currentMs > lastMs + 10 * 60 * 1000) return false;
+      // Interpolate position
+      let lat = positions[positions.length - 1].lat;
+      let lon = positions[positions.length - 1].lon;
+      for (let i = 0; i < positions.length - 1; i++) {
+        const t0 = new Date(positions[i].timestamp).getTime();
+        const t1 = new Date(positions[i + 1].timestamp).getTime();
+        if (currentMs >= t0 && currentMs <= t1) {
+          const frac = t1 > t0 ? (currentMs - t0) / (t1 - t0) : 0;
+          lat = positions[i].lat + (positions[i + 1].lat - positions[i].lat) * frac;
+          lon = positions[i].lon + (positions[i + 1].lon - positions[i].lon) * frac;
+          break;
+        }
+      }
+      return lat >= BOX.minLat && lat <= BOX.maxLat && lon >= BOX.minLon && lon <= BOX.maxLon;
+    }).length;
+  }, [m5Tracks, currentMs]);
 
   // Selected vessel track for detailed rendering
   const selectedTrack = m5Tracks.find(t => t.vessel_id === selectedVesselId) || null;
@@ -225,8 +261,8 @@ export default function RegionalMonitoring() {
           <div className="stat-label">Total Vessels</div>
         </div>
         <div className="stat-card success">
-          <div className="stat-value">{stats?.vessels_ever_in_region ?? '—'}</div>
-          <div className="stat-label">In Region</div>
+          <div className="stat-value" style={{ transition: 'all 0.3s' }}>{m5Tracks.length > 0 ? vesselsInRegionNow : (stats?.vessels_ever_in_region ?? '—')}</div>
+          <div className="stat-label">In Region Now</div>
         </div>
         <div className="stat-card">
           <div className="stat-value">{stats?.total_gateway_crossings ?? '—'}</div>
@@ -642,9 +678,9 @@ export default function RegionalMonitoring() {
 
         {/* Gateway Event Panel — M5 CrossingDetector output */}
         <GatewayEventPanel
-          caseId={ACTIVE_CASE_ID}
           currentTimestamp={demoTime}
           selectedVesselId={selectedVesselId}
+          tracks={m5Tracks}
         />
       </div>
 

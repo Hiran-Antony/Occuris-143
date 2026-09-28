@@ -1,68 +1,63 @@
 region:
   name: "Arabian Sea Monitored Sector"
-  bounds: [58.0, 14.0, 75.0, 25.0]  # [min_lon, min_lat, max_lon, max_lat]
+  bounds: [59.0, 14.5, 70.0, 22.0]
 
-# 4 narrow corridor gateways (not region-sized boxes) positioned to intercept shipping corridors
 gateways:
   - gateway_id: "GATE_A"
-    name: "Western Oman / Gulf of Aden Approach Corridor"
+    name: "Gate Alpha — Western Corridor"
     orientation: "west"
     entry_side: "west"
     exit_side: "east"
     geometry_geojson:
       type: "Polygon"
-      # Narrow corridor polygon around lon 63.0E from lat 14.0N to 22.5N
       coordinates:
-        - - [62.75, 14.0]
-          - [63.25, 14.0]
-          - [63.25, 22.5]
-          - [62.75, 22.5]
-          - [62.75, 14.0]
+        - - [58.8, 14.5]
+          - [59.2, 14.5]
+          - [59.2, 22.0]
+          - [58.8, 22.0]
+          - [58.8, 14.5]
 
   - gateway_id: "GATE_B"
-    name: "Northern Persian Gulf Approach Corridor"
+    name: "Gate Bravo — Northern Corridor"
     orientation: "north"
     entry_side: "north"
     exit_side: "south"
     geometry_geojson:
       type: "Polygon"
-      # Narrow corridor polygon around lat 18.0N from lon 64.0E to 68.0E
       coordinates:
-        - - [64.0, 17.8]
-          - [68.0, 17.8]
-          - [68.0, 18.2]
-          - [64.0, 18.2]
-          - [64.0, 17.8]
+        - - [59.0, 21.8]
+          - [70.0, 21.8]
+          - [70.0, 22.2]
+          - [59.0, 22.2]
+          - [59.0, 21.8]
 
   - gateway_id: "GATE_C"
-    name: "Southern Lakshadweep Passage Corridor"
+    name: "Gate Charlie — Southern Corridor"
     orientation: "south"
-    entry_side: "north"
-    exit_side: "south"
+    entry_side: "south"
+    exit_side: "north"
     geometry_geojson:
       type: "Polygon"
-      # Narrow corridor polygon around lat 16.0N from lon 68.0E to 72.0E
       coordinates:
-        - - [68.0, 15.8]
-          - [72.0, 15.8]
-          - [72.0, 16.2]
-          - [68.0, 16.2]
-          - [68.0, 15.8]
+        - - [59.0, 14.3]
+          - [70.0, 14.3]
+          - [70.0, 14.7]
+          - [59.0, 14.7]
+          - [59.0, 14.3]
 
   - gateway_id: "GATE_D"
-    name: "Eastern India Coastal Transit Corridor"
+    name: "Gate Delta — Eastern Corridor"
     orientation: "east"
     entry_side: "east"
     exit_side: "west"
     geometry_geojson:
       type: "Polygon"
-      # Narrow corridor polygon around lon 66.0E from lat 16.0N to 19.0N
       coordinates:
-        - - [65.75, 16.0]
-          - [66.25, 16.0]
-          - [66.25, 19.0]
-          - [65.75, 19.0]
-          - [65.75, 16.0]
+        - - [69.8, 14.5]
+          - [70.2, 14.5]
+          - [70.2, 22.0]
+          - [69.8, 22.0]
+          - [69.8, 14.5]
 
 thresholds:
   ais_gap_minutes: 15.0

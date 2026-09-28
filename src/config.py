@@ -18,8 +18,8 @@ MODELS_DIR     = ROOT / "models"
 DB_PATH        = ROOT / "data" / "occris.db"
 
 # ── Arabian Sea bounding box (shared) ─────────────────────────────────────────
-# lon: 58–75 E  |  lat: 14–25 N
-ARABIAN_SEA_BBOX = dict(lon_min=58.0, lon_max=75.0, lat_min=14.0, lat_max=25.0)
+# lon: 59–70 E  |  lat: 14.5–22 N  (fully in open ocean, no land overlap)
+ARABIAN_SEA_BBOX = dict(lon_min=59.0, lon_max=70.0, lat_min=14.5, lat_max=22.0)
 
 # ── Case definitions ──────────────────────────────────────────────────────────
 # Each case represents one investigation scenario.
@@ -111,9 +111,9 @@ GATEWAY_POLYGONS = {
 
 # Module 5 operational corridor line gateways that intersect active shipping tracks
 GATEWAY_CORRIDORS = {
-    "GW_NORTH": {"name": "Northern Transit Corridor", "coords": [(18.0, 64.0), (18.0, 68.0)], "orientation": "north"},
-    "GW_EAST":  {"name": "Eastern Approach Gate",     "coords": [(16.0, 66.0), (19.0, 66.0)], "orientation": "east"},
-    "GW_WEST":  {"name": "Western Oman Corridor",     "coords": [(14.0, 63.0), (22.5, 63.0)], "orientation": "west"},
-    "GW_SOUTH": {"name": "Southern Passage Gate",     "coords": [(16.0, 68.0), (16.0, 72.0)], "orientation": "south"},
+    "GW_NORTH": {"name": "Gate B — Bravo (North)",  "coords": [(22.0, 59.0), (22.0, 70.0)], "orientation": "north"},
+    "GW_EAST":  {"name": "Gate D — Delta (East)",   "coords": [(14.5, 70.0), (22.0, 70.0)], "orientation": "east"},
+    "GW_WEST":  {"name": "Gate A — Alpha (West)",   "coords": [(14.5, 59.0), (22.0, 59.0)], "orientation": "west"},
+    "GW_SOUTH": {"name": "Gate C — Charlie (South)","coords": [(14.5, 59.0), (14.5, 70.0)], "orientation": "south"},
 }
 

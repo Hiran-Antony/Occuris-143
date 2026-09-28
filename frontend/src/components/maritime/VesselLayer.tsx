@@ -14,14 +14,21 @@ import { CircleMarker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { Marker } from 'react-leaflet';
 
-// Color per vessel (not related to suspicion — just visual distinction)
-const VESSEL_COLORS: Record<string, string> = {
-  V001: '#00d4ff',
-  V002: '#ffb800',
-  V003: '#00ff88',
-  V004: '#ff6b6b',
-  V005: '#c084fc',
-};
+// Generates a consistent color for any vessel ID using HSL hue rotation
+function getVesselColor(vesselId: string): string {
+  const FIXED: Record<string, string> = {
+    V001: '#00d4ff',
+    V002: '#ffb800',
+    V003: '#00ff88',
+    V004: '#ff6b6b',
+    V005: '#c084fc',
+  };
+  if (FIXED[vesselId]) return FIXED[vesselId];
+  // For V006–V025: deterministic hue from vessel number
+  const num = parseInt(vesselId.replace(/\D/g, ''), 10) || 1;
+  const hue = (num * 37 + 180) % 360; // golden-angle-like spread
+  return `hsl(${hue}, 85%, 60%)`;
+}
 
 interface AisPing {
   timestamp: string;
@@ -148,7 +155,7 @@ export default function VesselLayer({ tracks, currentTimestamp, selectedVesselId
         const state = getVesselStateAt(track, currentMs);
         if (!state) return null;
 
-        const color = VESSEL_COLORS[track.vessel_id] || '#7ba7c0';
+        const color = getVesselColor(track.vessel_id);
         const isSelected = track.vessel_id === selectedVesselId;
 
         return (
@@ -175,16 +182,30 @@ export default function VesselLayer({ tracks, currentTimestamp, selectedVesselId
             <Marker
               position={[state.lat, state.lon]}
               icon={L.divIcon({
-                html: `<div style="
-                  width: 10px; height: 10px; border-radius: 50%;
-                  background: ${state.isInGap ? '#ffb800' : color};
-                  border: 2px solid ${state.isInGap ? '#fff8' : '#fff5'};
-                  box-shadow: 0 0 ${isSelected ? 8 : 4}px ${color};
-                  cursor: pointer;
-                "></div>`,
+                html: `<div style="display:flex;flex-direction:column;align-items:center;cursor:pointer;">
+                  <div style="
+                    font-size: ${isSelected ? '22px' : '18px'};
+                    line-height: 1;
+                    filter: drop-shadow(0 0 ${isSelected ? '8px' : '3px'} ${state.isInGap ? '#ffb800' : color});
+                    transition: all 0.2s;
+                  ">🚢</div>
+                  <div style="
+                    font-family: 'JetBrains Mono', monospace;
+                    font-size: 9px;
+                    font-weight: 700;
+                    color: ${state.isInGap ? '#ffb800' : color};
+                    background: rgba(3,10,25,0.8);
+                    border: 1px solid ${state.isInGap ? '#ffb800' : color}88;
+                    border-radius: 3px;
+                    padding: 1px 4px;
+                    margin-top: 1px;
+                    white-space: nowrap;
+                    letter-spacing: 0.5px;
+                  ">${track.vessel_id}</div>
+                </div>`,
                 className: '',
-                iconSize: [10, 10],
-                iconAnchor: [5, 5],
+                iconSize: [36, 38],
+                iconAnchor: [18, 10],
               })}
               eventHandlers={{
                 click: () => onSelectVessel(isSelected ? null : track.vessel_id),
@@ -225,23 +246,7 @@ export default function VesselLayer({ tracks, currentTimestamp, selectedVesselId
               </Popup>
             </Marker>
 
-            {/* Vessel label */}
-            <Marker
-              position={[state.lat + 0.07, state.lon]}
-              icon={L.divIcon({
-                html: `<div style="
-                  font-family: 'JetBrains Mono', monospace;
-                  font-size: 9px; font-weight: 700;
-                  color: ${state.isInGap ? '#ffb800' : color};
-                  text-shadow: 0 1px 3px #000c;
-                  white-space: nowrap;
-                  pointer-events: none;
-                ">${track.vessel_id}${state.isInGap ? ' ⚠' : ''}</div>`,
-                className: '',
-                iconSize: [60, 14],
-                iconAnchor: [30, 7],
-              })}
-            />
+
           </div>
         );
       })}

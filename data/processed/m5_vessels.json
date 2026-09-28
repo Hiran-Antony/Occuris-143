@@ -6,15 +6,15 @@
     "vessel_type": "cargo",
     "ais_continuity": "CONTINUOUS",
     "journey": {
-      "entry_gateway": "GATE_D",
-      "exit_gateway": "GATE_D",
+      "entry_gateway": null,
+      "exit_gateway": null,
       "actual_duration_hours": 11.9,
-      "expected_duration_hours": 14.02,
-      "delay_hours": -2.12,
-      "status": "COMPLETED",
+      "expected_duration_hours": 13.92,
+      "delay_hours": -2.02,
+      "status": "WINDOW_INTERIOR",
       "expected_basis": "CORRIDOR_BASELINE"
     },
-    "behaviour_event_count": 4,
+    "behaviour_event_count": 0,
     "unexplained_event_count": 0
   },
   {
@@ -24,15 +24,15 @@
     "vessel_type": "cargo",
     "ais_continuity": "GAP_DETECTED",
     "journey": {
-      "entry_gateway": "GATE_D",
-      "exit_gateway": "GATE_D",
+      "entry_gateway": null,
+      "exit_gateway": null,
       "actual_duration_hours": 11.95,
-      "expected_duration_hours": 11.54,
-      "delay_hours": 0.41,
-      "status": "COMPLETED",
+      "expected_duration_hours": 11.45,
+      "delay_hours": 0.5,
+      "status": "WINDOW_INTERIOR",
       "expected_basis": "CORRIDOR_BASELINE"
     },
-    "behaviour_event_count": 2,
+    "behaviour_event_count": 0,
     "unexplained_event_count": 0
   },
   {
@@ -42,15 +42,15 @@
     "vessel_type": "cargo",
     "ais_continuity": "CONTINUOUS",
     "journey": {
-      "entry_gateway": "GATE_A",
-      "exit_gateway": "GATE_A",
+      "entry_gateway": null,
+      "exit_gateway": null,
       "actual_duration_hours": 11.97,
-      "expected_duration_hours": 26.7,
-      "delay_hours": -14.73,
-      "status": "COMPLETED",
+      "expected_duration_hours": 26.76,
+      "delay_hours": -14.79,
+      "status": "WINDOW_INTERIOR",
       "expected_basis": "CORRIDOR_BASELINE"
     },
-    "behaviour_event_count": 2,
+    "behaviour_event_count": 0,
     "unexplained_event_count": 0
   },
   {
@@ -60,15 +60,15 @@
     "vessel_type": "cargo",
     "ais_continuity": "CONTINUOUS",
     "journey": {
-      "entry_gateway": "GATE_C",
-      "exit_gateway": "GATE_C",
+      "entry_gateway": null,
+      "exit_gateway": null,
       "actual_duration_hours": 11.98,
-      "expected_duration_hours": 11.97,
-      "delay_hours": 0.01,
-      "status": "COMPLETED",
+      "expected_duration_hours": 12.59,
+      "delay_hours": -0.61,
+      "status": "WINDOW_INTERIOR",
       "expected_basis": "CORRIDOR_BASELINE"
     },
-    "behaviour_event_count": 2,
+    "behaviour_event_count": 0,
     "unexplained_event_count": 0
   },
   {
@@ -78,15 +78,375 @@
     "vessel_type": "cargo",
     "ais_continuity": "CONTINUOUS",
     "journey": {
-      "entry_gateway": "GATE_A",
-      "exit_gateway": "GATE_A",
+      "entry_gateway": null,
+      "exit_gateway": null,
       "actual_duration_hours": 11.97,
-      "expected_duration_hours": 9.8,
-      "delay_hours": 2.17,
+      "expected_duration_hours": 9.95,
+      "delay_hours": 2.02,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001006",
+    "vessel_id": "V006",
+    "name": "BACKGROUND VESSEL 6",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.9,
+      "expected_duration_hours": 9.75,
+      "delay_hours": 2.15,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001007",
+    "vessel_id": "V007",
+    "name": "BACKGROUND VESSEL 7",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.88,
+      "expected_duration_hours": 13.74,
+      "delay_hours": -1.86,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001008",
+    "vessel_id": "V008",
+    "name": "BACKGROUND VESSEL 8",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.9,
+      "expected_duration_hours": 10.0,
+      "delay_hours": 1.9,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001009",
+    "vessel_id": "V009",
+    "name": "BACKGROUND VESSEL 9",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.92,
+      "expected_duration_hours": 11.55,
+      "delay_hours": 0.37,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001010",
+    "vessel_id": "V010",
+    "name": "BACKGROUND VESSEL 10",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.98,
+      "expected_duration_hours": 14.03,
+      "delay_hours": -2.05,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001011",
+    "vessel_id": "V011",
+    "name": "BACKGROUND VESSEL 11",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.98,
+      "expected_duration_hours": 8.37,
+      "delay_hours": 3.61,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001012",
+    "vessel_id": "V012",
+    "name": "BACKGROUND VESSEL 12",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 11.02,
+      "delay_hours": 0.95,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001013",
+    "vessel_id": "V013",
+    "name": "BACKGROUND VESSEL 13",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": "GATE_D",
+      "exit_gateway": "GATE_D",
+      "actual_duration_hours": 11.93,
+      "expected_duration_hours": 10.33,
+      "delay_hours": 1.6,
       "status": "COMPLETED",
       "expected_basis": "CORRIDOR_BASELINE"
     },
     "behaviour_event_count": 2,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001014",
+    "vessel_id": "V014",
+    "name": "BACKGROUND VESSEL 14",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.83,
+      "expected_duration_hours": 12.15,
+      "delay_hours": -0.32,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001015",
+    "vessel_id": "V015",
+    "name": "BACKGROUND VESSEL 15",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.93,
+      "expected_duration_hours": 12.16,
+      "delay_hours": -0.23,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001016",
+    "vessel_id": "V016",
+    "name": "BACKGROUND VESSEL 16",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.98,
+      "expected_duration_hours": 10.79,
+      "delay_hours": 1.19,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001017",
+    "vessel_id": "V017",
+    "name": "BACKGROUND VESSEL 17",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.92,
+      "expected_duration_hours": 14.04,
+      "delay_hours": -2.12,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001018",
+    "vessel_id": "V018",
+    "name": "BACKGROUND VESSEL 18",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.93,
+      "expected_duration_hours": 9.98,
+      "delay_hours": 1.95,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001019",
+    "vessel_id": "V019",
+    "name": "BACKGROUND VESSEL 19",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.9,
+      "expected_duration_hours": 9.77,
+      "delay_hours": 2.13,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001020",
+    "vessel_id": "V020",
+    "name": "BACKGROUND VESSEL 20",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 8.71,
+      "delay_hours": 3.26,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001021",
+    "vessel_id": "V021",
+    "name": "BACKGROUND VESSEL 21",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 10.59,
+      "delay_hours": 1.38,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001022",
+    "vessel_id": "V022",
+    "name": "BACKGROUND VESSEL 22",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.92,
+      "expected_duration_hours": 9.63,
+      "delay_hours": 2.29,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001023",
+    "vessel_id": "V023",
+    "name": "BACKGROUND VESSEL 23",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.88,
+      "expected_duration_hours": 9.24,
+      "delay_hours": 2.64,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001024",
+    "vessel_id": "V024",
+    "name": "BACKGROUND VESSEL 24",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": "GATE_A",
+      "exit_gateway": "GATE_A",
+      "actual_duration_hours": 11.97,
+      "expected_duration_hours": 9.29,
+      "delay_hours": 2.68,
+      "status": "COMPLETED",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 2,
+    "unexplained_event_count": 0
+  },
+  {
+    "mmsi": "477001025",
+    "vessel_id": "V025",
+    "name": "BACKGROUND VESSEL 25",
+    "vessel_type": "cargo",
+    "ais_continuity": "CONTINUOUS",
+    "journey": {
+      "entry_gateway": null,
+      "exit_gateway": null,
+      "actual_duration_hours": 11.98,
+      "expected_duration_hours": 7.88,
+      "delay_hours": 4.1,
+      "status": "WINDOW_INTERIOR",
+      "expected_basis": "CORRIDOR_BASELINE"
+    },
+    "behaviour_event_count": 0,
     "unexplained_event_count": 0
   }
 ]
