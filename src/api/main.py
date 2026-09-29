@@ -23,9 +23,9 @@ app.add_middleware(
 DATA_DIR = Path("data/processed")
 
 CASES = [
-    {"id": "case_01", "name": "Al-Mahra Corridor", "region": "Arabian Sea", "status": "ACTIVE", "sar_image_path": "sar_01.png", "mask_path": "case_01_pred_mask.png"},
-    {"id": "case_02", "name": "Lakshadweep Passage", "region": "Arabian Sea", "status": "ACTIVE", "sar_image_path": "sar_02.png", "mask_path": "case_02_pred_mask.png"},
-    {"id": "case_03", "name": "Oman Basin", "region": "Arabian Sea", "status": "ACTIVE", "sar_image_path": "sar_03.png", "mask_path": "case_03_pred_mask.png"}
+    {"id": "case_01", "name": "Al-Mahra Corridor", "region": "Arabian Sea", "status": "ACTIVE", "sar_image_path": "sar_01.png", "mask_path": "kaggle_pred_01.png"},
+    {"id": "case_02", "name": "Lakshadweep Passage", "region": "Arabian Sea", "status": "ACTIVE", "sar_image_path": "sar_02.png", "mask_path": "kaggle_pred_02.png"},
+    {"id": "case_03", "name": "Oman Basin", "region": "Arabian Sea", "status": "ACTIVE", "sar_image_path": "sar_03.png", "mask_path": "kaggle_pred_03.png"}
 ]
 
 def load_json(filename: str):

@@ -97,9 +97,13 @@ def generate_sar_images():
     seeds = {"case_01": 7, "case_02": 13, "case_03": 42}   # 42 → two patches
     for case_id, seed in seeds.items():
         idx = case_id.split("_")[1]
-        sar, mask = make_sar_and_mask(seed)
         sar_path  = SAR_DIR / f"sar_{idx}.png"
         mask_path = SAR_DIR / f"mask_{idx}.png"
+        # Skip if real SAR images already exist (protect Kaggle/real data from being overwritten)
+        if sar_path.exists() and sar_path.stat().st_size > 50000:
+            print(f"  [SAR] {sar_path.name}  (skipped — real image already present)")
+            continue
+        sar, mask = make_sar_and_mask(seed)
         sar.save(sar_path)
         mask.save(mask_path)
         print(f"  [SAR] {sar_path.name}  {sar.size}  mask_pixels={np.array(mask).sum()//255}")
