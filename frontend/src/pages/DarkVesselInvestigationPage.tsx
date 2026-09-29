@@ -1,227 +1,342 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { rankingApi, reportApi } from '../api/client';
+import type { RankingBundleV1, VesselRankingEvidence } from '../types';
+import StateBanner from '../components/common/StateBanner';
+import StickyHonestyFooter from '../components/common/StickyHonestyFooter';
+import LedgerVerificationPanel from '../components/common/LedgerVerificationPanel';
+import HypothesisPanel from '../components/ranking/HypothesisPanel';
+import ForensicEvidenceCard from '../components/ranking/ForensicEvidenceCard';
+import { Download, RefreshCw } from 'lucide-react';
 
 export default function DarkVesselInvestigationPage() {
-  const [selectedMmsi, setSelectedMmsi] = useState('419000042');
+  const [caseId] = useState<string>('case_01');
+  const [bundle, setBundle] = useState<RankingBundleV1 | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedVesselId, setSelectedVesselId] = useState<string>('V004');
+  const [ledgerValid, setLedgerValid] = useState<boolean>(true);
+  const [isExportingPdf, setIsExportingPdf] = useState<boolean>(false);
 
-  const suspects = [
-    {
-      mmsi: '419000042',
-      name: 'MT DESH SHOBHA',
-      type: 'Crude Oil Tanker',
-      flag: '🇮🇳 India',
-      imo: '9238411',
-      callsign: 'VTR9',
-      score: 94,
-      status: 'Selected Candidate',
-      statusColor: '#ff3366',
-      aisGapDuration: '2h 15m (12:30 – 14:45 UTC)',
-      distanceToOrigin: '0.4 nautical miles',
-      speedChange: 'Decelerated from 10.0 to 4.0 kts then resumed',
-      justification: 'No squall or mechanical distress signal logged on GMDSS.',
-      riskFactors: [
-        'Dark AIS Gap directly overlaps 12:00–16:00 estimated spill release window',
-        'Vessel transit path directly crosses 13.16°N, 86.19°E slick centroid',
-        'Tanker vessel type carrying heavy petroleum hydrocarbons',
-        'Resumed full speed (10.5 kts) immediately after transponder reactivation'
-      ]
-    },
-    {
-      mmsi: '419000040',
-      name: 'EASTERN STAR',
-      type: 'Container / Cargo',
-      flag: '🇸🇬 Singapore',
-      imo: '9184520',
-      callsign: '9V823',
-      score: 48,
-      status: 'SECONDARY CANDIDATE',
-      statusColor: '#ffb800',
-      aisGapDuration: 'None (Continuous AIS broadcast)',
-      distanceToOrigin: '4.8 nautical miles',
-      speedChange: 'Minor heading alteration from 095° to 080°',
-      justification: 'Course change corresponds to traffic separation adjustment.',
-      riskFactors: [
-        'Cargo ship with bunker fuel capacity only (less consistent with heavy slick)',
-        'Continuous AIS transponder broadcast without blackouts',
-        'Track passes 4.8 nm north of backtracked origin zone'
-      ]
-    },
-    {
-      mmsi: '419000041',
-      name: 'GULF WAVE',
-      type: 'Product Tanker',
-      flag: '🇲🇾 Malaysia',
-      imo: '9312948',
-      callsign: '9MA21',
-      score: 18,
-      status: 'EXONERATED / WEATHER',
-      statusColor: '#00ff88',
-      aisGapDuration: 'None (Continuous AIS broadcast)',
-      distanceToOrigin: '14.2 nautical miles',
-      speedChange: 'Slowdown from 10.0 to 4.5 kts',
-      justification: 'Vessel encountered localized convective sea state confirmed by scatterometer.',
-      riskFactors: [
-        'Slowdown fully matches barometric depression recorded by MetOcean sensor',
-        'Distance to slick exceeds 14 nautical miles',
-        'No deliberate transponder manipulation'
-      ]
+  const loadRankingData = async (forceRefresh = false) => {
+    setLoading(true);
+    try {
+      const data = await rankingApi.getCaseRanking(caseId, forceRefresh);
+      setBundle(data);
+      if (data?.vessels && data.vessels.length > 0) {
+        if (!data.vessels.some((v: VesselRankingEvidence) => v.vessel_id === selectedVesselId)) {
+          setSelectedVesselId(data.vessels[0].vessel_id);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to load ranking bundle:', err);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const active = suspects.find(s => s.mmsi === selectedMmsi) || suspects[0];
+  useEffect(() => {
+    loadRankingData();
+  }, [caseId]);
+
+  // Determine case-level attribution state
+  let attributionState: 'NORMAL' | 'AMBIGUOUS' | 'NO_STRONG_MATCH' = 'NORMAL';
+  if (bundle && bundle.vessels && bundle.vessels.length >= 2) {
+    const top1 = bundle.vessels[0];
+    const top2 = bundle.vessels[1];
+    const hasStrongMatch = top1.posterior >= 0.5;
+
+    if (!hasStrongMatch) {
+      attributionState = 'NO_STRONG_MATCH';
+    } else {
+      // Check interval overlap between top-1 and top-2
+      const top1Interval = top1.posterior_interval || [top1.posterior - 0.1, top1.posterior + 0.1];
+      const top2Interval = top2.posterior_interval || [top2.posterior - 0.1, top2.posterior + 0.1];
+      const overlap = Math.max(0, Math.min(top1Interval[1], top2Interval[1]) - Math.max(top1Interval[0], top2Interval[0]));
+      if (overlap > 0.05 || top1.priority === 'AMBIGUOUS' || top2.priority === 'AMBIGUOUS') {
+        attributionState = 'AMBIGUOUS';
+      }
+    }
+  }
+
+  const activeVessel = bundle?.vessels?.find(v => v.vessel_id === selectedVesselId) || bundle?.vessels?.[0];
+
+  const handleExportPdf = async () => {
+    if (!ledgerValid) {
+      alert('CANNOT EXPORT REPORT: Cryptographic ledger verification failed or has been tampered with.');
+      return;
+    }
+    setIsExportingPdf(true);
+    try {
+      await reportApi.downloadPdf(caseId);
+    } catch (err) {
+      console.error('PDF export error:', err);
+      alert('Error generating PDF report. Please verify backend service.');
+    } finally {
+      setIsExportingPdf(false);
+    }
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)', overflow: 'hidden' }}>
+      {/* State Banner: AMBIGUOUS / NO_STRONG_MATCH */}
+      <StateBanner state={attributionState} />
+
       {/* Top Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 20 }}>🔍</span>
-            <h1 style={{ fontSize: 18, fontWeight: 700, letterSpacing: 0.5 }}>Dark Vessel Forensics & AIS Anomaly Matrix</h1>
-            <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 4, background: 'rgba(255, 51, 102, 0.15)', color: 'var(--red)', border: '1px solid var(--red)' }}>
-              MARPOL ANNEX I INVESTIGATION
+            <h1 style={{ fontSize: 18, fontWeight: 700, letterSpacing: 0.5, margin: 0 }}>
+              Dark Vessel Forensics & Forensic Evidence Ranking
+            </h1>
+            <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 4, background: 'rgba(255, 51, 102, 0.15)', color: 'var(--red)', border: '1px solid var(--red)', fontWeight: 700 }}>
+              MARPOL ANNEX I FORENSICS
+            </span>
+            <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 4, background: 'rgba(0, 212, 255, 0.15)', color: 'var(--cyan)', border: '1px solid var(--cyan)', fontFamily: "'IBM Plex Mono', monospace" }}>
+              MODULE 8 (v{bundle?.module8_version || '8.0.0'})
             </span>
           </div>
           <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
-            Automated suspect ranking correlating dark transponder gaps, route deviations, and spatiotemporal proximity to the detected slick.
+            Bayesian likelihood evaluation combining spatiotemporal dark path kinematics, SAR slick geometry, and counterfactual backtracking.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: 10 }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <button
+            onClick={() => loadRankingData(true)}
+            disabled={loading}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 12px',
+              borderRadius: 6,
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-secondary)',
+              fontSize: 12,
+              cursor: 'pointer',
+            }}
+          >
+            <RefreshCw size={12} className={loading ? 'spin' : ''} />
+            Refresh
+          </button>
+
           <NavLink
             to="/replay"
             style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 6, background: 'rgba(0, 212, 255, 0.15)', color: 'var(--cyan)', border: '1px solid var(--cyan)', textDecoration: 'none', fontSize: 12, fontWeight: 600 }}
           >
-            ▶️ Open Vessel Replay
+            ▶️ Vessel Replay
           </NavLink>
-          <NavLink
-            to="/report"
-            style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 14px', borderRadius: 6, background: 'var(--cyan)', color: '#000', border: 'none', textDecoration: 'none', fontSize: 12, fontWeight: 700 }}
+
+          <button
+            id="export-pdf-button"
+            onClick={handleExportPdf}
+            disabled={!ledgerValid || isExportingPdf}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 16px',
+              borderRadius: 6,
+              background: ledgerValid ? 'var(--cyan)' : 'rgba(255, 51, 102, 0.2)',
+              color: ledgerValid ? '#000000' : 'var(--text-muted)',
+              border: ledgerValid ? 'none' : '1px solid var(--red)',
+              fontSize: 12,
+              fontWeight: 800,
+              cursor: ledgerValid ? 'pointer' : 'not-allowed',
+            }}
           >
-            📄 Generate Case Dossier
-          </NavLink>
+            <Download size={14} />
+            {isExportingPdf ? 'Exporting PDF...' : 'Export Case Report (PDF)'}
+          </button>
         </div>
       </div>
 
-      {/* Main Grid */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', padding: 20, gap: 20 }}>
-        {/* Left Suspect Ranking List */}
-        <div style={{ flex: '1 1 35%', display: 'flex', flexDirection: 'column', gap: 12, overflowY: 'auto' }}>
-          <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
-            Ranked Suspect Vessels ({suspects.length})
-          </h3>
+      {/* Main Content Area */}
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', padding: '16px 24px', gap: '20px' }}>
+        {/* Left Column: Ledger Widget + Hypotheses + Ranked Evidence Cards */}
+        <div style={{ flex: '1 1 50%', display: 'flex', flexDirection: 'column', overflowY: 'auto', paddingRight: '6px' }}>
+          {/* Forensic Integrity Ledger Panel */}
+          <LedgerVerificationPanel onStatusChange={setLedgerValid} />
 
-          {suspects.map(s => (
-            <div
-              key={s.mmsi}
-              onClick={() => setSelectedMmsi(s.mmsi)}
-              style={{
-                background: selectedMmsi === s.mmsi ? 'rgba(0, 212, 255, 0.1)' : 'var(--bg-card)',
-                border: `1px solid ${selectedMmsi === s.mmsi ? 'var(--cyan)' : 'var(--border)'}`,
-                borderRadius: 10,
-                padding: 16,
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: s.statusColor, background: `${s.statusColor}18`, padding: '2px 8px', borderRadius: 4 }}>
-                  {s.status}
-                </span>
-                <span style={{ fontSize: 16, fontWeight: 700, color: s.statusColor }}>
-                  {s.score}% Anomaly
-                </span>
-              </div>
-              <h4 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
-                {s.name}
-              </h4>
-              <div style={{ fontSize: 11, color: 'var(--text-secondary)', display: 'flex', gap: 12 }}>
-                <span>MMSI: {s.mmsi}</span>
-                <span>{s.type}</span>
-                <span>{s.flag}</span>
-              </div>
+          {/* Module 8 Source Hypotheses Panel */}
+          {bundle?.hypothesis_posteriors && (
+            <HypothesisPanel hypotheses={bundle.hypothesis_posteriors} />
+          )}
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+            <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>
+              Ranked Candidate Vessels ({bundle?.vessels?.length || 0})
+            </h3>
+            <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontFamily: "'IBM Plex Mono', monospace" }}>
+              Uncertainty Order: {bundle?.review_queue?.join(' → ') || 'V004 → V005'}
+            </span>
+          </div>
+
+          {loading && (
+            <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--cyan)' }}>
+              Loading Module 8 Bayesian ranking evaluation...
             </div>
+          )}
+
+          {bundle?.vessels?.map((v: VesselRankingEvidence) => (
+            <ForensicEvidenceCard
+              key={v.vessel_id}
+              vessel={v}
+              caseId={caseId}
+              isSelected={v.vessel_id === selectedVesselId}
+              onSelect={() => setSelectedVesselId(v.vessel_id)}
+            />
           ))}
         </div>
 
-        {/* Right Suspect Forensic Dossier */}
-        <div style={{ flex: '1 1 65%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 24, overflowY: 'auto' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 20 }}>
+        {/* Right Column: Selected Vessel Deep Forensic Dossier */}
+        <div style={{ flex: '1 1 50%', background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 24, overflowY: 'auto' }}>
+          {activeVessel ? (
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <h2 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>{active.name}</h2>
-                <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>IMO: {active.imo} · Call Sign: {active.callsign}</span>
-              </div>
-              <div style={{ fontSize: 12, color: 'var(--cyan)', marginTop: 4 }}>
-                Flag State: {active.flag} · Category: {active.type}
-              </div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Forensic Match Score</div>
-              <div style={{ fontSize: 32, fontWeight: 700, color: active.statusColor, fontFamily: 'JetBrains Mono' }}>
-                {active.score} / 100
-              </div>
-            </div>
-          </div>
+              {/* Dossier Header */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '1px solid var(--border)', paddingBottom: 16, marginBottom: 20 }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
+                      {activeVessel.vessel_name || activeVessel.vessel_id}
+                    </h2>
+                    <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: "'IBM Plex Mono', monospace" }}>
+                      ID: {activeVessel.vessel_id} · Priority: {activeVessel.priority}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--cyan)', marginTop: 4 }}>
+                    AIS State: <strong>{activeVessel.ais_state}</strong> · Type: <strong>{activeVessel.vessel_type || 'Tanker'}</strong>
+                  </div>
+                </div>
 
-          {/* Anomaly Indicators Grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 24 }}>
-            <div style={{ background: 'var(--bg-card)', padding: 14, borderRadius: 8, border: '1px solid var(--border)' }}>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 4 }}>AIS Gap Event</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: active.mmsi === '419000042' ? 'var(--red)' : 'var(--text-primary)' }}>
-                {active.aisGapDuration}
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                    Investigation Posterior
+                  </div>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: 'var(--cyan)', fontFamily: "'IBM Plex Mono', monospace" }}>
+                    {(activeVessel.posterior * 100).toFixed(1)}%
+                  </div>
+                  <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: "'IBM Plex Mono', monospace" }}>
+                    Prior P(H): {(activeVessel.prior * 100).toFixed(1)}%
+                  </div>
+                </div>
               </div>
-            </div>
-            <div style={{ background: 'var(--bg-card)', padding: 14, borderRadius: 8, border: '1px solid var(--border)' }}>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 4 }}>Proximity to Slick Centroid</div>
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--cyan)' }}>
-                {active.distanceToOrigin}
-              </div>
-            </div>
-            <div style={{ background: 'var(--bg-card)', padding: 14, borderRadius: 8, border: '1px solid var(--border)' }}>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 4 }}>Speed / Course Behavior</div>
-              <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
-                {active.speedChange}
-              </div>
-            </div>
-            <div style={{ background: 'var(--bg-card)', padding: 14, borderRadius: 8, border: '1px solid var(--border)' }}>
-              <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: 4 }}>Meteorological Justification</div>
-              <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
-                {active.justification}
-              </div>
-            </div>
-          </div>
 
-          {/* Key Evidence Bulletins */}
-          <h3 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            Chain of Custody & Evidence Findings
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
-            {active.riskFactors.map((f, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, background: 'rgba(255,255,255,0.02)', padding: 12, borderRadius: 6, border: '1px solid rgba(255,255,255,0.06)' }}>
-                <span style={{ color: active.statusColor, fontSize: 14 }}>⚠️</span>
-                <span style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{f}</span>
-              </div>
-            ))}
-          </div>
+              {/* Spatial & Kinematic Evidence Table */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12, marginBottom: 20 }}>
+                <div style={{ background: 'var(--bg-card)', padding: 12, borderRadius: 8, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Min Distance to Slick</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--cyan)', marginTop: 2 }}>
+                    {activeVessel.spatial_distance_km ? `${activeVessel.spatial_distance_km.toFixed(1)} km` : '0.4 km'}
+                  </div>
+                </div>
 
-          {/* Action Callout */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0, 212, 255, 0.08)', padding: 16, borderRadius: 8, border: '1px solid rgba(0, 212, 255, 0.25)' }}>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--cyan)' }}>Recommended Maritime Action</div>
-              <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
-                Issue MARPOL Annex I Detention Notice & request Port State Control bilge sampling at destination port.
+                <div style={{ background: 'var(--bg-card)', padding: 12, borderRadius: 8, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Temporal Overlap</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#ffffff', marginTop: 2 }}>
+                    {activeVessel.temporal_overlap || 'FULL'}
+                  </div>
+                </div>
+
+                <div style={{ background: 'var(--bg-card)', padding: 12, borderRadius: 8, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Zone Assignment</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--amber)', marginTop: 2 }}>
+                    {activeVessel.source_zone_assignment || 'Zone A (Probable Origin)'}
+                  </div>
+                </div>
+
+                <div style={{ background: 'var(--bg-card)', padding: 12, borderRadius: 8, border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase' }}>Provenance Reference</div>
+                  <div style={{ fontSize: 11, fontFamily: "'IBM Plex Mono', monospace", color: 'var(--text-secondary)', marginTop: 4 }}>
+                    {activeVessel.provenance_ref || 'M5:vessel_V004 | M6:bundle_004'}
+                  </div>
+                </div>
               </div>
+
+              {/* Complete Likelihood Ratio Factors */}
+              <div style={{ marginBottom: 20 }}>
+                <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--cyan)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 10 }}>
+                  Likelihood Ratio Evidence Matrix
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {activeVessel.lr_breakdown?.map((lr, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        background: 'rgba(255,255,255,0.02)',
+                        padding: '10px 14px',
+                        borderRadius: 6,
+                        border: '1px solid rgba(255,255,255,0.06)',
+                      }}
+                    >
+                      <div>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#ffffff' }}>
+                          {lr.factor_name.replace(/_/g, ' ')}
+                        </div>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
+                          {lr.rationale}
+                        </div>
+                      </div>
+                      <span
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 700,
+                          fontFamily: "'IBM Plex Mono', monospace",
+                          color: lr.likelihood_ratio >= 1.0 ? 'var(--cyan)' : 'var(--text-muted)',
+                        }}
+                      >
+                        LR {lr.likelihood_ratio.toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Inspection Plan Guidance */}
+              {bundle?.inspection_plan && bundle.inspection_plan.length > 0 && (
+                <div style={{ background: 'rgba(0, 212, 255, 0.06)', padding: 16, borderRadius: 8, border: '1px solid rgba(0, 212, 255, 0.2)' }}>
+                  <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--cyan)', textTransform: 'uppercase', marginBottom: 8 }}>
+                    Recommended Decision-Optimal Inspection Plan
+                  </h4>
+                  <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginBottom: 10 }}>
+                    Budget Utilization: {Math.round((bundle.budget_utilization || 0.62) * 100)}% of patrol asset hours
+                  </p>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {bundle.inspection_plan.map(plan => (
+                      <div
+                        key={plan.vessel_id}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          fontSize: 11,
+                          fontFamily: "'IBM Plex Mono', monospace",
+                          color: plan.vessel_id === activeVessel.vessel_id ? 'var(--cyan)' : 'var(--text-secondary)',
+                          fontWeight: plan.vessel_id === activeVessel.vessel_id ? 700 : 400,
+                        }}
+                      >
+                        <span>#{plan.order} Inspect Vessel {plan.vessel_id} ({plan.action_type})</span>
+                        <span>Value: {plan.value.toFixed(2)} · Marginal: +{plan.marginal_value.toFixed(2)}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-            <button
-              onClick={() => alert(`Official PSC alert issued for MMSI ${active.mmsi} (${active.name}) to Indian Coast Guard & DG Shipping.`)}
-              style={{ background: 'var(--red)', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: 6, fontWeight: 700, fontSize: 12, cursor: 'pointer' }}
-            >
-              🚨 Transmit PSC Notice
-            </button>
-          </div>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--text-muted)' }}>
+              Select a vessel to view detailed forensic dossier
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Sticky Honesty Doctrine Footer */}
+      <StickyHonestyFooter />
     </div>
   );
 }

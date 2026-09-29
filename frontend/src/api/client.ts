@@ -53,3 +53,51 @@ export const forensicsApi = {
 export const journeyApi = {
   list: (): Promise<Journey[]> => Promise.resolve([]),
 };
+
+export const rankingApi = {
+  getCaseRanking: (caseId = 'case_01', forceRefresh = false): Promise<any> =>
+    api.get(`/api/v1/ranking/case/${caseId}?force_refresh=${forceRefresh}`).then(r => r.data),
+  getVesselRanking: (vesselId: string, caseId = 'case_01'): Promise<any> =>
+    api.get(`/api/v1/ranking/vessels/${vesselId}?case_id=${caseId}`).then(r => r.data),
+  getReviewQueue: (caseId = 'case_01'): Promise<any> =>
+    api.get(`/api/v1/ranking/review-queue?case_id=${caseId}`).then(r => r.data),
+  submitAnalystDecision: (payload: {
+    vessel_id: string;
+    case_id: string;
+    decision: 'follow_up' | 'reject_with_reason' | 'ambiguous' | 'insufficient';
+    note?: string;
+    analyst_id?: string;
+  }): Promise<any> => api.post('/api/v1/ranking/analyst-decision', payload).then(r => r.data),
+};
+
+export const verificationApi = {
+  verifyLedger: (): Promise<any> => api.get('/api/v1/verification/ledger/verify').then(r => r.data),
+  getVerificationBundle: (vesselId: string, caseId = 'case_01'): Promise<any> =>
+    api.get(`/api/v1/verification/vessels/${vesselId}/verify?case_id=${caseId}`).then(r => r.data),
+};
+
+export const reportApi = {
+  generatePdfUrl: (caseId = 'case_01') => `http://localhost:8080/api/cases/${caseId}/report/pdf`,
+  downloadPdf: async (caseId = 'case_01'): Promise<boolean> => {
+    try {
+      const response = await api.get(`/api/cases/${caseId}/report/pdf`, { responseType: 'blob' });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const dateStr = new Date().toISOString().replace(/[:.]/g, '-');
+      link.setAttribute('download', `Occuris_Case_${caseId}_${dateStr}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      return true;
+    } catch (err) {
+      console.error('Failed to download PDF report', err);
+      throw err;
+    }
+  },
+};
+
+export default api;
+

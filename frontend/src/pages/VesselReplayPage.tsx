@@ -511,7 +511,7 @@ export default function VesselReplayPage() {
 
               {/* Speed Multipliers */}
               <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.05)', padding: 3, borderRadius: 6, border: '1px solid var(--border)' }}>
-                {[1, 2, 4].map(spd => (
+                {[1, 3, 8].map(spd => (
                   <button
                     key={spd}
                     onClick={() => setPlaySpeed(spd)}
@@ -563,23 +563,54 @@ export default function VesselReplayPage() {
             </div>
           </div>
 
-          {/* Scrubber slider */}
-          <input
-            type="range"
-            min={0}
-            max={Math.max(0, positions.length - 1)}
-            value={currentIndex}
-            onChange={(e) => {
-              setIsPlaying(false);
-              setCurrentIndex(parseInt(e.target.value));
-            }}
-            style={{
-              width: '100%',
-              accentColor: isInsideAnomaly ? 'var(--red)' : 'var(--cyan)',
-              cursor: 'pointer',
-              marginBottom: 6
-            }}
-          />
+          {/* Smooth Drag-to-Scrub Slider with AIS Gaps Shaded Red */}
+          {(() => {
+            let anomStartPct = 20;
+            let anomEndPct = 35;
+            if (positions.length > 1) {
+              const sIdx = positions.findIndex(p => new Date(p.timestamp) >= anomStart);
+              const eIdx = positions.findIndex(p => new Date(p.timestamp) >= anomEnd);
+              const s = sIdx >= 0 ? sIdx : 0;
+              const e = eIdx >= 0 ? eIdx : positions.length - 1;
+              anomStartPct = Math.round((s / (positions.length - 1)) * 100);
+              anomEndPct = Math.round((e / (positions.length - 1)) * 100);
+            }
+            return (
+              <div style={{ position: 'relative', width: '100%', marginBottom: 8, height: '24px', display: 'flex', alignItems: 'center' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: 0,
+                    right: 0,
+                    height: '6px',
+                    transform: 'translateY(-50%)',
+                    borderRadius: '3px',
+                    background: `linear-gradient(to right, rgba(0, 212, 255, 0.3) 0%, rgba(0, 212, 255, 0.3) ${anomStartPct}%, rgba(255, 51, 102, 0.85) ${anomStartPct}%, rgba(255, 51, 102, 0.85) ${anomEndPct}%, rgba(0, 212, 255, 0.3) ${anomEndPct}%, rgba(0, 212, 255, 0.3) 100%)`,
+                    pointerEvents: 'none',
+                  }}
+                />
+                <input
+                  type="range"
+                  min={0}
+                  max={Math.max(0, positions.length - 1)}
+                  value={currentIndex}
+                  onChange={(e) => {
+                    setIsPlaying(false);
+                    setCurrentIndex(parseInt(e.target.value));
+                  }}
+                  style={{
+                    position: 'relative',
+                    width: '100%',
+                    accentColor: isInsideAnomaly ? 'var(--red)' : 'var(--cyan)',
+                    cursor: 'pointer',
+                    background: 'transparent',
+                    zIndex: 2,
+                  }}
+                />
+              </div>
+            );
+          })()}
 
           {/* Dynamic Milestones for the active vessel */}
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: 'var(--text-muted)' }}>

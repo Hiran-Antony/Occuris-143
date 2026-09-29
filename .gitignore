@@ -13,3 +13,8 @@ venv.bak/
 .vscode/
 .coverage
 .pytest_cache/
+node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+scratch/

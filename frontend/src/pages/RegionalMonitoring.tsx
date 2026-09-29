@@ -678,6 +678,7 @@ export default function RegionalMonitoring() {
 
         {/* Gateway Event Panel — M5 CrossingDetector output */}
         <GatewayEventPanel
+          caseId="case_01"
           currentTimestamp={demoTime}
           selectedVesselId={selectedVesselId}
           tracks={m5Tracks}

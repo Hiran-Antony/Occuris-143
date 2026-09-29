@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
-import { forensicsApi } from '../api/client';
+import { forensicsApi, reportApi } from '../api/client';
+import LedgerVerificationPanel from '../components/common/LedgerVerificationPanel';
+import StickyHonestyFooter from '../components/common/StickyHonestyFooter';
+import { Download, Printer } from 'lucide-react';
 
 export default function CaseReportPage() {
   const [incident, setIncident] = useState<any>(null);
+  const [ledgerValid, setLedgerValid] = useState<boolean>(true);
+  const [isExporting, setIsExporting] = useState<boolean>(false);
 
   useEffect(() => {
     forensicsApi.getIncidents().then(data => {
@@ -17,31 +22,75 @@ export default function CaseReportPage() {
     window.print();
   };
 
+  const handleExportPdf = async () => {
+    if (!ledgerValid) {
+      alert('CANNOT EXPORT REPORT: Cryptographic ledger verification failed or has been tampered with.');
+      return;
+    }
+    setIsExporting(true);
+    try {
+      await reportApi.downloadPdf('case_01');
+    } catch (err) {
+      console.error('Failed to export PDF:', err);
+      alert('Error generating court-ready PDF report.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)', overflowY: 'auto', padding: '30px 40px' }}>
-      {/* Action Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--border)' }}>
-        <div>
-          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--cyan)', textTransform: 'uppercase', letterSpacing: 1 }}>
-            Official Maritime Audit Dossier
-          </span>
-          <h1 style={{ fontSize: 24, fontWeight: 800, marginTop: 4 }}>
-            MARPOL Annex I Forensic Investigation Report
-          </h1>
-          <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 4 }}>
-            Incident ID: <span style={{ color: 'var(--text-primary)', fontFamily: 'JetBrains Mono' }}>OCCURIS-BOB-2024-0042</span> · Status: Confirmed Discharge
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)', overflowY: 'auto' }}>
+      <div style={{ flex: 1, padding: '30px 40px', overflowY: 'auto' }}>
+        {/* Action Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, paddingBottom: 16, borderBottom: '1px solid var(--border)' }}>
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--cyan)', textTransform: 'uppercase', letterSpacing: 1 }}>
+              Official Maritime Audit Dossier
+            </span>
+            <h1 style={{ fontSize: 24, fontWeight: 800, marginTop: 4 }}>
+              MARPOL Annex I Forensic Investigation Report
+            </h1>
+            <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 4 }}>
+              Incident ID: <span style={{ color: 'var(--text-primary)', fontFamily: 'JetBrains Mono' }}>OCCURIS-BOB-2024-0042</span> · Status: Confirmed Discharge
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button
+              onClick={handlePrint}
+              style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid var(--border)', padding: '10px 16px', borderRadius: 8, fontWeight: 600, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
+            >
+              <Printer size={16} /> Print View
+            </button>
+            <button
+              id="export-court-pdf-button"
+              onClick={handleExportPdf}
+              disabled={!ledgerValid || isExporting}
+              style={{
+                background: ledgerValid ? 'var(--cyan)' : 'rgba(255, 51, 102, 0.2)',
+                color: ledgerValid ? '#000' : 'var(--text-muted)',
+                border: ledgerValid ? 'none' : '1px solid var(--red)',
+                padding: '10px 20px',
+                borderRadius: 8,
+                fontWeight: 800,
+                fontSize: 13,
+                cursor: ledgerValid ? 'pointer' : 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <Download size={16} />
+              {isExporting ? 'Generating Court PDF...' : 'Export Court-Ready PDF'}
+            </button>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 12 }}>
-          <button
-            onClick={handlePrint}
-            style={{ background: 'var(--cyan)', color: '#000', border: 'none', padding: '10px 20px', borderRadius: 8, fontWeight: 700, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}
-          >
-            🖨️ Print / Save PDF
-          </button>
+        {/* Ledger Verification Widget */}
+        <div style={{ maxWidth: 1000, margin: '0 auto 20px auto' }}>
+          <LedgerVerificationPanel onStatusChange={setLedgerValid} />
         </div>
-      </div>
+
 
       {/* Main Report Container */}
       <div style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', borderRadius: 12, padding: 36, maxWidth: 1000, margin: '0 auto', width: '100%' }}>
@@ -194,6 +243,9 @@ export default function CaseReportPage() {
           </div>
         </div>
       </div>
+      </div>
+      <StickyHonestyFooter />
     </div>
   );
 }
+

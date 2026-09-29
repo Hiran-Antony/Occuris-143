@@ -1,0 +1,95 @@
+{
+  "version": 8,
+  "name": "Occuris Maritime Dark",
+  "metadata": {
+    "author": "Occuris Forensic Marine Intelligence",
+    "description": "Dark-themed oceanic forensic basemap for Arabian Sea and regional maritime monitoring"
+  },
+  "sources": {
+    "openmaptiles": {
+      "type": "vector",
+      "tiles": [
+        "https://demotiles.maplibre.org/tiles/{z}/{x}/{y}.pbf"
+      ],
+      "maxzoom": 14
+    }
+  },
+  "glyphs": "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#050f1e"
+      }
+    },
+    {
+      "id": "water-depth-deep",
+      "type": "background",
+      "paint": {
+        "background-color": "#030a16"
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "paint": {
+        "fill-color": "#07172c",
+        "fill-opacity": 0.95
+      }
+    },
+    {
+      "id": "land",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "landcover",
+      "paint": {
+        "fill-color": "#0d1b2a",
+        "fill-opacity": 0.8
+      }
+    },
+    {
+      "id": "coastline",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "waterway",
+      "paint": {
+        "line-color": "#1b4965",
+        "line-width": 1.2,
+        "line-opacity": 0.6
+      }
+    },
+    {
+      "id": "boundaries",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "boundary",
+      "paint": {
+        "line-color": "#2c4a6f",
+        "line-width": 0.8,
+        "line-dasharray": [3, 2],
+        "line-opacity": 0.5
+      }
+    },
+    {
+      "id": "places",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "place",
+      "layout": {
+        "text-field": "{name:latin}",
+        "text-size": 11,
+        "text-font": ["Noto Sans Regular"],
+        "text-transform": "uppercase",
+        "text-letter-spacing": 0.1
+      },
+      "paint": {
+        "text-color": "#627d98",
+        "text-halo-color": "#050f1e",
+        "text-halo-width": 1
+      }
+    }
+  ]
+}
