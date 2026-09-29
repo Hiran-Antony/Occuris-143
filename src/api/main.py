@@ -16,9 +16,20 @@ app.mount("/masks", StaticFiles(directory="data/processed"), name="masks")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+from src.api.maritime import router as maritime_v1_router
+from src.api.maritime_router import router as maritime_compat_router
+from src.api.verification import router as verification_v1_router
+from src.ranking.api import router as ranking_v1_router
+
+app.include_router(maritime_v1_router)
+app.include_router(verification_v1_router)
+app.include_router(ranking_v1_router)
+app.include_router(maritime_compat_router)
 
 DATA_DIR = Path("data/processed")
 
@@ -176,8 +187,34 @@ def get_investigation_candidates(case_id: str):
     return get_computed_legacy_candidates(case_id)
 
 @app.post("/api/cases/{case_id}/report")
+@app.post("/api/v1/cases/{case_id}/report")
 def generate_report(case_id: str):
-    return {"status": "success", "message": "PDF Report triggered (WeasyPrint)"}
+    """Trigger report generation and store deterministic dossier hash."""
+    from src.api.reports import gather_case_dossier_data
+    dossier = gather_case_dossier_data(case_id)
+    return {
+        "status": "success",
+        "case_id": case_id,
+        "dossier_sha256": dossier["dossier_sha256"],
+        "pdf_url": f"/api/cases/{case_id}/report/pdf",
+        "message": "Forensic MARPOL Annex I report generated deterministically",
+    }
+
+@app.get("/api/cases/{case_id}/report/pdf")
+@app.get("/api/v1/cases/{case_id}/report/pdf")
+def get_report_pdf(case_id: str):
+    """Download court-ready forensic PDF report."""
+    from fastapi.responses import Response
+    from datetime import datetime, timezone
+    from src.api.reports import generate_report_pdf
+
+    pdf_bytes = generate_report_pdf(case_id)
+    filename = f"Occuris_Case_{case_id}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.pdf"
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
 
 if __name__ == "__main__":
     import uvicorn

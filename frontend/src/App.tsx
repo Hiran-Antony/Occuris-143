@@ -8,14 +8,26 @@ import DriftForecastPage from './pages/DriftForecastPage';
 import DarkVesselInvestigationPage from './pages/DarkVesselInvestigationPage';
 import VesselReplayPage from './pages/VesselReplayPage';
 import CaseReportPage from './pages/CaseReportPage';
+import GlobalSourceBadge from './components/common/GlobalSourceBadge';
 import './index.css';
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="app-layout">
+      <div className="app-layout" style={{ position: 'relative' }}>
         <Sidebar />
-        <main className="main-content">
+        <main className="main-content" style={{ position: 'relative' }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '12px',
+              right: '24px',
+              zIndex: 1000,
+              pointerEvents: 'auto',
+            }}
+          >
+            <GlobalSourceBadge />
+          </div>
           <Routes>
             <Route path="/" element={<Navigate to="/monitoring" replace />} />
             <Route path="/monitoring" element={<RegionalMonitoring />} />
@@ -35,4 +47,5 @@ export default function App() {
     </BrowserRouter>
   );
 }
+
 

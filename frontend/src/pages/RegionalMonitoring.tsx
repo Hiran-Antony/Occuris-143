@@ -13,6 +13,7 @@ import type { VesselTrack as M5VesselTrack } from '../components/maritime/Vessel
 import VesselTrackLayer from '../components/maritime/VesselTrackLayer';
 import GatewayEventPanel from '../components/maritime/GatewayEventPanel';
 import MaritimePlayback from '../components/maritime/MaritimePlayback';
+import StickyHonestyFooter from '../components/common/StickyHonestyFooter';
 
 // A fallback initial timestamp is set to the known dataset start.
 // The actual playback range is derived by MaritimePlayback from the loaded tracks.
@@ -678,6 +679,7 @@ export default function RegionalMonitoring() {
 
         {/* Gateway Event Panel — M5 CrossingDetector output */}
         <GatewayEventPanel
+          caseId="case_01"
           currentTimestamp={demoTime}
           selectedVesselId={selectedVesselId}
           tracks={m5Tracks}
@@ -905,6 +907,7 @@ export default function RegionalMonitoring() {
           </div>
         </div>
       )}
+      <StickyHonestyFooter />
     </div>
   );
 }

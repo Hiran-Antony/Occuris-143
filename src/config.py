@@ -15,7 +15,7 @@ AIS_DIR        = DATA_RAW / "ais"
 OCEAN_DIR      = DATA_RAW / "ocean"
 WIND_DIR       = DATA_RAW / "wind"
 MODELS_DIR     = ROOT / "models"
-DB_PATH        = ROOT / "data" / "occris.db"
+DB_PATH        = ROOT / "data" / "occuris.db"
 
 # ── Arabian Sea bounding box (shared) ─────────────────────────────────────────
 # lon: 59–70 E  |  lat: 14.5–22 N  (fully in open ocean, no land overlap)

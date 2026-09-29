@@ -171,3 +171,82 @@ export const SEVERITY_COLORS = {
   medium: '#ff8800',
   high:   '#ff3366',
 };
+
+// ── Module 8 Forensic Ranking Types ──────────────────────────────────────────
+export type InvestigationPriorityType = 'HIGH' | 'MEDIUM' | 'LOW' | 'AMBIGUOUS' | 'INSUFFICIENT_DATA';
+
+export interface LikelihoodRatioBreakdown {
+  factor_name: string;
+  factor_value: string;
+  likelihood_ratio: number;
+  rationale: string;
+  source_module: string;
+}
+
+export interface SensitivityContribution {
+  factor_name: string;
+  posterior_with_factor: number;
+  posterior_without_factor: number;
+  delta: number;
+  influence: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+export interface HypothesisPosterior {
+  hypothesis_id: string;
+  description: string;
+  posterior: number;
+  bic_penalty: number;
+  status: 'TESTABLE' | 'INSUFFICIENT_DATA';
+}
+
+export interface VesselRankingEvidence {
+  vessel_id: string;
+  vessel_name?: string | null;
+  vessel_type?: string | null;
+  prior: number;
+  posterior: number;
+  posterior_interval: [number, number];
+  priority: InvestigationPriorityType;
+  lr_breakdown: LikelihoodRatioBreakdown[];
+  sensitivity: SensitivityContribution[];
+  ais_state: string;
+  source_zone_assignment?: string | null;
+  temporal_overlap: string;
+  spatial_distance_km: number;
+  provenance_ref: string;
+}
+
+export interface InspectionAction {
+  vessel_id: string;
+  order: number;
+  value: number;
+  cost: number;
+  marginal_value: number;
+  action_type: string;
+}
+
+export interface RankingBundleV1 {
+  schema_version: string;
+  case_id: string;
+  module8_version: string;
+  hypothesis_posteriors: HypothesisPosterior[];
+  vessels: VesselRankingEvidence[];
+  inspection_plan: InspectionAction[];
+  budget_utilization: number;
+  review_queue: string[];
+  ledger_hash?: string | null;
+  provenance_summary: string;
+  source_mode?: string;
+  disclaimer?: string;
+}
+
+export interface LedgerVerificationData {
+  verified: boolean;
+  total_events: number;
+  status: string;
+  broken_chain_at?: string | null;
+  merkle_root_match: boolean;
+  details: string;
+  merkle_root?: string;
+}
+
