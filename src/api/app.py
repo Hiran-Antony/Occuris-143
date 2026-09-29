@@ -62,6 +62,38 @@ def health_check():
     }
 
 
+@app.post("/api/cases/{case_id}/report")
+@app.post("/api/v1/cases/{case_id}/report")
+def generate_report(case_id: str):
+    """Trigger report generation and store deterministic dossier hash."""
+    from src.api.reports import gather_case_dossier_data
+    dossier = gather_case_dossier_data(case_id)
+    return {
+        "status": "success",
+        "case_id": case_id,
+        "dossier_sha256": dossier["dossier_sha256"],
+        "pdf_url": f"/api/cases/{case_id}/report/pdf",
+        "message": "Forensic MARPOL Annex I report generated deterministically",
+    }
+
+
+@app.get("/api/cases/{case_id}/report/pdf")
+@app.get("/api/v1/cases/{case_id}/report/pdf")
+def get_report_pdf(case_id: str):
+    """Download court-ready forensic PDF report."""
+    from fastapi.responses import Response
+    from datetime import datetime, timezone
+    from src.api.reports import generate_report_pdf
+
+    pdf_bytes = generate_report_pdf(case_id)
+    filename = f"Occuris_Case_{case_id}_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}.pdf"
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
 # Mount frontend static files
 frontend_dir = ROOT / "frontend"
 if frontend_dir.exists():

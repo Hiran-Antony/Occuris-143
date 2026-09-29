@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Polyline, CircleMarker, Popup, ImageOverlay, Rectangle, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { vesselApi, forensicsApi } from '../api/client';
+import StickyHonestyFooter from '../components/common/StickyHonestyFooter';
 
 interface SuspectConfig {
   mmsi: string;
@@ -628,6 +629,7 @@ export default function VesselReplayPage() {
           </div>
         </div>
       </div>
+      <StickyHonestyFooter />
     </div>
   );
 }

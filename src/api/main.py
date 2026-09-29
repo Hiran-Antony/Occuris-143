@@ -187,6 +187,7 @@ def get_investigation_candidates(case_id: str):
     return get_computed_legacy_candidates(case_id)
 
 @app.post("/api/cases/{case_id}/report")
+@app.post("/api/v1/cases/{case_id}/report")
 def generate_report(case_id: str):
     """Trigger report generation and store deterministic dossier hash."""
     from src.api.reports import gather_case_dossier_data
@@ -200,6 +201,7 @@ def generate_report(case_id: str):
     }
 
 @app.get("/api/cases/{case_id}/report/pdf")
+@app.get("/api/v1/cases/{case_id}/report/pdf")
 def get_report_pdf(case_id: str):
     """Download court-ready forensic PDF report."""
     from fastapi.responses import Response
